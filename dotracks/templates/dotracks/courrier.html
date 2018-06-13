@@ -1,0 +1,83 @@
+{% extends 'dotracks/header.html' %} {% load static %} {% block content %}
+
+<style>
+    .banner_area {
+        background: url("{% static "dotracks/img/apple-iphone-books-desk2.jpg" %}") no-repeat scroll center center;
+        background-size: cover;
+        background-attachment: fixed;
+        position: relative;
+        min-height: 400px;
+    }
+
+    .banner_area:before {
+        content: "";
+        background: rgba(4, 8, 29, 0.4);
+        position: absolute;
+        left: 0px;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<!--================Banner Area =================-->
+<section class="banner_area">
+    <div class="container">
+        <div class="banner_text_inner">
+            <h4>Expediez Votre Courrier</h4>
+            <ul>
+                <li>
+                    <a href="{{ baseUrl }}/{{ lang_abbr }}/">
+                        <i class="fa fa-home" aria-hidden="true"></i>{{ langue.form_menu_acceuil }}</a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>&nbsp;
+                        <i class="fa fa-file" aria-hidden="true"></i>{{ langue.form_menu_courrier }}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!--================End Banner Area =================-->
+
+<!--================Industries Area =================-->
+<section class="industries_area">
+    <div class="left_indus">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="contact_form">
+                    <div class="main_title">
+                        <h2>Destinataire ?</h2>
+                        <p>Retrouvez Une entreprise pour expedier votre courrier (Demande, Lettre, Note D'information, ...).</p>
+                    </div>
+                    <form class="contact_us_form row" action="" method="POST" id="loginForm">
+                        {% csrf_token %}
+                        <div class="form-group col-lg-12">
+                            <input type="text" required="" class="form-control" ref="email" name="email" placeholder="{{ langue.form_email }} ou {{ langue.form_libeller }} de l'entreprise">
+                        </div>
+
+                        <div class="alert" id="reponses">
+
+                        </div>
+
+                        <div class="form-group col-md-12" id="push">
+                            <button type="submit" value="submit" class="btn submit_btn2 form-control pull-right" style="float:right; margin-right:30px;">{{ langue.form_search }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="right_indus">
+
+        <div class="indus_img">
+            <img src="{% static 'dotracks/img/indus-laptop.png' %}" alt="">
+        </div>
+    </div>
+</section>
+<!--================End Industries Area =================-->
+
+{% endblock %}

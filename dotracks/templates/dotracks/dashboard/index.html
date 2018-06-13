@@ -1,0 +1,437 @@
+{% extends 'dotracks/dashboard/admin/header.html' %} {% load static %} {% block content %}
+
+<div class="box box-primary">
+
+    <!-- Card -->
+    <div class="card">
+
+        <!-- Card image -->
+
+        <div class="view zoom" style="background:url('{% static 'dotracks/img/apple-iphone-books-desk2.jpg' %}')center/cover; min-height: 250px;">
+            <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="Image of ballons flying over canyons with mask pattern one." style="margin-top: 35px; margin-left: 15px;">
+            <div class="mask pattern-1 flex-center waves-effect waves-light">
+                <p class="white-text" style="font-size: 2.3em">" Bienvenue Administrateur {{ request.session.d_user }} "</p>
+            </div>
+        </div>
+    </div>
+    <!-- Card -->
+
+    <div class="box-header with-border hover">
+        <h3 class="box-title"></h3>
+        {% if request.session.d_Entr %}
+        <a href="{{ baseurl }}/dashboard/company/logout/{{ lang_abbr }}">
+            <button class="btn btn-flat btn-danger btn-xs pull-right" data-toggle="tooltip" title="Deconnexion de l'entrprise">
+                <i class="fa fa-power-off"></i>&nbsp; {{ langue.form_logout }} {{ request.session.d_Entr }}</button>
+        </a>
+        {% endif %}
+    </div>
+    <div class="box-body card">
+        {% if errorSucuLog == "error" %}
+        <div class="col-md-12">
+            <div class="card text-center z-depth-2 alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4>
+                    <i class="icon fa fa-warning"></i> Echec de synchronisation !</h4>
+                <p>Echec de synchronisation du compte Membre au compte admin / Veuillez vous attribuer un compte Membre dans
+                    cette Sucursale</p>
+            </div>
+        </div>
+        {% endif %}
+        <div class="col-md-6">
+            <!-- USERS LIST -->
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{ langue.form_Latest_Members }}</h3>
+
+                    <!--<div class="box-tools pull-right">
+                        <span class="label label-danger">{{ nbrUser }} {{ langue.form_NewMembers }}</span>
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>-->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body no-padding card z-depth-2">
+                    <ul class="users-list clearfix">
+                        {% for elmts in userList %}
+                        <li class=" wow animated jello">
+                            <img src="{% static 'dotracks/dist/img/avatar6.png' %}" alt="DOTrack">
+                            <a class="users-list-name" href="{{baseurl}}/dashboard/company/user/{{ elmts.id }}/profile/{{lang_abbr}}">{{ elmts.nom }} {{ elmts.prenom }}</a>
+                            <span class="users-list-name" style="font-size: 0.7em; opacity: 0.5;">{{ elmts.typ__libeler }} , {{ elmts.role }}
+                                <br>{{ elmts.cic__ville }}( {{ elmts.cic__pays }} )</span>
+                        </li>
+                        {% endfor %} {% if preg != "1" %} {% for i in preg %}
+                        <li style="min-height: 60px;">
+                            <img src="{% static 'dotracks/dist/img/avatar6.png' %}" alt="DOTrack" style="opacity: 0.35;">
+                            <a class="users-list-name" href="#" data-target="#addUsers" data-toggle="modal" style="opacity: 0.3;">{{ langue.form_ajouter}}</a>
+                            <span class="users-list-date" style="opacity: 0.3;font-size: 0.7em;">
+                                <br>
+                                <i class="fa fa-user-plus"></i>
+                            </span>
+                        </li>
+                        {% endfor %} {% endif %}
+                    </ul>
+                    <!-- /.users-list -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer text-center">
+                    <a href="{{baseurl}}/dashboard/company/users/{{lang_abbr}}" class="uppercase btn btn-primary" style="font-size: 0.8em;">{{ langue.form_consulter }} {{ langue.form_utilisateurs }}</a>
+                </div>
+                <!-- /.box-footer -->
+                {% if request.session.d_Entr %} {% else %}
+                <div class="overlay" style="position: absolute; top:0; bottom:0; left:0; right:0; background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7))">
+                    <i class="fa fa-refresh fa-spin" style="color: #fff"></i>
+                    <center>
+                        <p style="margin-top: 87px; color: #fff">
+                            <b>{{ langue.form_Veuillez_ChoisiruneEntreprise }}</b>
+                        </p>
+                    </center>
+                </div>
+                {% endif %}
+            </div>
+            <!--/.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-6">
+            <div class="card wow animated bounce indigo text-center z-depth-2 alert alert-danger alert-dismissible">
+                <div class="card-body">
+                    <button type="button" class="close hidden" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4>
+                        <i class="icon fa fa-ban"></i> {{ langue.form_alert_securite }}!</h4>
+                    <p>{{ langue.form_dashbooard_admin_texte2 }}</p>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box wow animated rotateIn bg-aqua card info-color text-center z-depth-2">
+                <div class="inner">
+                    <h3>{{ nbrEntr }}
+                        <sup style="font-size: 20px">{{ nbrEntr }}</sup>
+                    </h3>
+
+                    <p>{{ langue.form_Entreprises }}</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-building"></i>
+                </div>
+                <a href="{{ baseurl }}/dashboard/company/{{ lang_abbr }}" class="small-box-footer" style="font-size: 1.1em">
+                    {{ langue.form_reglages }}
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        <!-- ./col -->
+
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box wow animated rotateIn card bg-blue text-center z-depth-2" style="position: relative;">
+                <div class="inner">
+                    <h3>{{ nbrCicr }}
+                        <sup style="font-size: 20px">{{ nbrCicr }}</sup>
+                    </h3>
+
+                    <p>{{ langue.form_Cicursale }}</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="#" class="small-box-footer" style="font-size: 1.1em" data-toggle="modal" data-target="#viewCicursale">
+                    {{ langue.form_consulter }}
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+
+                {% if request.session.d_Entr %} {% else %}
+                <div class="overlay" style="position: absolute; top:0; bottom:0; left:0; right:0; background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7))">
+                    <i class="fa fa-refresh fa-spin" style="color: #fff"></i>
+                    <center>
+                        <p style="margin-top: 87px;">
+                            <b>{{ langue.form_Veuillez_ChoisiruneEntreprise }}</b>
+                        </p>
+                    </center>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- ./col -->
+
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box wow animated rotateIn card bg-blue text-center z-depth-2">
+                <div class="inner">
+                    <h3>
+                        <sup style="font-size: 20px">
+                            <i class="glyphicon glyphicon-cog"></i>
+                        </sup>
+                    </h3>
+
+                    <p>{{ langue.form_reglages }}</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="#" class="small-box-footer" style="font-size: 1.1em">
+                    {{ langue.form_consulter }}
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        <!-- ./col -->
+
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box wow animated rotateIn bg-red card text-center z-depth-2" style="position: relative;">
+                <div class="inner">
+                    <h3>{{ nbrTypUser }}
+                        <sup style="font-size: 20px">{{ nbrTypUser }}</sup>
+                    </h3>
+
+                    <p>{{ langue.form_type_users }}</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="#" class="small-box-footer" style="font-size: 1.1em" data-toggle="modal" data-target="#viewTypeUsers">
+                    {{ langue.form_consulter }}
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+
+                {% if request.session.d_Entr %} {% else %}
+                <div class="overlay" style="position: absolute; top:0; bottom:0; left:0; right:0; background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7))">
+                    <i class="fa fa-refresh fa-spin" style="color: #fff"></i>
+                    <center>
+                        <p style="margin-top: 87px;">
+                            <b>{{ langue.form_Veuillez_ChoisiruneEntreprise }}</b>
+                        </p>
+                    </center>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- ./col -->
+
+        <div class="col-md-8">
+            <!-- ./col -->
+            <div class="col-lg-4 col-xs-12">
+                <!-- small box -->
+                <div class="small-box wow animated rotateIn bg-blue card text-center z-depth-2" style="position: relative;">
+                    <div class="inner">
+                        <h3>{{ nbrUser }}
+                            <sup style="font-size: 20px">{{ nbrUser }}</sup>
+                        </h3>
+
+                        <p>{{ langue.form_utilisateurs }}</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <a href="#" class="small-box-footer" data-toggle="modal" data-target="#addUsers">
+                        {{ langue.form_consulter }}
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+
+                    {% if request.session.d_Entr %} {% else %}
+                    <div class="overlay" style="position: absolute; top:0; bottom:0; left:0; right:0; background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7))">
+                        <i class="fa fa-refresh fa-spin" style="color: #fff"></i>
+                        <center>
+                            <p style="margin-top: 87px;">
+                                <b>{{ langue.form_Veuillez_ChoisiruneEntreprise }}</b>
+                            </p>
+                        </center>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- ./col -->
+
+            <!-- ./col -->
+            <div class="col-lg-4 col-xs-12">
+                <!-- small box -->
+                <div class="small-box wow animated rotateIn bg-aqua card text-center z-depth-2" style="position: relative;">
+                    <div class="inner">
+                        <h3>
+                            <sup style="font-size: 20px">
+                                <i class="fa fa-user"></i>
+                            </sup>
+                        </h3>
+
+                        <p>My Admin</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <a href="#" class="small-box-footer" data-toggle="modal" data-target="#addUsers">
+                        Config
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- ./col -->
+
+            <!-- ./col -->
+            <div class="col-lg-4 col-xs-12">
+                <!-- small box -->
+                <div class="small-box wow animated rotateIn bg-aqua card text-center z-depth-2" style="position: relative;">
+                    <div class="inner">
+                        <h3>
+                            <sup style="font-size: 20px">
+                                <i class="glyphicon glyphicon-cog"></i>
+                            </sup>
+                        </h3>
+
+                        <p>Administration</p>
+                    </div>
+                    <div class="icon">
+                        <i class="glyphicon glyphicon-cog"></i>
+                    </div>
+                    <a href="{{ baseurl }}/dashboard/administrate/{{ lang_abbr }}/" class="small-box-footer">
+                        {{ langue.form_consulter }}
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- ./col -->
+
+            <div class="col-md-12" style="background: none;">
+                <!-- Custom Tabs (Pulled to the right) -->
+                <div class="nav-tabs-custom tabs-wrapper">
+                    <ul class="nav nav-tabs pull-right nav classic-tabs tabs-orange" style="background: none;">
+                        <li class="active nav-item">
+                            <a href="#tab_1-1" class="nav-link waves-light" data-toggle="tab">{{ langue.form_mouchard }}</a>
+                        </li>
+                        <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Dropdown
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li role="presentation">
+                                    <a role="menuitem" href="#tab_1-1" data-toggle="tab">Action</a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" href="#tab_1-1" data-toggle="tab">Another action</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="pull-left header">
+                            <i class="fa fa-th"></i> {{ request.session.d_Entr }} &nbsp; {{ langue.mouchard }}</li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_1-1">
+                            <b>{{ langue.form_activiteRecente }} :</b>
+
+                            <div class="row">
+                                <div class="box box-primary text-center">
+                                    <!-- /.box-header -->
+                                    <div class="box-body scroll scroll_bleu" style="overflow-x: auto">
+                                        <table id="example1" class="table table-bordered table-striped" style="font-size: 1.1em">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th style="font-size: 1.1em">IP</th>
+                                                    <th style="font-size: 1.1em">{{ langue.form_libeller }}</th>
+                                                    <th style="font-size: 1.1em">Dates</th>
+                                                    <th style="font-size: 1.1em">{{ langue.form_outils}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for elmts in allMouchard|slice:":5" %}
+                                                <tr>
+                                                    <td style="font-size: 1.1em">
+                                                        <center>
+                                                            <button class="btn btn-info btn-sm delete" id="{{ elmts.id }}" data-toggle="tooltip" title="Voir les Details">
+                                                                <i class="fa fa-eye"></i>
+                                                            </button>
+                                                        </center>
+                                                    </td>
+                                                    <td style="font-size: 1.1em">{{ elmts.ip }}</td>
+                                                    <td style="font-size: 1.1em">{{ elmts.page }}</td>
+                                                    <td style="font-size: 1.1em">{{ elmts.date }}</td>
+                                                    <td style="font-size: 1.1em">
+                                                        <center>
+                                                            <button class="btn btn-success btn-sm desactiver" id="{{ elmts.id }}" data-toggle="tooltip" title="Marquer Comme Vus">
+                                                                <i class="fa fa-check"></i>
+                                                            </button>
+                                                        </center>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="box-footer text-center">
+                                        <a href="{{baseurl}}/dashboard/company/activite/{{lang_abbr}}" class="uppercase btn btn-primary" style="font-size: 0.8em;">{{ langue.form_consulter }} {{ langue.form_activiteRecente }}</a>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                        <!-- /.tab-pane -->
+                    </div>
+                    <!-- /.tab-content -->
+                </div>
+                <!-- nav-tabs-custom -->
+
+                <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+            </div>
+            <!-- /.col -->
+        </div>
+
+        <div class="col-md-4">
+            <!-- DONUT CHART -->
+            <div class="box box-danger" style="position: relative;">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Documents Courriers Archives</h3>
+                </div>
+                <div class="box-body chart-responsive">
+                    <div class="chart wow animated rotateIn infine" id="sales-chart" style="height: 300px; position: relative;"></div>
+                </div>
+                <!-- /.box-body -->
+                {% if request.session.d_Entr %} {% else %}
+                <div class="overlay" style="position: absolute; top:0; bottom:0; left:0; right:0; background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7))">
+                    <i class="fa fa-refresh fa-spin" style="color: #fff"></i>
+                    <center>
+                        <p style="margin-top: 87px; color: #fff">
+                            <b>{{ langue.form_Veuillez_ChoisiruneEntreprise }}</b>
+                        </p>
+                    </center>
+                </div>
+                {% endif %}
+            </div>
+            <!-- /.box -->
+
+            <div class="card text-center" style="width: 100%;">
+                <div class="card-header success-color white-text" style="font-size:1.1em; padding: 12px;">
+                    Featured
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Special title treatment</h4>
+                    <p class="card-text" style="font-size:1.1em;">With supporting text below as a natural lead-in to additional content.</p>
+                    <a class="btn btn-success btn-sm" style="font-size:0.8em;">Go somewhere</a>
+                </div>
+                <hr>
+                <div class="card-footer text-muted success-color white-text" style="font-size:1.1em; padding: 5px;">
+                    <p class="mb-0">2 days ago</p>
+                </div>
+            </div>
+        </div>
+        <!-- /.box -->
+
+        <div class="col-md-5">
+
+        </div>
+    </div>
+</div>
+<!-- /.box-body -->
+</div>
+<!-- /.box -->
+
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'dotracks/dashboard/admin/header.html' %} {% load static %} {% block content %}
+
+<div class="box box-default card">
+
+    <!-- Card -->
+    <div class="card">
+        <!-- Card image -->
+        <div class="view" style="background:url('{% static 'dotracks/img/stamps-1712530_1920.jpg' %}')center/cover; min-height: 250px;">
+            <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="Image of ballons flying over canyons with mask pattern one."
+                style="margin-top: 35px;">
+            <div class="mask rgba-black-light flex-center waves-effect waves-light">
+                <p class="white-text" style="font-size: 2.3em">" {{ request.resolver_match.view_name }} "</p>
+            </div>
+        </div>
+    </div>
+    <!-- Card -->
+
+
+    <div class="box-header with-border hover">
+        <h3 class="box-title">
+            <i class="fa fa-building"></i>&nbsp;
+            <b>{{ request.session.d_Entr }}</b> {{ request.resolver_match.view_name }}</h3>
+        {% if request.session.d_Entr %}
+        <a href="">
+            <button class="btn btn-primary pull-right">
+                <i class="fa fa-sign-in"></i>&nbsp; Envoyer un Courrier</button>
+        </a>
+
+        <a href="{{ baseurl }}/dashboard/company/logout/{{ lang_abbr }}">
+            <button class="btn btn-danger pull-right">
+                <i class="fa fa-power-off"></i>&nbsp; {{ langue.form_logout }} {{ request.session.d_Entr }}</button>
+        </a>
+        {% endif %}
+    </div>
+    <div class="box-body hover">
+
+        <!-- ./col -->
+        <div class="col-md-12 col-xs-12">
+            <div class="box-body hover" style="margin-top: 25px; background: #f5f5f5">
+                <!-- ./col -->
+                {% if allCourrier == None %}
+                <div class="col-md-12">
+                    <div class="card text-center z-depth-2 alert alert-warning alert-dismissible">
+                        
+                        <h4>
+                            <i class="icon fa fa-warning"></i> Erreur de donnees !</h4>
+                        <p>Oups ! Aucun Courriel Disponible pour votre entreprise. Vous serrez notifier en cas de disponibilite</p>
+                    </div>
+                </div>
+                {% else %} {% for row in allCourrier %}
+                <div class="col-lg-3 col-xs-12">
+                    <!-- small box -->
+                    <div class="small-box card bg-blue">
+                        <div class="inner">
+                            <h3>
+                                <sup style="font-size: 20px">{{ nbrCicr }}</sup>
+                            </h3>
+
+                            <p>{{ langue.form_Cicursale }}</p>
+                        </div>
+                        <div class="icon">
+
+                        </div>
+                        <a href="#" class="small-box-footer">
+                            {{ langue.form_ouvrir }}
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- ./col -->
+                {% endif %}
+            </div>
+            {% if request.session.d_Entr %} {% else %}
+            <div class="overlay" style="position: absolute; top:0; bottom:0; left:0; right:0; background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9))">
+                <i class="fa fa-refresh fa-spin" style="color: #fff"></i>
+                <center>
+                    <p style="margin-top: 187px; color: #fff">
+                        <b>{{ langue.form_Veuillez_ChoisiruneEntreprise }}</b>
+                    </p>
+                </center>
+            </div>
+            {% endif %}
+
+        </div>
+        <!-- ./col -->
+
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+
+
+{% endblock %}

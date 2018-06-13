@@ -1,0 +1,72 @@
+{% extends 'dotracks/dashboard/admin/header.html' %} {% load static %} {% block content %}
+
+<div class="box box-primary" style="border-radius: 0px;">
+    <!-- Card -->
+    <div class="card">
+        <!-- Card image -->
+        <div class="view" style="background:url('{% static 'dotracks/img/analytics-ss-1920.jpg' %}')center/cover; min-height: 250px;">
+            <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="Image of ballons flying over canyons with mask pattern one."
+                style="margin-top: 35px;">
+            <div class="mask rgba-black-light flex-center waves-effect waves-light">
+                <p class="white-text" style="font-size: 2.3em">" {{ langue.mouchard }} "</p>
+            </div>
+        </div>
+    </div>
+    <!-- Card -->
+
+    <div class="box-header with-border hover">
+        <h3 class="box-title">
+            <i class="fa fa-building"></i>&nbsp; {{ request.session.d_Entr }} {{ request.resolver_match.view_name }}</h3>
+        {% if request.session.d_Entr %}
+        <a href="{{ baseurl }}/dashboard/company/logout/{{ lang_abbr }}">
+            <button class="btn btn-flat btn-danger btn-xs pull-right">
+                <i class="fa fa-power-off"></i>&nbsp; {{ langue.form_logout }} {{ request.session.d_Entr }}</button>
+        </a>
+        {% endif %}
+    </div>
+    <div class="box-body scroll scroll_bleu" style="overflow-x: auto">
+        <table id="example1" class="table table-bordered table-striped" style="font-size: 1.1em">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th style="font-size: 1.1em">IP</th>
+                    <th style="font-size: 1.1em">{{ langue.form_libeller }}</th>
+                    <th style="font-size: 1.1em">Dates</th>
+                    <th style="font-size: 1.1em">Taches</th>
+                    <th style="font-size: 1.1em">{{ langue.form_outils}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for elmts in allMouchard|slice:":100" %}
+                <tr>
+                    <td style="font-size: 1.1em">
+                        <center>
+                            <button class="btn btn-info btn-sm delete" id="{{ elmts.id }}" data-toggle="tooltip" title="Voir les Details">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </center>
+                    </td>
+                    <td style="font-size: 1.1em">{{ elmts.ip }}</td>
+                    <td style="font-size: 1.1em">{{ elmts.page }}</td>
+                    <td style="font-size: 1.1em">{{ elmts.date }}</td>
+                    <td style="font-size: 1.1em">{{ elmts.tache }}</td>
+                    <td style="font-size: 1.1em">
+                        <center>
+                            <button class="btn btn-success btn-sm desactiver" id="{{ elmts.id }}" data-toggle="tooltip" title="Marquer Comme Vus">
+                                <i class="fa fa-check"></i>
+                            </button>
+                        </center>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="box-footer text-center">
+        <a href="#" class="uppercase btn btn-primary" style="font-size: 0.8em;">Marquer tous comme Vus</a>
+    </div>
+</div>
+<!-- /.box -->
+
+
+{% endblock %}

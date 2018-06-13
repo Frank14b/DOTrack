@@ -1,0 +1,52 @@
+{% extends 'dotracks/header.html' %} {% load static %} {% block content %}
+
+<style>
+    .home_slider_container, .contactt {
+        display: none;
+    }
+</style>
+
+<!-- Contact -->
+
+<div class="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 contact_form_col" style="margin-top:-80px;">
+                <div class="section_title_container">
+                    <div class="section_subtitle">Document Tracking</div>
+                    <div class="section_title">Formulaire de Connexion</div>
+                </div>
+                <div class="contact_form_container">
+                    <form  action="" method="POST" id="loginForm" class="contact_form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {% csrf_token %}
+                                <input type="email" name="email" class="input_item" placeholder="Votre Email" required="required">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="password" name="password" class="input_item" placeholder="Votre Mot de Passe" required="required">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox"> Se souvenir de moi
+                            </div>
+                            <hr>
+                            <div class="col-md-12"><a href=""><i class="fa fa-eye"></i>&nbsp;Mot de passe oublier ?</a> &nbsp;|&nbsp; <a  href="{{ baseUrl }}/inscription/{{ lang_abbr }}/">Creer un Compte</a></div>
+                             
+                            <div class="col-md-12"><hr>
+                                <button id="push" type="submit" class="contact_button trans_200" value="Submit">Connexion</button>
+                            </div>
+                            <div class="alert col-md-12" id="reponses">
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-4">
+                    <img src="{% static 'dotracks/img/indus-laptop.png' %}" alt="" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

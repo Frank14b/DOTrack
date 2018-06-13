@@ -1,0 +1,154 @@
+{% extends 'dotracks/dashboard/admin/header.html' %} {% load static %} {% block content %}
+
+<div class="box box-primary" style="border-radius: 0px;">
+    <!-- Card -->
+    <div class="card">
+        <!-- Card image -->
+        <div class="view" style="background:url('{% static 'dotracks/img/home-slider/slider-1.jpg' %}')center/cover; min-height: 250px;">
+            <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="Image of ballons flying over canyons with mask pattern one."
+                style="margin-top: 35px;">
+            <div class="mask pattern-1 flex-center waves-effect waves-light">
+                <p class="white-text" style="font-size: 2.3em">" {{ langue.form_utilisateurs }} "</p>
+            </div>
+        </div>
+    </div>
+    <!-- Card -->
+
+    <div class="box-header with-border hover">
+        <h3 class="box-title">
+            <i class="fa fa-building"></i>&nbsp; {{ request.session.d_Entr }} {{ request.resolver_match.view_name }}</h3>
+        {% if request.session.d_Entr %}
+        <a href="{{ baseurl }}/dashboard/company/logout/{{ lang_abbr }}">
+            <button class="btn btn-flat btn-danger btn-xs pull-right">
+                <i class="fa fa-power-off"></i>&nbsp; {{ langue.form_logout }} {{ request.session.d_Entr }}</button>
+        </a>
+        {% endif %}
+    </div>
+    <div class="box-body card hover">
+
+        <div class="col-md-12">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box card z-depth-2">
+                    <span class="info-box-icon bg-aqua">
+                        <i class="fa fa-users"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">all Users</span>
+                        <span class="info-box-number">0{{userList.count}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box card z-depth-2">
+                    <span class="info-box-icon bg-green">
+                        <i class="fa fa-check"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Active Users</span>
+                        <span class="info-box-number">0{{userList.count|slice:"status = 0"}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box card z-depth-2">
+                    <span class="info-box-icon bg-yellow">
+                        <i class="fa fa-power-off"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Disabled Users</span>
+                        <span class="info-box-number">0{{userList.count|slice:"status != 0"}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box card z-depth-2">
+                    <span class="info-box-icon bg-red">
+                        <i class="fa fa-user-plus"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">New Users</span>
+                        <span class="info-box-number">1</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="col-md-12" style="background: #f5f5f5;">
+            <hr> {% if userList %} {% for elmts in userList %}
+            <div class="col-md-3">
+                <!-- Widget: user widget style 1 -->
+                <div class="box box-widget card z-depth-2 widget-user">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="widget-user-header bg-aqua-active" style="position: relative;">
+                        <div class="overlay" style="position: absolute; top:0; bottom:0; left:0; right:0; background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4))">
+                        </div>
+                        <div class="overlay" style="position: absolute; top:0; bottom:0; left:0; right:0; background:none; text-align: center;">
+                            <h4 class="widget-user-username" style="margin-top: 8px; font-size: 1.1em">{{ elmts.nom }} {{ elmts.prenom }}</h4>
+                            <h6 class="widget-user-desc" style="z-index: 99; font-size: 0.9em; color: #aaa;">{{ elmts.typ__libeler }} , {{ elmts.role }}</h6>
+                        </div>
+                    </div>
+                    <div class="widget-user-image" style="z-index: 99; border: 0px;">
+                        <img class="img-circle" src="{% static 'dotracks/dist/img/avatar6.png' %}" alt="User Avatar" style="border: 0px;">
+                    </div>
+                    <div class="box-footer hover">
+                        <div class="row">
+                            <div class="col-sm-12 border-right">
+                                <div class="description-block">
+                                    <h5 class="description-header" style=" font-size: 0.9em; color: #aaa;">{{ elmts.cic__ville }}( {{ elmts.cic__pays }} )</h5>
+                                    <a class="description-text btn btn-danger btn-flat btn-xs">
+                                        <i class="fa fa-power-off"></i>
+                                    </a>
+                                    <a class="description-text btn btn-success btn-flat btn-xs">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a href="{{baseurl}}/dashboard/company/user/{{ elmts.id }}/profile/{{lang_abbr}}" class="description-text btn btn-primary btn-flat btn-xs">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                </div>
+                <!-- /.widget-user -->
+            </div>
+            <!-- /.col -->
+            {% endfor %} {% else %}
+            <div class="callout callout-success">
+                <h4>
+                    <i class="icon fa fa-info"></i> I&nbsp; {{ langue.form_aucunedonne}}</h4>
+                <p>{{ langue.form_aucunedonne_text}}</p>
+                <br>
+                <a href="#" data-target="#addUsers" data-toggle="modal">
+                    <button class="btn  bg-aqua">
+                        <i class="fa fa-user-plus"></i>&nbsp; {{ langue.form_utilisateurs }}</button>
+                </a>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+
+
+{% endblock %}

@@ -1,0 +1,568 @@
+{% extends 'dotracks/dashboard/admin/header.html' %} {% load static %} {% block content %}
+
+<div class="box box-default card">
+    <div class="box-header with-border hover">
+        <h3 class="box-title">
+            <i class="fa fa-building"></i>&nbsp; {{ request.session.d_Entr }} {{ request.resolver_match.view_name }}</h3>
+        {% if request.session.d_Entr %}
+        <a href="{{ baseurl }}/dashboard/company/logout/{{ lang_abbr }}">
+            <button class="btn btn-danger pull-right">
+                <i class="fa fa-power-off"></i>&nbsp; {{ langue.form_logout }} {{ request.session.d_Entr }}</button>
+        </a>
+
+        <a href="#" data-target="#addUsers" data-toggle="modal">
+            <button class="btn  btn-primary pull-right">
+                <i class="fa fa-user-plus"></i>&nbsp; {{ langue.form_utilisateurs }}</button>
+        </a>
+        {% endif %}
+    </div>
+    <div class="box-body hover">
+        <div class="col-md-12" style="background: none;">
+            <!-- Custom Tabs (Pulled to the right) -->
+            <div class="nav-tabs-custom" style="background: none;">
+                <ul class="nav nav-tabs pull-right" style="background: none;">
+                    <li class="active">
+                        <a href="#tab_1-1" data-toggle="tab">{{ langue.form_DroitDacces}}</a>
+                    </li>
+                    <li>
+                        <a href="#tab_2-2" data-toggle="tab">{{ langue.form_DroitDacces_menus}}</a>
+                    </li>
+                    <li>
+                        <a href="#tab_3-2" data-toggle="tab">{{ langue.formatFichier }}</a>
+                    </li>
+                    <li>
+                        <a href="#tab_3-3" data-toggle="tab">{{ langue.typeCourriers }}</a>
+                    </li>
+                    <li>
+                        <a href="#tab_4-3" data-toggle="tab">{{ langue.typeArchives }}</a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Dropdown
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">Action</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">Another action</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">Something else here</a>
+                            </li>
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">Separated link</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="pull-left header">
+                        <i class="fa fa-th"></i> Custom Tabs</li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1-1">
+
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="alert alert-default alert-dismissible col-md-10">
+                                <h4>
+                                    <i class="icon fa fa-warning"></i> Alerte Securite !</h4>
+                                <p>Utilisez cette espace pour attribuer des droits d'acces aux differents groupes d'utilisateurs
+                                    / vous pourrez les modifiez en cas de non satisfaction</p>
+                            </div>
+
+                            <div class="col-md-4 col-xs-12" style="background: #fff; margin-top: -20px;">
+                                <!-- Widget: user widget style 1 -->
+                                <div class="box box-widget widget-user-2 card">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    <div class="widget-user-header bg-aqua">
+                                        <div class="widget-user-image">
+                                            <img class="img-circle" data-target="#picture" data-toggle="modal" src="{% static 'dotracks/dist/img/user7-128x128.jpg' %}"
+                                                alt="DOTrack">
+                                        </div>
+                                        <!-- /.widget-user-image -->
+                                        <h3 class="widget-user-username">{{ request.session.d_Entr }}</h3>
+                                        <h5 class="widget-user-desc">{{ langue.form_Entreprises }}</h5>
+                                    </div>
+                                    <div class="box-footer no-padding hover scroll scroll_bleu" style="height: 280px; overflow-y: auto; max-height:450px;">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10">
+                                            <form role="form" method="POST" action="{{ baseusrl }}/dashboard/admin/droitGroup" id="setUserDroit">
+                                                {% csrf_token %}
+                                                <ul class="nav nav-stacked">
+                                                    <!-- /.box-header -->
+                                                    <li>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputEmail1amn">{{ langue.form_user }}</label>
+                                                            <select name="typ" class="form-control select2" id="droitTypusers" required id="exampleInputEmail1amn" style="width: 100%;">
+                                                                <option value="" selected disabled>Choisir un Type d'Utilisateur</option>
+                                                                {% for elmts in typuserlist %}
+                                                                <option value="{{ elmts.id }}">{{ elmts.libeler }} ({{ elmts.code }})</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </li>
+                                                    {% for mod in modules%} {% if mod.modules == 0 %}
+                                                    <li>
+                                                        <label for='{{ mod.id }}' style="width: 100%; padding: 4px;">
+                                                            {{mod.libele }}
+                                                            <b class="pull-right">
+                                                                <input type="checkbox" id="{{ mod.id }}" class="checkbox flat-red authCheckbox" name="ids" value="{{ mod.id }}" style="border:0px;"
+                                                                />
+                                                            </b>
+                                                        </label>
+                                                    </li>
+                                                    {%endif%} {% endfor %}
+                                                </ul>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="box-footer no-padding" style="height: 30px; background: #f5f5f5">
+                                        
+                                    </div>
+                                </div>
+                                <!-- /.widget-user -->
+                            </div>
+                            <div class="col-md-4 col-xs-12" style="background: #fff; margin-top: 5px;">
+                                <div class="box box-widget">
+                                    <div class="box-body">
+                                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                                        <div class="widget-user-header bg-default hover">
+                                            <img src="{% static 'dotracks/img/apple-iphone-books-desk2.jpg' %}" alt="DOTrack" class="img-fluid hover" style="opacity: 1; width:100%;">
+                                            <h3 class="widget-user-username bg-aqua" style="margin-top: -40px;">
+                                                <button class="btn btn-info btn-flat" id="validateAuth">
+                                                    <i class="fa fa-arrow-right"></i>
+                                                    <br>
+                                                    <i class="fa fa-arrow-right"></i>
+                                                </button>
+                                            </h3>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 col-xs-12" style="background: #fff; margin-top: -20px;">
+                                <!-- Widget: user widget style 1 -->
+                                <div class="box box-widget widget-user-2 card">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    <div class="widget-user-header bg-red">
+                                        <!-- /.widget-user-image -->
+                                        <h3 class="widget-user-username">{{ request.session.d_Entr }}</h3>
+                                        <h5 class="widget-user-desc">{{ langue.form_Entreprises }}</h5>
+                                    </div>
+                                    <div class="box-footer no-padding hover scroll_v scroll_bleu" style="height: 280px; overflow-y: auto; max-height:450px;">
+                                        <div class="col-md-12">
+                                            <form role="form" method="POST" action="{{ baseusrl }}/dashboard/admin/droitGroup" id="removeUserDroit">
+                                                {% csrf_token %}
+                                                <ul class="nav nav-stacked" id="authorise" style="margin-top:5px;">
+                                                    <div class="callout callout-info" style="margin-top:75px;">
+                                                        <h4>Authorisation Type d'utilisateur</h4>
+                                                        <p>Veuillez choisir le type utilisateur a parametrer via le menu de
+                                                            gauche
+                                                        </p>
+                                                    </div>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="box-footer no-padding" style="height: 30px; background: #f5f5f5">
+                                        
+                                    </div>
+                                </div>
+                                <!-- /.widget-user -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab_2-2">
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="alert alert-default alert-dismissible col-md-10">
+                                <h4>
+                                    <i class="icon fa fa-warning"></i> Alerte Securite !</h4>
+                                <p>Utilisez cette espace pour attribuer des droits d'acces aux differents groupes d'utilisateurs
+                                    / vous pourrez les modifiez en cas de non satisfaction</p>
+                            </div>
+
+                            <div class="col-md-4 col-xs-12" style="background: #fff; margin-top: -20px;">
+                                <!-- Widget: user widget style 1 -->
+                                <div class="box box-widget widget-user-2">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    <div class="widget-user-header bg-aqua">
+                                        <div class="widget-user-image">
+                                            <img class="img-circle" data-target="#picture" data-toggle="modal" src="{% static 'dotracks/dist/img/user7-128x128.jpg' %}"
+                                                alt="DOTrack">
+                                        </div>
+                                        <!-- /.widget-user-image -->
+                                        <h3 class="widget-user-username">{{ request.session.d_Entr }}</h3>
+                                        <h5 class="widget-user-desc">{{ langue.form_Entreprises }}</h5>
+                                    </div>
+                                    <div class="box-footer no-padding hover scroll scroll_bleu" style="height: 280px; overflow-y: auto; max-height:450px;">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10">
+                                            <form role="form" method="POST" action="{{ baseusrl }}/dashboard/admin/droitGroup" id="setUserDroit">
+                                                {% csrf_token %}
+                                                <ul class="nav nav-stacked">
+                                                    <!-- /.box-header -->
+                                                    <li>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputEmail1amn">{{ langue.form_user }}</label>
+                                                            <select name="typ" class="form-control select2" id="droitTypusersMenus" required id="exampleInputEmail1amn" style="width: 100%;">
+                                                                <option value="" selected disabled>Choisir un Type d'Utilisateur</option>
+                                                                {% for elmts in typuserlist %}
+                                                                <option value="{{ elmts.id }}">{{ elmts.libeler }} ({{ elmts.code }})</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                                <ul class="nav nav-stacked" id="sous-menus">
+
+                                                </ul>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.widget-user -->
+                            </div>
+                            <div class="col-md-4 col-xs-12" style="background: #fff; margin-top: 5px;">
+                                <div class="box box-widget">
+                                    <div class="box-body hover">
+                                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                                        <div class="widget-user-header bg-default hover">
+                                            <img src="{% static 'dotracks/img/apple-iphone-books-desk2.jpg' %}" alt="DOTrack" class="img-fluid hover" style="opacity: 1; width:100%;">
+                                            <h3 class="widget-user-username bg-aqua" style="margin-top: -40px;">
+                                                <button class="btn btn-default btn-flat" id="validateSMenus">
+                                                    <i class="fa fa-arrow-right"></i>
+                                                    <br>
+                                                    <i class="fa fa-arrow-right"></i>
+                                                </button>
+                                            </h3>
+                                        </div>
+
+                                        <ul class="nav nav-stacked" id="list-sous-menus">
+
+                                        </ul>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 col-xs-12" style="background: #fff; margin-top: -20px;">
+                                <!-- Widget: user widget style 1 -->
+                                <div class="box box-widget widget-user-2">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    <div class="widget-user-header bg-red">
+                                        <!-- /.widget-user-image -->
+                                        <h3 class="widget-user-username">{{ request.session.d_Entr }}</h3>
+                                        <h5 class="widget-user-desc">{{ langue.form_Entreprises }}</h5>
+                                    </div>
+                                    <div class="box-footer no-padding hover" style="height: 330px;">
+                                        <div class="col-md-12">
+                                            <form role="form" method="POST" action="{{ baseusrl }}/dashboard/admin/droitGroup" id="removeUserDroit">
+                                                {% csrf_token %}
+                                                <ul class="nav nav-stacked" id="authorise" style="margin-top:5px;">
+                                                    <div class="callout callout-info" style="margin-top:75px;">
+                                                        <h4>Authorisation Type d'utilisateur</h4>
+                                                        <p>Veuillez choisir le type utilisateur a parametrer via le menu de
+                                                            gauche
+                                                        </p>
+                                                    </div>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.widget-user -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab_3-2">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="box box-primary">
+                                    <div class="box-header">
+                                        <h3 class="box-title">{{ request.session.d_Entr }} &nbsp; {{ langue.formatFichier }}
+                                        </h3>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body scroll scroll_bleu" style="overflow-x: auto">
+                                        <table id="example1" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th style="font-size:1em;">{{ langue.form_libeller }}</th>
+                                                    <th style="font-size:1em;">{{ langue.form_abbreviation }}</th>
+                                                    <th style="font-size:1em;">{{ langue.form_outils}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for elmts in allFormat %}
+                                                <tr>
+                                                    <td style="font-size:1em;">
+                                                        <center>
+                                                            <button class="btn btn-primary btn-xs btn-flat edit" data-target="#editEntr" data-toggle="modal" id="{{ elmts.id }}">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </button>
+                                                        </center>
+                                                    </td>
+                                                    <td style="font-size:1em;">{{ elmts.libelle }}</td>
+                                                    <td style="font-size:1em;">{{ elmts.extension }}</td>
+                                                    <td style="font-size:1em;">
+                                                        <center>
+                                                            <button class="btn btn-danger btn-xs btn-flat delete" id="{{ elmts.id }}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                            <button class="btn btn-warning btn-xs btn-flat desactiver" id="{{ elmts.id }}">
+                                                                <i class="fa fa-power-off"></i>
+                                                            </button>
+                                                        </center>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">{{ langue.form_champ_obligatoire }}</h3>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <!-- form start -->
+                                    <form role="form" method="POST" action="{{ baseusrl }}/Member/addFormatDoc" class="addElemt">
+                                        {% csrf_token %}
+                                        <div class="box-body">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">{{ langue.form_libeller }}</label>
+                                                <input type="text" required name="libelle" class="form-control" id="exampleInputEmail1" placeholder="{{ langue.form_libeller }}"
+                                                />
+                                                <input type="hidden" id="note" value="Format des Fichiers entreprise Ajouter avec succes !" />
+                                                <input type="hidden" name="ent" value="1" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail2">{{ langue.form_abbreviation }}</label>
+                                                <input type="text" required name="extension" class="form-control" id="exampleInputEmail2" placeholder="{{ langue.form_abbreviation }}"
+                                                />
+                                            </div>
+                                            <!-- phone mask -->
+                                            <!-- /.form group -->
+                                        </div>
+                                        <!-- /.box-body -->
+
+                                        <div id="reponses" class="col-md-12">
+
+                                        </div>
+
+                                        <div class="box-footer" id="push">
+                                            <button type="submit" class="btn btn-flat btn-primary">
+                                                <i class="fa fa-save"></i>&nbsp; {{ langue.form_Enregistrer }}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /.box -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.tab-pane -->
+
+                    <div class="tab-pane" id="tab_3-3">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="box box-primary">
+                                    <div class="box-header">
+                                        <h3 class="box-title">{{ request.session.d_Entr }} &nbsp; {{ langue.typeCourriers }}
+                                        </h3>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body scroll scroll_bleu" style="overflow-x: auto">
+                                        <table id="example1" class="table table-bordered table-striped" style="font-size:1em;">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th style="font-size:1em;">{{ langue.form_libeller }}</th>
+                                                    <th style="font-size:1em;">{{ langue.form_abbreviation }}</th>
+                                                    <th style="font-size:1em;">{{ langue.form_outils}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for elmts in allTypeCourrier %}
+                                                <tr style="font-size:1em;">
+                                                    <td style="font-size:1em;">
+                                                        <center>
+                                                            <button class="btn btn-primary btn-xs btn-flat edit" data-target="#editEntr" data-toggle="modal" id="{{ elmts.id }}">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </button>
+                                                        </center>
+                                                    </td>
+                                                    <td style="font-size:1em;">{{ elmts.libeler }}</td>
+                                                    <td style="font-size:1em;">{{ elmts.abreviation }}</td>
+                                                    <td style="font-size:1em;">
+                                                        <center>
+                                                            <button class="btn btn-danger btn-xs btn-flat delete" id="{{ elmts.id }}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                            <button class="btn btn-warning btn-xs btn-flat desactiver" id="{{ elmts.id }}">
+                                                                <i class="fa fa-power-off"></i>
+                                                            </button>
+                                                        </center>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">{{ langue.form_champ_obligatoire }}</h3>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <!-- form start -->
+                                    <form role="form" method="POST" action="{{ baseusrl }}/Member/addTypeCourrier" class="addElemt">
+                                        {% csrf_token %}
+                                        <div class="box-body">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">{{ langue.form_libeller }}</label>
+                                                <input type="text" required name="libeler" class="form-control" id="exampleInputEmail1" placeholder="{{ langue.form_libeller }}"
+                                                />
+                                                <input type="hidden" id="note" value="Type de Courrier entreprise Ajouter avec succes !" />
+                                                <input type="hidden" name="ent" value="1" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail2">{{ langue.form_abbreviation }}</label>
+                                                <input type="text" required name="abreviation" class="form-control" id="exampleInputEmail2" placeholder="{{ langue.form_abbreviation }}"
+                                                />
+                                            </div>
+                                            <!-- phone mask -->
+                                            <!-- /.form group -->
+                                        </div>
+                                        <!-- /.box-body -->
+
+                                        <div id="reponses" class="col-md-12">
+
+                                        </div>
+
+                                        <div class="box-footer" id="push">
+                                            <button type="submit" class="btn btn-flat btn-primary">
+                                                <i class="fa fa-save"></i>&nbsp; {{ langue.form_Enregistrer }}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /.box -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.tab-pane -->
+
+                    <div class="tab-pane" id="tab_4-3">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="box box-primary">
+                                    <div class="box-header">
+                                        <h3 class="box-title">{{ request.session.d_Entr }} &nbsp; {{ langue.typeArchives }}
+                                        </h3>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body scroll scroll_bleu" style="overflow-x: auto">
+                                        <table id="example1" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr style="font-size:1em;">
+                                                    <th></th>
+                                                    <th style="font-size:1em;">{{ langue.form_libeller }}</th>
+                                                    <th style="font-size:1em;">{{ langue.form_abbreviation }}</th>
+                                                    <th style="font-size:1em;">{{ langue.form_outils}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for elmts in allTypeArchives %}
+                                                <tr style="font-size:1em;">
+                                                    <td style="font-size:1em;">
+                                                        <center>
+                                                            <button class="btn btn-primary btn-xs btn-flat edit" data-target="#editEntr" data-toggle="modal" id="{{ elmts.id }}">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </button>
+                                                        </center>
+                                                    </td>
+                                                    <td style="font-size:1em;">{{ elmts.libelle }}</td>
+                                                    <td style="font-size:1em;">{{ elmts.code }}</td>
+                                                    <td style="font-size:1em;">
+                                                        <center>
+                                                            <button class="btn btn-danger btn-xs btn-flat delete" id="{{ elmts.id }}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                            <button class="btn btn-warning btn-xs btn-flat desactiver" id="{{ elmts.id }}">
+                                                                <i class="fa fa-power-off"></i>
+                                                            </button>
+                                                        </center>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">{{ langue.form_champ_obligatoire }}</h3>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <!-- form start -->
+                                    <form role="form" method="POST" action="{{ baseusrl }}/Member/addTypeArchives" class="addElemt">
+                                        {% csrf_token %}
+                                        <div class="box-body">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">{{ langue.form_libeller }}</label>
+                                                <input type="text" required name="libelle" class="form-control" id="exampleInputEmail1" placeholder="{{ langue.form_libeller }}"
+                                                />
+                                                <input type="hidden" id="note" value="Type de D'archive entreprise Ajouter avec succes !" />
+                                                <input type="hidden" name="ent" value="1" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail2">{{ langue.form_abbreviation }}</label>
+                                                <input type="text" required name="code" class="form-control" id="exampleInputEmail2" placeholder="{{ langue.form_abbreviation }}"
+                                                />
+                                            </div>
+                                            <!-- phone mask -->
+                                            <!-- /.form group -->
+                                        </div>
+                                        <!-- /.box-body -->
+
+                                        <div id="reponses" class="col-md-12">
+
+                                        </div>
+
+                                        <div class="box-footer" id="push">
+                                            <button type="submit" class="btn btn-flat btn-primary">
+                                                <i class="fa fa-save"></i>&nbsp; {{ langue.form_Enregistrer }}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /.box -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+            </div>
+            <!-- nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+
+
+{% endblock %}

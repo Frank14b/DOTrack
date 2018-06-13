@@ -1,0 +1,171 @@
+{% extends 'dotracks/dashboard/admin/header.html' %} {% load static %} {% block content %}
+
+<div class="box box-default card">
+    <div class="box-header with-border hover">
+        <h3 class="box-title"><i class="fa fa-building"></i>&nbsp; {{ request.session.d_Entr }} {{ request.resolver_match.view_name }}</h3>
+        {% if request.session.d_Entr %}
+        <a href="{{ baseurl }}/dashboard/company/logout/{{ lang_abbr }}">
+            <button class="btn btn-danger pull-right">
+                <i class="fa fa-power-off"></i>&nbsp; {{ langue.form_logout }} {{ request.session.d_Entr }}</button>
+        </a>
+
+        <a href="#" data-target="#addUsers" data-toggle="modal">
+            <button class="btn btn-primary pull-right">
+                <i class="fa fa-user-plus"></i>&nbsp; {{ langue.form_utilisateurs }}</button>
+        </a>
+        {% endif %}
+    </div>
+    <div class="box-body hover">
+
+        <!-- ./col -->
+        <div class="col-md-7 col-xs-12">
+            <!-- small box -->
+            <div class="box card">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-users"></i>&nbsp; {{ langue.form_utilisateurs }} &nbsp;
+                        <span class="pull-right badge bg-blue">{{ nbrUser }}</span>
+                    </h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body scroll" style="overflow-x: auto">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th style="font-size: 1.1em">{{ langue.form_nom}}</th>
+                                <th style="font-size: 1.1em">{{ langue.form_prenom }}</th>
+                                <th style="font-size: 1.1em">{{ langue.form_phone }}</th>
+                                <th style="font-size: 1.1em">date</th>
+                                <th style="font-size: 1.1em">{{ langue.form_outils}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for elmts in listuser %}
+                            <tr>    
+                                <td style="font-size: 1.1em">
+                                    {% if synchro == None %}
+                                    <button class="btn btn-primary btn-xs btn-flat synchroMemberAdmin" id="{{ elmts.id }}" style="margin-top: -5px; margin-right: 10px;"  data-toggle="tooltip" title="Definir comme admin de la sucursale">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                    {% endif %}
+                                    <a href="{{ baseurl }}/dashboard/company/{{ elmts.id }}/{{ lang_abbr }}/">{{ elmts.nom }}</a>
+                                </td>
+                                <td style="font-size: 1.1em">
+                                    {{ elmts.prenom }}
+                                </td>
+                                <td style="font-size: 1.1em">{{ elmts.tel }}</td>
+                                <td style="font-size: 1.1em">{{ elmts.dates }}</td>
+                                <td style="font-size: 1.1em">
+                                    <button class="btn btn-primary btn-sm edit" data-target="#editEntr" data-toggle="modal" id="{{ elmts.id }}">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm delete" id="{{ elmts.id }}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-warning btn-sm desactiver" id="{{ elmts.id }}">
+                                        <i class="fa fa-power-off"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer no-padding" style="height: 30px; background: #f5f5f5">
+                                        
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- ./col -->
+
+        <!-- ./col -->
+        <div class="col-md-5 col-xs-12">
+            <div class="box-body hover" style="margin-top: 25px; background: #f5f5f5">
+                <!-- ./col -->
+                <div class="col-lg-6 col-xs-12">
+                    <!-- small box -->
+                    <div class="small-box card bg-aqua">
+                        <div class="inner">
+                            <h3>{{ nbrTypUser }}
+                                <sup style="font-size: 20px">{{ nbrTypUser }}</sup>
+                            </h3>
+
+                            <p>{{ langue.form_type_users }}</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="#" class="small-box-footer" data-toggle="modal" data-target="#viewTypeUsers">
+                            {{ langue.form_consulter }}
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- ./col -->
+
+                <!-- ./col -->
+                <div class="col-lg-6 col-xs-12">
+                    <!-- small box -->
+                    <div class="small-box card bg-red">
+                        <div class="inner">
+                            <h3>{{ nbrEntr }}
+                                <sup style="font-size: 20px">{{ nbrEntr }}</sup>
+                            </h3>
+
+                            <p>{{ langue.form_Entreprises }}</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="{{ baseurl }}/dashboard/company/{{ lang_abbr }}/" class="small-box-footer">
+                            {{ langue.form_reglages }}
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- ./col -->
+
+                <!-- ./col -->
+                <div class="col-lg-6 col-xs-12">
+                    <!-- small box -->
+                    <div class="small-box card bg-blue">
+                        <div class="inner">
+                            <h3>{{ nbrCicr }}
+                                <sup style="font-size: 20px">{{ nbrCicr }}</sup>
+                            </h3>
+
+                            <p>{{ langue.form_Cicursale }}</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="#" class="small-box-footer" data-toggle="modal" data-target="#viewCicursale">
+                            {{ langue.form_consulter }}
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- ./col -->
+            </div>
+            {% if request.session.d_Entr %} {% else %}
+            <div class="overlay" style="position: absolute; top:0; bottom:0; left:0; right:0; background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9))">
+                <i class="fa fa-refresh fa-spin" style="color: #fff"></i>
+                <center>
+                    <p style="margin-top: 187px; color: #fff">
+                        <b>{{ langue.form_Veuillez_ChoisiruneEntreprise }}</b>
+                    </p>
+                </center>
+            </div>
+            {% endif %}
+
+        </div>
+        <!-- ./col -->
+
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+
+
+{% endblock %}

@@ -1,0 +1,200 @@
+{% extends 'dotracks/dashboard/header.html' %} {% load static %} {% block content %}
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            {{ langue.form_utilisateurs }}
+            <small>DOTrack v1.0</small>
+        </h1>
+        <ol class="breadcrumb">
+            {% if request.session.d_user %}
+            <li>
+                <a href="{{baseurl}}/dashboard/admin/{{lang_abbr}}">
+                    <button class="btn btn-xs btn-flat btn-default">
+                        <i class="fa fa-arrow-left"></i> {{langue.form_dashboard }} Admin</button>
+                </a>
+            </li>
+            {% endif %}
+            <li>
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> {{ langue.form_menu_acceuil }}</a>
+            </li>
+            <li class="active">{{ langue.form_Members }}</li>
+            <li class="active">{{ request.resolver_match.view_name }}</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+        <hr>
+
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box card">
+                    <span class="info-box-icon bg-aqua">
+                        <i class="ion ion-ios-gear-outline"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">{{ langue.form_reglages }}</span>
+                        <span class="info-box-number">20
+                            <small>%</small>
+                        </span>
+                        <button class="btn btn-xs btn-flat btn-default">Configurer</button>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box card">
+                    <span class="info-box-icon bg-red">
+                        <i class="fa fa-book"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">{{ langue.form_Documents }}</span>
+                        <span class="info-box-number">0,0</span>
+                        <button class="btn btn-xs btn-flat btn-primary">{{ langue.form_consulter }}</button>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+
+            <!-- fix for small devices only -->
+            <div class="clearfix visible-sm-block"></div>
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box card">
+                    <span class="info-box-icon bg-green">
+                        <i class="fa fa-envelope"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Courriers</span>
+                        <span class="info-box-number">0
+                            <small>Recus</small>
+                        </span>
+                        <button class="btn btn-xs btn-flat btn-primary">{{ langue.form_consulter }}</button>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box card">
+                    <span class="info-box-icon bg-yellow">
+                        <i class="ion ion-ios-people-outline"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">{{ langue.form_utilisateurs }}</span>
+                        <span class="info-box-number">0 {{ nbruser }}</span>
+                        <button class="btn btn-xs btn-flat btn-default">{{ langue.form_consulter }}</button>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary card" style="border-radius: 0px;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <i class="fa fa-building"></i>&nbsp; {{ request.session.d_Entr }} {{ request.resolver_match.view_name }} &nbsp;
+                            <span class="label label-success pull-right" style="font-size: .7em;">{{ dossierList.count }} Dossiers</span>
+                        </h3>
+                    </div>
+                    <div class="box-body">
+
+                        <div class="col-md-12" style="background: #f5f5f5;">
+                            <div class="row">
+                                <hr> {% if dossierList %}
+                                <div class="col-md-12">
+                                    <a href="#" data-toggle="modal" data-target="#addDossier">
+                                        <button class="btn btn-flat bg-green btn-sm" style="font-size: 0.7em">
+                                            <i class="fa fa-file"></i>&nbsp; {{ langue.form_nouvelle }}</button>
+                                    </a>
+                                </div>
+                                <br>
+                                <style>
+                                   .dropdown-item{
+                                       padding: 12px;
+                                       float: left;
+                                       width: 100%;
+                                   }
+                                </style>
+                                <br> {% for elmts in dossierList %}
+                                <div class="col-md-2" style="position: relative;">
+
+                                    <div class="btn-group">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            style="float:right;">
+                                            <i class="fa fa-angle-down"></i>
+                                        </button>
+
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/{{ lang_abbr }}"><i class="fa fa-eye"></i> Ouvrir</a>
+                                            <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/share"><i class="fa fa-share"></i> Partager</a>
+                                            <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/download"><i class="fa fa-download"></i> Telecharger</a>
+                                            <div class="dropdown-divider"></div>
+                                        </div>
+                                    </div>
+                                    <!-- Widget: user widget style 1 -->
+                                    <div class="box box-widget widget-user" style=" cursor:pointer; float: left;">
+                                        <center>
+                                            <img src="{% static 'dotracks/img/folder.png' %}" alt="" style="width: 80%; margin-top: 10px;" class="img-responsive">
+                                        </center>
+                                        <p style="float: left;">
+                                            <center style="font-weight:bold;margin-bottom: 2px;">{{elmts.libelle}}</center>
+                                        </p>
+                                    </div>
+                                    <!-- /.widget-user -->
+                                </div>
+                                <!-- /.col -->
+                                {% endfor %} {% else %}
+                            </div>
+                            <div class="callout callout-success">
+                                <h4>
+                                    <i class="icon fa fa-info"></i> I&nbsp; {{ langue.form_aucunedonne}}</h4>
+                                <p>{{ langue.form_aucunedonne_text}}</p>
+                                <br>
+                                <a href="#" data-toggle="modal" data-target="#addDossier" data-dos="0">
+                                    <button class="btn btn-flat bg-aqua btn-sm">
+                                        <i class="fa fa-plus"></i>&nbsp;{{ langue.form_nouvelle }}</button>
+                                </a>
+                            </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}

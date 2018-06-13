@@ -1,0 +1,71 @@
+{% extends 'dotracks/header.html' %} {% load static %} {% block content %}
+
+<style>
+    .home_slider_container, .login {
+        display: none;
+    }
+</style>
+<style>
+    .hover {
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    }
+</style>
+
+<!-- Contact -->
+
+<div class="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="info">
+                    <div class="section_title_container">
+                        <div class="section_subtitle">Document Tracking</div>
+                        <div class="section_title">Informations</div>
+                    </div>
+                    <div class="info_title">Direction Generale</div>
+                    <ul>
+                        <li>Addresse: Bafoussam, Depot UCB Entree de la ville, Cameroun.</li>
+                        <li>Phone: <a href="tel:+237 698 92 44 16"> +237 698 92 44 16</a></li>
+                        <li>Email: service@dotrack.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-8 contact_form_col">
+                <div class="section_title_container">
+                    <div class="section_subtitle">Document Tracking</div>
+                    <div class="section_title">Laissez nous un message</div>
+                </div>
+                <div class="contact_form_container">
+                    <form action="#" class="contact_form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="input_item" placeholder="Your Name" required="required">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" class="input_item" placeholder="Your E-mail" required="required">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="input_item" placeholder="Your Phone">
+                            </div>
+                            <div class="col-md-6">
+                                <select class="dropdown_item input_item">
+                                    <option>Business type</option>
+                                    <option>Business type</option>
+                                    <option>Business type</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <textarea id="contact_message" class="input_item contact_message" name="message" placeholder=" Your Message" required="required" data-error="Please, write us a message."></textarea>
+                            </div>
+                            <div class="col-md-12">
+                                <button id="contact_btn" type="submit" class="contact_button trans_200" value="Submit">submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

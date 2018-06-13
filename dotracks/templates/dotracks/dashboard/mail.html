@@ -1,0 +1,188 @@
+{% extends 'dotracks/dashboard/header.html' %} {% load static %} {% block content %}
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            {{ langue.form_utilisateurs }}
+            <small>DOTrack v1.0</small>
+        </h1>
+        <ol class="breadcrumb">
+            {% if request.session.d_user %}
+            <li>
+                <a href="{{baseurl}}/dashboard/admin/{{lang_abbr}}" data-toggle="tooltip" title="Synchronisation">
+                    <button class="btn btn-xs btn-flat btn-default">
+                        <i class="fa fa-arrow-left"></i> {{langue.form_dashboard }} Admin</button>
+                </a>
+            </li>
+            {% endif %}
+            <li>
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> {{ langue.form_menu_acceuil }}</a>
+            </li>
+            <li class="active">{{ langue.form_Members }}</li>
+            <li class="active">{{ request.resolver_match.view_name }}</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <!-- Card -->
+                <div class="card">
+                    <!-- Card image -->
+                    <div class="view" style="background:url('{% static 'dotracks/img/stamps-1712530_1920.jpg' %}')center/cover; min-height: 250px;">
+                        <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="Image of ballons flying over canyons with mask pattern one."
+                            style="margin-top: 35px;">
+                        <div class="mask rgba-black-light flex-center waves-effect waves-light">
+                            <p class="white-text" style="font-size: 2.3em">" {{ request.resolver_match.view_name }} "</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-default" style="border-radius: 0px;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            <i class="fa fa-building"></i>&nbsp; {{ request.session.d_Entr }} {{ request.resolver_match.view_name }}</h3>
+                    </div>
+                    <div class="box-body">
+
+                        <div class="col-md-12" style="background: #f5f5f5;">
+                            <!-- ./col -->
+                            <div class="col-md-12" style="">
+                                <a href="#" title="Nouveau courrier" data-target="#newCourrier" data-toggle="modal">
+                                    <button class="btn btn-primary">
+                                        <i class="fa fa-sign-in"></i>&nbsp; Envoyer un Courrier</button>
+                                </a>
+                            </div>
+                            {% if allCourrier == None %}
+                            <div class="col-md-12" style="margin-top:20px;">
+                                <div class="card text-center z-depth-2 alert alert-warning alert-dismissible">
+
+                                    <h4>
+                                        <i class="icon fa fa-warning"></i> Erreur de donnees !</h4>
+                                    <p>Oups ! Aucun Courriel Disponible pour votre entreprise. Vous serrez notifier en cas de
+                                        disponibilite
+                                    </p>
+                                </div>
+                            </div>
+                            {% else %} {% for row in allCourrier %}
+                            <div class="col-lg-3 col-xs-12">
+                                <!-- small box -->
+                                <div class="small-box card bg-blue">
+                                    <div class="inner">
+                                        <h3>
+                                            <sup style="font-size: 20px">{{ nbrCicr }}</sup>
+                                        </h3>
+
+                                        <p>{{ langue.form_Cicursale }}</p>
+                                    </div>
+                                    <div class="icon">
+
+                                    </div>
+                                    <a href="#" class="small-box-footer">
+                                        {{ langue.form_ouvrir }}
+                                        <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <!-- ./col -->
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<div class="modal modal-default fade" id="newCourrier">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">
+                            <i class="fa fa-power-off"></i>
+                        </button>
+                    </button>
+                    <h4 class="modal-title">{{ langue.form_courrier }}</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- general form elements -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <form role="form" method="POST" action="{{ baseusrl }}/dashboard/addDossier" class="addElemt">
+                            {% csrf_token %}
+                            <div class="box-body">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">{{ langue.form_libeller }}</label>
+                                        <input type="text" required name="libelle" class="form-control" id="exampleInputEmail1" placeholder="{{ langue.form_libeller }}"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1an">{{ langue.form_abbr }}</label>
+                                        <input type="text" required name="abreviation" class="form-control" id="exampleInputEmail1an" placeholder="{{ langue.form_abbr }}"
+                                        />
+                                    </div>
+                                    <input type="hidden" required name="cic" value="{{ userInfo.cic }}" />
+                                    <input type="hidden" id="sdossierdOS" name="dos" value="" />
+                                </div>
+                            </div>
+                            <input type="hidden" required id="note" value="{{ langue.form_dossier_ajouter_succes }}" />
+                            <!-- /.box-body -->
+
+                            <div id="reponses" class="row">
+
+                            </div>
+
+                            <div class="box-footer" id="push">
+                                <center><button type="submit" class="btn btn-flat btn-primary">
+                                    <i class="fa fa-save"></i>&nbsp; {{ langue.form_Enregistrer }}</button>
+                                </center>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+{% endblock %}

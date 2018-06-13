@@ -1,0 +1,407 @@
+{% load static %}
+
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href="{% static 'dotracks/img/logo.png' %}" type="image/x-icon" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>DOtrack | {{ request.resolver_match.view_name }}</title>
+
+    <!-- Icon css link -->
+    <link href="{% static 'dotracks/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'dotracks/vendors/elegant-icon/style.css' %}" rel="stylesheet">
+    <link href="{% static 'dotracks/vendors/themify-icon/themify-icons.css' %}" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="{% static 'dotracks/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Rev slider css -->
+    <link href="{% static 'dotracks/vendors/revolution/css/settings.css' %}" rel="stylesheet">
+    <link href="{% static 'dotracks/vendors/revolution/css/layers.css' %}" rel="stylesheet">
+    <link href="{% static 'dotracks/vendors/revolution/css/navigation.css' %}" rel="stylesheet">
+    <link href="{% static 'dotracks/vendors/animate-css/animate.css' %}" rel="stylesheet">
+
+    <!-- Extra plugin css -->
+    <link href="{% static 'dotracks/vendors/owl-carousel/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'dotracks/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'dotracks/css/responsive.css' %}" rel="stylesheet">
+</head>
+
+<body>
+
+    <!--================Search Area =================-->
+    <section class="search_area">
+        <div class="search_inner">
+            <input type="text" placeholder="Enter Your Search...">
+            <i class="ti-close"></i>
+        </div>
+    </section>
+    <!--================End Search Area =================-->
+
+    <!--================Header Menu Area =================-->
+    <header class="main_menu_area">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'dotracks/img/logo.png' %}" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {% if request.resolver_match.view_name == 'Acceuil' %} {{ active }} {% endif %}">
+                        <a class="nav-link" href="{{ baseUrl }}/{{ lang_abbr }}">
+                            <i class="fa fa-home" aria-hidden="true"></i>&nbsp;{{ langue.form_menu_acceuil }}</a>
+                    </li>
+                    <li class="nav-item {% if request.resolver_match.view_name == 'Apropos' %} {{ active }} {% endif %}">
+                        <a class="nav-link" href="{{ baseUrl }}/apropos/{{ lang_abbr }}">{{ langue.form_menu_apropos }}</a>
+                    </li>
+                    <li class="nav-item {% if request.resolver_match.view_name == 'Courrier' %} {{ active }} {% endif %}">
+                        <a href="{{ baseUrl }}/courrier/{{ lang_abbr }}">
+                            <i class="fa fa-email" aria-hidden="true"></i>&nbsp;{{ langue.form_menu_courrier }}</a>
+                    </li>
+                    <li class="nav-item  {% if request.resolver_match.view_name == 'Connexion' %} {{ active }} {% endif %}">
+                        <a class="nav-link" href="{{ baseUrl }}/connexion/{{ lang_abbr }}">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;{{ langue.form_menu_connexion }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ baseUrl }}/contact/{{ lang_abbr }}">
+                            <i class="fa fa-phone" aria-hidden="true"></i>&nbsp;{{ langue.form_menu_contact }}</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav justify-content-end">
+                    <li class="dropdown" id="myDropdown">
+                        <a href="#" data-toggle="dropdown" v-on:click="active = !active">
+                            <i class="fa fa-flag"></i>&nbsp;&nbsp;{{ lang_abbr }}
+                            <span class="caret"></span>
+                            <ul class="dropdown-menu nav navbar-nav" v-if="active" style="background: none; height: 20px; margin-top:-30px; margin-left:-30px;">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ baseUrl }}{{ request.get_full_path }}../fr">Fr</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ baseUrl }}{{ request.get_full_path }}../en">En</a>
+                                </li>
+                            </ul>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="icon_search"></i>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!--================End Header Menu Area =================-->
+
+
+
+    {% block content %} {% endblock %}
+
+    <!--================Footer Area =================-->
+    <footer class="footer_area">
+        <div class="footer_widgets_area">
+            <div class="container">
+                <div class="f_widgets_inner row">
+                    <div class="col-lg-3 col-md-6">
+                        <aside class="f_widget subscribe_widget">
+                            <div class="f_w_title">
+                                <h3>Our Newsletter</h3>
+                            </div>
+                            <p>Subscribe to our mailing list to get the updates to your email inbox.</p>
+                            <div class="input-group">
+                                <input type="email" class="form-control" placeholder="E-mail" aria-label="E-mail">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-secondary submit_btn" type="button">Subscribe</button>
+                                </span>
+                            </div>
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-facebook"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-twitter"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-google-plus"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-pinterest"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </aside>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <aside class="f_widget twitter_widget">
+                            <div class="f_w_title">
+                                <h3>Twitter Feed</h3>
+                            </div>
+                            <div class="tweets_feed"></div>
+                        </aside>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <aside class="f_widget categories_widget">
+                            <div class="f_w_title">
+                                <h3>Link Categories</h3>
+                            </div>
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>Agency</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>Studio</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>Studio</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>Blogs</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>Shop</a>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>Home</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>About</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>Services</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>Work</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>Privacy</a>
+                                </li>
+                            </ul>
+                        </aside>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <aside class="f_widget contact_widget">
+                            <div class="f_w_title">
+                                <h3>Contact Us</h3>
+                            </div>
+                            <a href="#">1 (800) 686-6688</a>
+                            <a href="#">info.deercreative@gmail.com</a>
+                            <p>40 Baria Sreet 133/2
+                                <br />NewYork City, US</p>
+                            <h6>Open hours: 8.00-18.00 Mon-Fri</h6>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copy_right_area">
+            <div class="container">
+                <div class="float-md-left">
+                    <h5>Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | DOtrack
+                        <i class="fa fa-heart-o" aria-hidden="true"></i> by ZonePluS
+                        <!--<a href="https://colorlib.com" target="_blank">Colorlib</a>-->
+                    </h5>
+                </div>
+                <div class="float-md-right">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Disclaimer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Advertisement</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact us</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--================End Footer Area =================-->
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'dotracks/js/jquery-3.2.1.min.js' %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'dotracks/js/popper.min.js' %}"></script>
+    <script src="{% static 'dotracks/js/bootstrap.min.js' %}"></script>
+    <!-- Rev slider js -->
+    <script src="{% static 'dotracks/vendors/revolution/js/jquery.themepunch.tools.min.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/revolution/js/jquery.themepunch.revolution.min.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/revolution/js/extensions/revolution.extension.actions.min.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/revolution/js/extensions/revolution.extension.video.min.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/revolution/js/extensions/revolution.extension.slideanims.min.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/revolution/js/extensions/revolution.extension.layeranimation.min.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/revolution/js/extensions/revolution.extension.navigation.min.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/revolution/js/extensions/revolution.extension.slideanims.min.js' %}"></script>
+    <!-- Extra plugin css -->
+    <script src="{% static 'dotracks/vendors/counterup/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/counterup/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/counterup/apear.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/counterup/countto.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/owl-carousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/parallaxer/jquery.parallax-1.1.3.js' %}"></script>
+    <!--Tweets-->
+    <script src="{% static 'dotracks/vendors/tweet/tweetie.min.js' %}"></script>
+    <script src="{% static 'dotracks/vendors/tweet/script.js' %}"></script>
+
+    <script src="{% static 'dotracks/js/theme.js' %}"></script>
+    <script src="{% static 'dotracks/js/vue.min.js' %}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            ///////////////////////////////////// initiated mouchard ///////////////////////////////////////
+
+            function Mouchard() {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{baseurl}}/Member/addMouchard",
+                    data: { 'page': '{{ request.resolver_match.view_name }}', 'csrfmiddlewaretoken': '{{ csrf_token }}', 'ip': 1, 'ent': 1, 'use': 1, 'adm':1, 'tache': '{{ request.session.tacheMouchard }}' },
+                    //contentType: "application/json",
+                    //dataType: 'json',
+                    success: function (data) {
+                        if (data == 0) {
+                            //alert('mouchard on')
+                        } else {
+                            //alert('mouchard off')
+                        }
+                    }
+                })
+            }
+            Mouchard()
+
+            $('#registerForm').on('submit', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                $this.find('#reponses').show();
+                $this.find('#reponses').html('<div class="col-md-12 alert text-center" style="background: #f5f5f5; padding:4px; color:#444;"><center><img src="{% static "dotracks/img/preloader.gif" %}" style="width: 80px; height: 80px; border-radius: 50%;"/><br>Enregistrement en cours ...</center>'
+                    + '</div>');
+                $this.find('#push').hide();
+                setTimeout(function () {
+                    $.ajax({
+                        url: $this.attr('action'),
+                        type: "POST",
+                        data: $this.serialize(),
+                        success: function (htm) {
+                            if (htm !== "0") {
+                                $this.find('#reponses').html('<div class="alert" style="background: #f5f5f5; color: #ff6565; margin-top: -25px;">'
+                                    + '<div class="col-md-12 text-center">'
+                                    + htm + '</div></div>');
+                                $this.find('#push').show();
+                            } else {
+                                //alert('succes');
+                                $this.find('#reponses').html('<div class="alert"style="background: #f5f5f5; color: #4CAF50; margin-top: -25px;">'
+                                    + '<div class="col-md-12 text-center">'
+                                    + 'Operation terminé merci de validé le lien adressé à votre email </div></div>');
+                                $this.find('.form-control').val("");
+                                setTimeout(function () {
+                                    // window.location.href = "./";
+                                }, 2200);
+                            }
+                            setTimeout(function () {
+                                //$('.alert').hide('slow');
+                            }, 3500);
+                        }, error: function (htm) {
+                            alert(htm);
+                        }
+                    });
+                }, 3200);
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#loginForm').on('submit', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                $this.find('#reponses').show();
+                $this.find('#reponses').html('<div class="col-md-12 alert text-center" style="background: #f5f5f5;; padding:5px;"><center><img src="{% static "dotracks/img/preloader.gif" %}" style="width: 80px; height: 80px; border-radius: 50%;"/><br>En cours Vérification ...</center>'
+                    + '</div>');
+                $this.find('#push').hide();
+                setTimeout(function () {
+                    $.ajax({
+                        url: $this.attr('action'),
+                        type: "POST",
+                        data: $this.serialize(),
+                        success: function (htm) {
+
+                            if (htm !== "0") {
+                                $this.find('#reponses').html('<div class="alert" style="background: #f5f5f5; color: #ff6565; margin-top: -25px;">'
+                                    + '<div class="col-md-12 text-center">'
+                                    + htm + '</div></div>');
+                                $this.find('#push').show();
+                            } else {
+                                //alert('succes');
+                                $this.find('#reponses').html('<div class="alert"style="background: #f5f5f5; color: #4CAF50; margin-top: -25px;">'
+                                    + '<div class="col-md-12 text-center">'
+                                    + 'Redirection en cours </div></div>');
+                                $this.find('.form-control').val("");
+                                setTimeout(function () {
+                                    window.location.href = "";
+                                }, 2200);
+                            }
+                            setTimeout(function () {
+                                //$('.alert').hide('slow');
+                            }, 3500);
+                        }, error: function (htm) {
+                            alert('error');
+                        }
+                    });
+                }, 3200);
+            });
+        });
+    </script>
+
+    <script type="text/JavaScript">
+        new Vue({
+            el: '#myDropdown',
+            data:{
+                active : false,
+            },
+        })
+    </script>
+</body>
+
+</html>

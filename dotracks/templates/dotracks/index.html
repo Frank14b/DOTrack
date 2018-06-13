@@ -1,0 +1,208 @@
+{% extends 'dotracks/header.html' %} {% load static %} {% block content %}
+
+<!-- Features -->
+
+<style>
+	.login, .contactt {
+		display: none;
+	}
+</style>
+
+<div class="features">
+	<div class="container">
+		<div class="row">
+
+			<!-- Features Title -->
+			<div class="col-lg-3 features_col">
+				<div class="features_content">
+					<div class="features_title_container">
+						<div class="features_subtitle">Decouvrez nos</div>
+						<div class="features_title">Fonctionnalites</div>
+						<div class="features_text">DOTrack "Document Tracking" est un moyen simple et pratique de gestion & suivi des documents, de gestion de son agenda,
+							de relation employes-dirigent, ...</div>
+						<div class="link_button features_button">
+							<a href="#">read more</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Features Item -->
+			<div class="col-lg-3 features_col">
+				<div class="features_item">
+					<div class="features_image">
+						<img src="{% static 'dotracks/images//features_1.jpg' %}" alt="">
+					</div>
+					<div class="features_item_content">
+						<div class="features_item_title">
+							<a href="#">G.E.D</a>
+						</div>
+						<div class="features_item_text">
+							<p>La gestion electronique de document devient plus pratique grace a DOTrack: Courrier, archives, traitement, ...</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Features Item -->
+			<div class="col-lg-3 features_col">
+				<div class="features_item">
+					<div class="features_image">
+						<img src="{% static 'dotracks/images//features_2.jpg' %}" alt="">
+					</div>
+					<div class="features_item_content">
+						<div class="features_item_title">
+							<a href="#">SIGNATURES</a>
+						</div>
+						<div class="features_item_text">
+							<p>Ne manquez plus vos contrats, autorisez vos transactions via votre mobile, approuvez des documents ...</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Features Item -->
+			<div class="col-lg-3 features_col">
+				<div class="features_item">
+					<div class="features_image">
+						<img src="{% static 'dotracks/images//features_3.jpg' %}" alt="">
+					</div>
+					<div class="features_item_content">
+						<div class="features_item_title">
+							<a href="#">CONFERENCES</a>
+						</div>
+						<div class="features_item_text">
+							<p>Rester en contact avec votre equipe a tous moment. effectuer vos entretiens(embauche, reunion, affaire).</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- CTA -->
+
+<div class="cta">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<div class="cta_content text-center d-flex flex-row align-items-center justify-content-center">
+					<div class="cta_text">
+						<a href="#">Investissez moins et obtenez plus !</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- System -->
+
+<div class="system">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-6 nopadding">
+				<div class="system_content">
+					<div class="system_title_container">
+						<div class="system_subtitle">Document Tracking</div>
+						<div class="system_title">Notre systeme de signature electronique vous interesse ?</div>
+						<div class="system_text"></div>
+					</div>
+					<div class="system_items d-flex flex-row align-items-start justify-content-between flex-wrap">
+
+						<!-- System Item -->
+						<div class="system_item">
+							<div class="system_item_icon">
+								<img class="svg" src="{% static 'dotracks/images//system_1.svg' %}" alt="">
+							</div>
+							<div class="system_item_title">Economique</div>
+						</div>
+
+						<!-- System Item -->
+						<div class="system_item">
+							<div class="system_item_icon">
+								<img class="svg" src="{% static 'dotracks/images//system_2.svg' %}" alt="">
+							</div>
+							<div class="system_item_title">Disponible</div>
+						</div>
+
+						<!-- System Item
+						<div class="system_item">
+							<div class="system_item_icon">
+								<img class="svg" src="{% static 'dotracks/images//system_3.svg' %}" alt="">
+							</div>
+							<div class="system_item_title">wallet</div>
+						</div>
+
+						<!-- System Item -->
+						<div class="system_item">
+							<div class="system_item_icon">
+								<img class="svg" src="{% static 'dotracks/images//system_4.svg' %}" alt="">
+							</div>
+							<div class="system_item_title">Securisé</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 nopadding">
+				<div class="system_image">
+					<div class="system_background" style="background-image:url('{% static 'dotracks/images/system_1.jpg' %}')"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Info -->
+
+<div class="info">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-6 nopadding order-lg-1 order-2">
+				<div class="info_image">
+					<div class="info_background" style="background-image:url('{% static 'dotracks/images/system_2.jpg' %}')"></div>
+				</div>
+			</div>
+			<div class="col-lg-6 nopadding order-lg-2 order-1">
+				<div class="info_content">
+					<div class="info_title_container">
+						<div class="info_subtitle">Document Tracking</div>
+						<div class="info_title">Suivez l'evolution de votre systeme de gestion en tous lieux</div>
+						<div class="info_text"></div>
+					</div>
+				</div>
+				<div class="info_items">
+
+					<!-- Info Item -->
+					<div class="info_item">
+						<div class="info_item_icon">
+							<img src="{% static 'dotracks/images//info_1.svg' %}" alt="">
+						</div>
+						<div class="info_item_content">
+							<div class="info_item_title">Disponible pour vos avocats, employes, partenaires, ...</div>
+							<div class="info_item_category">Vos Documents en un seul lieu</div>
+						</div>
+					</div>
+
+					<!-- Info Item -->
+					<div class="info_item">
+						<div class="info_item_icon">
+							<img src="{% static 'dotracks/images//info_2.svg' %}" alt="">
+						</div>
+						<div class="info_item_content">
+							<div class="info_item_title">Personnalisez vos timbres personnel pour certifier vos documents</div>
+							<div class="info_item_category">Securisez vos documents</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

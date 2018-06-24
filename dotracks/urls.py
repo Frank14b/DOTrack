@@ -16,6 +16,8 @@ urlpatterns = {
     url(r'^apropos/(?P<lang>\w+)/$', views.About, name='Apropos'),
     url(r'^contact/(?P<lang>\w+)/$', views.ContactUs, name='Contact'),
     url(r'^courrier/(?P<lang>\w+)/$', views.CourrierUs, name='Courrier'),
+    url(r'^courrier/find', views.FindEntr),
+    url(r'^courrier/entr/(?P<pk>\d+)/send/(?P<lang>\w+)/$', views.CourrierSend, name='Courrier'), #Formulaire denvoi du courrier.
     url(r'^dashboard/admin/(?P<lang>\w+)/$',
         views.adminIndex, name='Dashboard'),
     url(r'^dashboard/admin/addEntr', views.post_addEntr),
@@ -24,17 +26,17 @@ urlpatterns = {
     url(r'^dashboard/company/(?P<lang>\w+)/$', views.allEntr, name='Company'),
     url(r'^dashboard/admin/addCicur', views.post_addSucur),
     url(r'^dashboard/sucursale/(?P<pk>\d+)/users/(?P<lang>\w+)/',
-        views.sucurUsers, name='Utilisateurs'), #liste utilisateurs entreprise par sucursale
+        views.sucurUsers, name='Utilisateurs'), #liste utilisateurs entreprise par sucursale.
     url(r'^dashboard/sucursale/(?P<pk>\d+)/acceder/(?P<lang>\w+)/', views.accesSucur),
     url(r'^dashboard/admin/addTypeuser', views.addTypeuse),
     url(r'^dashboard/admin/addUser', views.addUse),
     url(r'^dashboard/company/users/(?P<lang>\w+)/$',
-        views.allEntrUsers, name='Utilisateurs'),  #liste utilisateurs entreprise
+        views.allEntrUsers, name='Utilisateurs'),  #liste utilisateurs entreprise.
         url(r'^dashboard/company/user/(?P<pk>\d+)/profile/(?P<lang>\w+)/$',
-        views.profileUserEntr, name='Profile'), #profile utilisateur entreprise
+        views.profileUserEntr, name='Profile'), #profile utilisateur entreprise.
 
-    url(r'^dashboard/admin/synchroMember', views.synchroMemberAdmin), #synchroniser compte admin-membre
-    url(r'^dashboard/admin/droitTypusers', views.droitTypeusers), #charger droit utilisateur
+    url(r'^dashboard/admin/synchroMember', views.synchroMemberAdmin), #synchroniser compte admin-membre.
+    url(r'^dashboard/admin/droitTypusers', views.droitTypeusers), #charger droit utilisateur.
     url(r'^dashboard/admin/droitTypeusersMenus', views.droitTypeusersMenus), #charger droit utilisateur Menus
     url(r'^dashboard/admin/removedroitTypusers', views.removedroitTypeusers), #supprimer droit utilisateur
     url(r'^dashboard/admin/senddroitTypusers', views.senddroitTypeusers), #ajouter droit utilisateur

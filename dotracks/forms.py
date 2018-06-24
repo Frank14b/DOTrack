@@ -32,7 +32,6 @@ class entrForm(forms.ModelForm):
         fields = ('libelle', 'tel', 'slogan', 'web', 'descript',
                   'slogan', 'logo', 'status', 'dates')
 
-
 class SircuForm(forms.ModelForm):
     class Meta:
         model = Cicursale

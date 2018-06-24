@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/plugins/OwlCarousel2-2.2.1/animate.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/financial.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/financial_responsive.css' %}"> {% if request.resolver_match.view_name == "Connexion" or request.resolver_match.view_name == "Contact" %}
+    <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/financial_responsive.css' %}"> {% if request.resolver_match.view_name == "Connexion" or request.resolver_match.view_name == "Contact" or request.resolver_match.view_name == "Courrier" %}
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/contact.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/contact_responsive.css' %}"> {% endif %}
 </head>
@@ -27,7 +27,29 @@
         <!-- Home -->
 
         <div class="home">
-
+            {% if request.resolver_match.view_name == "Courrier" %}
+            <div class="home_background parallax-window courr" data-parallax="scroll" data-image-src="{% static 'dotracks/images/services_background.jpg' %}"
+                data-speed="0.3"></div>
+            <div class="container courr">
+                <div class="row">
+                    <div class="col">
+                        <div class="home_content">
+                            <div class="home_content_inner">
+                                <div class="home_title">Expediez Votre Courrier</div>
+                                <div class="home_breadcrumbs">
+                                    <ul>
+                                        <li>
+                                            <a href="">{{ langue.form_menu_acceuil }}</a>
+                                        </li>
+                                        <li>{{ langue.form_menu_courrier }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %} {% if request.resolver_match.view_name == "Contact" %}
             <div class="home_background parallax-window contactt" data-parallax="scroll" data-image-src="{% static 'dotracks/images/contact_background.jpg' %}"
                 data-speed="0.3"></div>
             <div class="container contactt">
@@ -49,8 +71,8 @@
                     </div>
                 </div>
             </div>
-
-            <div class="home_background parallax-window login" data-parallax="scroll" data-image-src="{% static 'dotracks/images/news_post_6.jpg' %}"
+            {% endif %} {% if request.resolver_match.view_name == "Connexion"%}
+            <div class="home_background parallax-window login" data-parallax="scroll" data-image-src="{% static 'dotracks/images/financial.jpg' %}"
                 data-speed="0.3"></div>
             <div class="container login">
                 <div class="row">
@@ -71,6 +93,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
 
 
             <div class="home_slider_container">
@@ -696,7 +719,53 @@
                                 //$('.alert').hide('slow');
                             }, 3500);
                         }, error: function (htm) {
-                            alert('error');
+                            alert('error please check your connection');
+                        }
+                    });
+                }, 3200);
+            });
+        });
+
+        $(document).ready(function () {
+            $('#findEntr').on('submit', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                $this.find('#reponses').show();
+                $this.find('#reponses').html('<div class="col-md-12 alert text-center" style="background: #f5f5f5;; padding:5px;"><center><img src="{% static "dotracks/img/preloader.gif" %}" style="width: 80px; height: 80px; border-radius: 50%;"/><br>En cours Vérification ...</center>'
+                    + '</div>');
+                $this.find('#push').hide();
+                setTimeout(function () {
+                    $.ajax({
+                        url: $this.attr('action'),
+                        type: "POST",
+                        data: $this.serialize(),
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data == "0") {
+                                $this.find('#reponses').html('<div class="alert" style="background: #f5f5f5; color: #ff6565; margin-top: -25px;">'
+                                    + '<div class="col-md-12 text-center">'
+                                    + 'Aucune entreprise ne correspond a cette adresse</div></div>');
+                                $this.find('#push').show();
+                            } else {
+                                $this.find('#reponses').html('<div class="alert" style="background: #f5f5f5; color: skyblue; margin-top: -25px;">'
+                                    + '<div class="col-md-12 text-center">'
+                                    + 'Recuperation des resultats</div></div>');
+
+                                $("#blockans").fadeIn()
+
+                                setTimeout(function () {
+                                    $("#blockans").html("<h3 style='margin-top:45px;'>Resultats Correspondant a la recherche </h2><br><b> Choisir votre entreprise Destinataire dans la liste</b><hr>")
+                                    for (i in data) {
+                                        $("#blockans").append('<li class="list-group-item" style="margin-bottom: 0px;"><a href="{{baseurl}}/courrier/entr/' + data[i].id + '/send/{{lang_abbr}}"><b>' + data[i].email + '&nbsp; (' + data[i].pays + '/' + data[i].ville + ')</a></li>');
+                                    }
+                                    $this.find('.form-control').val("");
+                                }, 2300);
+                            }
+                            setTimeout(function () {
+                                //$('.alert').hide('slow');
+                            }, 3500);
+                        }, error: function (htm) {
+                            alert('error please check your connection');
                         }
                     });
                 }, 3200);

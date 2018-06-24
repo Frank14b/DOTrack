@@ -1203,8 +1203,8 @@ desired effect
                                 } else {
                                     $this.html("")
                                     for (i in data) {
-                                        $this.append('<li class="list-group-item" style="margin-bottom: 0px;"><img class="profile-user-img img-responsive img-circle" src="{% static "dotracks/dist/img/user4-128x128.jpg" %}" alt="DOTrack"'
-                                            + 'style="width: 37px;float: left;margin-top: -8px;margin-right:5px;"><b>' + data[i].prenom + '&nbsp;' + data[i].nom + '</b><a href="{{baseurl}}/Member/chat/user' + data[i].id + '/{{lang_abbr}}" class="pull-right btn btn-info btn-xs" style="margin-top:0px;"><i class="fa fa-comments-o"></i></a></li>');
+                                        $this.append('<li class="list-group-item" style="margin-bottom: 0px;"><a href="{{baseurl}}/Member/chat/user' + data[i].id + '/{{lang_abbr}}"><img class="profile-user-img img-responsive img-circle" src="{% static "dotracks/dist/img/user4-128x128.jpg" %}" alt="DOTrack"'
+                                            + 'style="width: 37px;float: left;margin-top: -8px;margin-right:5px;"><b>' + data[i].prenom + '&nbsp;' + data[i].nom + '</a></li>');
                                     }
                                 }
                             }

@@ -149,6 +149,22 @@ def CourrierUs(request, lang):
 
         return render(request, 'dotracks/courrier.html', {'active': active, 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang)})
 
+def FindEntr(request):
+    if 'd_user' in request.session:
+        return HttpResponseRedirect("/")
+    else:
+        if request.method == "POST":
+            try:
+                res = Cicursale.objects.filter(Q(email__contains=request.POST['email'])).values('id','pays','ville','email')
+                if res.count() != 0:
+                    dat = list(res)
+                else:
+                    dat = 0
+            except ObjectDoesNotExist:
+                dat = 0
+            return JsonResponse(dat, safe=False)
+
+
 def Register(request, lang):
     if 'd_user' in request.session:
         return HttpResponseRedirect("/dashboard/admin/"+checkLangAbbr(lang))
@@ -185,6 +201,13 @@ def ContactUs(request, lang):
 
         return render(request, 'dotracks/contact.html', {'active': active, 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang)})
 
+def CourrierSend(request, lang, pk):
+    if "d_user" in request.session:
+        return HttpResponseRedirect("/dashboard/admin/"+checkLangAbbr(lang))
+    else:
+        request.session['tacheMouchard'] = "Acces Espace Envoi du Courrier"
+
+        return render(request, 'dotracks/sendMail.html', {'active': active, 'send':pk, 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang)})
 
 def Logout(request, lang):
     try:
@@ -935,8 +958,8 @@ def getSearchChat(request):
         try:
             idsurcu = Users.objects.get(id=id).cic
             q = request.POST['q']
-            v = Users.objects.filter(Q(nom=q) | Q(
-                prenom=q)).values('nom', 'prenom', 'id')
+            v = Users.objects.filter(Q(nom__contains=q) | Q(
+                prenom__contains=q)).values('nom', 'prenom', 'id')
             if v.count() != 0:
                 use = list(v)
             else:
@@ -956,13 +979,13 @@ def addDossier(request):
                 post = form.save(commit=False)
                 if not request.POST['dos']:
                     if not os.path.exists('dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville+'_'+Sucur.pays+'/'+request.POST['libelle']):
-                        os.makedirs('dotracks/entreprises/'+entr+'/'+Sucur.ville +
+                        os.makedirs('dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville +
                                     '_'+Sucur.pays+'/'+request.POST['libelle'])
                 else:
                     libDos = Dossiers.objects.get(
                         id=request.POST['dos']).libelle
                     if not os.path.exists('dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville+'_'+Sucur.pays+'/'+libDos+'/'+request.POST['libelle']):
-                        os.makedirs('dotracks/entreprises/'+entr+'/'+Sucur.ville +
+                        os.makedirs('dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville +
                                     '_'+Sucur.pays+'/'+libDos+'/'+request.POST['libelle'])
 
                 post.status = 0
@@ -1020,13 +1043,13 @@ def addImageDoc(request):
             if not request.POST['pdos']:
                 pathh = 'dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville + \
                     '_'+Sucur.pays+'/'+request.POST['dos']+'/'
-                pathhbd = 'dotracks/entreprises/'+entr+'/'+Sucur.ville + \
+                pathhbd = 'dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville + \
                     '_'+Sucur.pays+'/'+request.POST['dos']+'/'
             else:
                 pathh = 'dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville+'_' + \
                     Sucur.pays+'/' + \
                         request.POST['pdos']+'/'+request.POST['dos']+'/'
-                pathhbd = 'dotracks/entreprises/'+entr+'/'+Sucur.ville+'_' + \
+                pathhbd = 'dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville+'_' + \
                     Sucur.pays+'/' + \
                     request.POST['pdos']+'/'+request.POST['dos']+'/'
 

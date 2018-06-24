@@ -26,24 +26,9 @@
                 </div>
                 <div class="contact_form_container">
                     <form action="{{baseurl}}/courrier/find" class="contact_form" id="findEntr">
-                        <div class="row">
-                            <div class="col-md-12">
-                                {% csrf_token %}
-                                <input type="text" required="" class="input_item" ref="email" name="email" placeholder="{{ langue.form_email }} ou {{ langue.form_libeller }} de l'entreprise">
-                            </div>
-                            <div class="alert col-md-12" id="reponses">
-
-                            </div>
-                            <div class="col-md-12" id="push">
-                                <button id="contact_btn" type="submit" class="contact_button trans_200" value="Submit">submit</button>
-                            </div>
-                        </div>
+                        
                     </form>
                 </div>
-            </div>
-            <div class="col-lg-1"></div>
-            <div class="col-lg-5" id="blockans" style="background:#f5f5f5; margin-top:45px;">
-                
             </div>
             
             <style>

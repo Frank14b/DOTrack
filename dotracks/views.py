@@ -112,13 +112,15 @@ def Loginadmin(request, lang):
             if dotrack != None:
                 if check_password(request.POST['password'], dotrack.password):
                     if "d_memberid" in request.session:
-                        admin = Users.objects.get(id=request.session["d_memberid"])
-                        if(admin.adm != dotrack.id):
+                        try:
                             del request.session["d_memberid"]
                             del request.session["d_member"]
+                        except ObjectDoesNotExist:
+                            answ =  None
 
                     request.session['d_userid'] = dotrack.id
                     request.session['d_user'] = dotrack.login
+
                     # return HttpResponseRedirect("/connexion/")
                     request.session['tacheMouchard'] = "DOTrack Connexion Administrateur "+request.session['d_user']
                     return HttpResponse('0')
@@ -211,6 +213,13 @@ def CourrierSend(request, lang, pk):
 
 def Logout(request, lang):
     try:
+        if "d_memberid" in request.session:
+            try:
+                del request.session["d_memberid"]
+                del request.session["d_member"]
+            except ObjectDoesNotExist:
+                answ =  None
+
         del request.session['d_userid']
         del request.session['d_user']
         request.session['tacheMouchard'] = "Nouvelle Deconnexion Administrateur "+request.session['d_user']
@@ -623,8 +632,7 @@ def droitTypeusers(request):
 def droitTypeusersMenus(request):
     if request.method == "POST":
         try:
-            v = Module.objects.filter(mods=request.POST['id']).values(
-                "id", "libele")
+            v = Module.objects.filter(mods=request.POST['id']).values("id", "libele")
             if v.count() != 0:
                 rs = list(v)
             else:
@@ -759,6 +767,7 @@ def LoginMember(request, lang):
             except ObjectDoesNotExist:
                 dotrack = None
             if dotrack != None:
+                
                 if check_password(request.POST['password'], dotrack.password):
                     request.session['d_memberid'] = dotrack.id
                     request.session['d_member'] = dotrack.login
@@ -789,7 +798,7 @@ def LogoutMember(request, lang):
 def get_Userby_id(id):
     try:
         use = Users.objects.filter(id=id).values(
-            'id', 'nom', 'prenom', 'typ__libeler', 'role', 'statut', 'cic__ville', 'cic__pays', "cic", 'login', 'email', 'tel', 'typ', 'typ__libeler', 'typ__code')[0]
+            'id', 'nom', 'prenom', 'typ__libeler', 'role', 'statut', 'cic__ville', 'cic__pays', "cic", 'login', 'email', 'tel', 'typ', 'typ__libeler', 'typ__code', 'lastconnect', 'totalconnect', 'about', 'dates')[0]
     except ObjectDoesNotExist:
         use = None
     return use
@@ -910,7 +919,7 @@ def recuperationChat(request):
         if request.method == "POST":
             id = request.session["d_memberid"]
             b = request.POST['use2']
-            mess = Chat.objects.filter(Q(use_id2=b) | Q(use_id2=id), Q(use=id) | Q(use=b)).values('id', 'use', 'use_id2', 'libelle', 'dates','use__login', 'use_id2__login', 'status').order_by('-id')
+            mess = Chat.objects.filter(Q(use_id2=b) | Q(use_id2=id), Q(use=id) | Q(use=b)).values('id', 'use', 'use_id2', 'libelle', 'dates','use__nom', 'use_id2__nom', 'use__prenom', 'use_id2__prenom', 'status').order_by('-id')
             if(mess.count() != 0):
                 chat = list(mess)
             else:
@@ -978,14 +987,14 @@ def addDossier(request):
                 entr = Sucur.entrName()
                 post = form.save(commit=False)
                 if not request.POST['dos']:
-                    if not os.path.exists('dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville+'_'+Sucur.pays+'/'+request.POST['libelle']):
-                        os.makedirs('dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville +
+                    if not os.path.exists('dotracks/entreprises/'+entr+'/'+Sucur.ville+'_'+Sucur.pays+'/'+request.POST['libelle']):
+                        os.makedirs('dotracks/entreprises/'+entr+'/'+Sucur.ville +
                                     '_'+Sucur.pays+'/'+request.POST['libelle'])
                 else:
                     libDos = Dossiers.objects.get(
                         id=request.POST['dos']).libelle
-                    if not os.path.exists('dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville+'_'+Sucur.pays+'/'+libDos+'/'+request.POST['libelle']):
-                        os.makedirs('dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville +
+                    if not os.path.exists('dotracks/entreprises/'+entr+'/'+Sucur.ville+'_'+Sucur.pays+'/'+libDos+'/'+request.POST['libelle']):
+                        os.makedirs('dotracks/entreprises/'+entr+'/'+Sucur.ville +
                                     '_'+Sucur.pays+'/'+libDos+'/'+request.POST['libelle'])
 
                 post.status = 0
@@ -1041,15 +1050,15 @@ def addImageDoc(request):
             entr = Sucur.entrName()
 
             if not request.POST['pdos']:
-                pathh = 'dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville + \
+                pathh = 'dotracks/entreprises/'+entr+'/'+Sucur.ville + \
                     '_'+Sucur.pays+'/'+request.POST['dos']+'/'
-                pathhbd = 'dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville + \
+                pathhbd = 'dotracks/entreprises/'+entr+'/'+Sucur.ville + \
                     '_'+Sucur.pays+'/'+request.POST['dos']+'/'
             else:
-                pathh = 'dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville+'_' + \
+                pathh = 'dotracks/entreprises/'+entr+'/'+Sucur.ville+'_' + \
                     Sucur.pays+'/' + \
                         request.POST['pdos']+'/'+request.POST['dos']+'/'
-                pathhbd = 'dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville+'_' + \
+                pathhbd = 'dotracks/entreprises/'+entr+'/'+Sucur.ville+'_' + \
                     Sucur.pays+'/' + \
                     request.POST['pdos']+'/'+request.POST['dos']+'/'
 
@@ -1065,7 +1074,7 @@ def addImageDoc(request):
                 post.status = 0
                 post.descipt = pathhbd+request.POST['libelle']
                 post.dates = timezone.now()
-                post.for_field = Format.objects.get(id=1)
+                post.for_field = Format.objects.get(id=3)
                 post.save()
                 return HttpResponse("0")
             else:

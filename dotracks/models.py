@@ -192,6 +192,7 @@ class Module(models.Model):
     libele = models.CharField(max_length=254, blank=True, null=True)
     statut = models.CharField(max_length=254, blank=True, null=True)
     modules = models.IntegerField(blank=True, null=True)
+    mods = models.IntegerField(blank=True, db_column='Mod_id', null=True)
 
     class Meta:
         managed = True
@@ -317,6 +318,10 @@ class Users(models.Model):
     login = models.CharField(max_length=254, blank=True, null=True)
     password = models.CharField(max_length=254, blank=True, null=True)
     dates = models.DateTimeField(blank=True, null=True)
+    lastconnect = models.CharField(max_length=200, blank=True, null=True)
+    totalconnect = models.IntegerField(blank=True, null=True)
+    about = models.CharField(max_length=253, blank=True, null=True)
+    photo = models.CharField(max_length=254, blank=True, null=True)
 
     def cics(self):
         try:

@@ -142,12 +142,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="col-md-2" style="position: relative;">
 
                                     <div class="btn-group">
-                                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            style="float:right;">
-                                            <i class="fa fa-angle-down"></i>
-                                        </button>
+                                        <span class="badge dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            style="float:right; cursor:pointer; margin-bottom:-10px; background:#fff;">
+                                            <i class="fa fa-angle-down" style="color:#333;"></i>
+                                        </span>
 
-                                        <div class="dropdown-menu">
+                                        <div class="dropdown-menu" style="font-size:0.8em">
                                             <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/{{ lang_abbr }}"><i class="fa fa-eye"></i> Ouvrir</a>
                                             <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/share"><i class="fa fa-share"></i> Partager</a>
                                             <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/download"><i class="fa fa-download"></i> Telecharger</a>
@@ -174,7 +174,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <p>{{ langue.form_aucunedonne_text}}</p>
                                 <br>
                                 <a href="#" data-toggle="modal" data-target="#addDossier" data-dos="0">
-                                    <button class="btn btn-flat bg-aqua btn-sm">
+                                    <button class="btn btn-flat bg-aqua">
                                         <i class="fa fa-plus"></i>&nbsp;{{ langue.form_nouvelle }}</button>
                                 </a>
                             </div>

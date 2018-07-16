@@ -311,7 +311,7 @@ desired effect
     <div class="wrapper">
 
         <!-- Main Header -->
-        <header class="main-header">
+        <header class="main-header bg-blue">
 
             <!-- Logo -->
             <a href="" class="logo hidden-sm hidden-xs">
@@ -537,17 +537,17 @@ desired effect
                     <li class="header">HEADER</li>
                     <!-- Optionally, you can add icons to the links -->
                     <li class="{%if request.resolver_match.view_name == 'Administration'%}active{%endif%}">
-                        <a href="{{ baseurl }}/dashboard/Member/{{lang_abbr}}" class="btn" style="font-size: 0.7em; text-align: left">
+                        <a href="{{ baseurl }}/dashboard/Member/{{lang_abbr}}" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-dashboard"></i>
                             <span>{{ langue.form_dashboard }}</span>
                         </a>
                     </li>
 
                     <li class="treeview menus {%if request.resolver_match.view_name == 'Utilisateurs'%}active{%endif%}" data-iden="1">
-                        <a href="#" class="btn" style="font-size: 0.7em; text-align: left">
+                        <a href="#" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-users"></i>
                             <span>{{ langue.form_utilisateurs }}</span>
-                            <span class="label pull-right bg-green" style="font-size: 1.1em">0</span>
+                            <span class="label pull-right bg-green" style="font-size: .8em">0</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -569,32 +569,30 @@ desired effect
                     </li>
 
                     <li class="menus" data-iden="2">
-                        <a href="{{ baseurl }}/dashboard/courrier/{{lang_abbr}}" class="btn" style="font-size: 0.7em; text-align: left">
+                        <a href="{{ baseurl }}/dashboard/courrier/{{lang_abbr}}" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-envelope"></i>
                             <span>{{ langue.form_courrier_box }}</span>
-                            <span class="pull-right-container">
-                                <small class="label pull-right bg-yellow" style="font-size: 1.1em">0</small>
-                                <small class="label pull-right bg-green" style="font-size: 1.1em">0</small>
-                                <small class="label pull-right bg-red" style="font-size: 1.1em">0</small>
-                            </span>
+                            
+                                <small class="label pull-right bg-yellow" style="font-size: .8em">0</small>
+                                <small class="label pull-right bg-green" style="font-size: .8em">0</small>
+                                <small class="label pull-right bg-red" style="font-size: .8em">0</small>
+                            
                         </a>
                     </li>
 
                     <li class="menus {%if request.resolver_match.view_name == 'Messagerie' %}active{%endif%}" data-iden="3">
-                        <a href="{{baseurl}}/Member/chat/{{lang_abbr}}" class="btn" style="font-size: 0.7em; text-align: left">
+                        <a href="{{baseurl}}/Member/chat/{{lang_abbr}}" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-comments-o"></i>
                             <span>{{ langue.form_messages }}</span>
-                            <span class="pull-right-container">
-                                <small class="label pull-right bg-yellow" style="font-size: 1.1em">0</small>
-                            </span>
+                            <small class="label pull-right bg-yellow" style="font-size: .8em">0</small>
                         </a>
                     </li>
 
                     <li class="treeview menus  {%if request.resolver_match.view_name == 'Documents' %}active{%endif%}" data-iden="4">
-                        <a href="#" class="btn" style="font-size: 0.7em; text-align: left">
+                        <a href="#" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-file-word-o"></i>
                             <span>{{ langue.form_Documents }}</span>
-                            <span class="label pull-right bg-red" style="font-size: 1.1em">0</span>
+                            <span class="label pull-right bg-red" style="font-size: .8em">0</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -616,10 +614,10 @@ desired effect
                     </li>
 
                     <li class="treeview menus {%if request.resolver_match.view_name == 'Archives' %}active{%endif%}" data-iden="5">
-                        <a href="#" class="btn" style="font-size: 0.7em; text-align: left">
+                        <a href="#" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa  fa-archive"></i>
                             <span>{{ langue.form_archives }}</span>
-                            <span class="label pull-right bg-blue" style="font-size: 1.1em">0</span>
+                            <span class="label pull-right bg-blue" style="font-size: .8em">0</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -641,20 +639,18 @@ desired effect
                     </li>
 
                     <li class="menus {%if request.resolver_match.view_name == 'Statistiques' %}active{%endif%}" data-iden="6">
-                        <a href="{{ baseurl }}/dashboard/courriers/{{ lang_abbr }}" class="btn" style="font-size: 0.7em; text-align: left">
+                        <a href="{{ baseurl }}/dashboard/courriers/{{ lang_abbr }}" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-bar-chart"></i>
                             <span>{{ langue.form_Statistiques }}</span>
-                            <span class="pull-right-container">
-                                <small class="label pull-right bg-blue" style="font-size: 1.1em">0</small>
-                            </span>
+                            <small class="label pull-right bg-blue" style="font-size: .8em">0</small>
                         </a>
                     </li>
 
                     <li class="treeview menus {%if request.resolver_match.view_name == 'Dossiers' %}active{%endif%}" data-iden="15">
-                        <a href="#" class="btn" style="font-size: 0.7em; text-align: left">
+                        <a href="#" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-file"></i>
                             <span>{{ langue.form_Dossiers }}</span>
-                            <span class="label pull-right bg-green" style="font-size: 1.1em">0</span>
+                            <span class="label pull-right bg-green" style="font-size: .8em">0</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -676,17 +672,17 @@ desired effect
                     </li>
 
                     <li class="menus {%if request.resolver_match.view_name == 'Statistiques' %}active{%endif%}" data-iden="6">
-                        <a href="{{ baseurl }}/dashboard/courriers/" class="btn" style="font-size: 0.7em; text-align: left">
+                        <a href="{{ baseurl }}/dashboard/courriers/" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-users"></i>
-                            <span>Groupes</span>
+                            <span>Barbillard</span>
 
                         </a>
                     </li>
 
                     <li class="menus {%if request.resolver_match.view_name == 'Statistiques' %}active{%endif%}" data-iden="6">
-                        <a href="{{ baseurl }}/dashboard/courriers/" class="btn" style="font-size: 0.7em; text-align: left">
+                        <a href="{{ baseurl }}/dashboard/courriers/" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-bar-chart"></i>
-                            <span>Actions Rapides</span>
+                            <span>Conference</span>
 
                         </a>
                     </li>
@@ -714,9 +710,9 @@ desired effect
                     </div>
                     <div class="modal-body">
                         <!-- general form elements -->
-                        <div class="box box-primary">
+                        <div class="box">
                             <div class="box-header with-border">
-                                <h3 class="box-title">(*) Champs sont Obligatoire</h3>
+                                <h3 class="box-title">{{ langue.form_champ_obligatoire }}</h3>
                             </div>
                             <!-- /.box-header -->
                             <!-- form start -->
@@ -953,51 +949,47 @@ desired effect
 
 
         <!--Footer-->
-        <footer class="main-footer page-footer font-small blue pt-4 card z-depth-2 mt-4" style="font-size: 1.1em; min-height: 250px;">
-            <!--Footer Links-->
-            <div class="container-fluid text-center text-md-left mask rgba-black-strong flex-center waves-effect waves-light" style=" min-height: 250px;">
-                <div class="row">
+    <footer class="main-footer page-footer font-small blue pt-4 card z-depth-2 mt-4" style="font-size: 1.1em; min-height: 150px;">     
+        <!--Footer Links-->
+        <div class="container-fluid text-left text-md-left" style="min-height:150px;">
+            <div class="row">
 
-                    <!--First column-->
-                    <div class="col-md-6">
-                        <h5 class="text-uppercase">DOTrack Infos</h5>
-                        <p>DOTrack vos procure assurance, flexibite, securite dans l'excution et le traitement de vos Documents
-                            . DOTrack est votre solution tout en un (chat, courrier, travail collaboratif, echange avec dautres
-                            entreprises du systeme, ...)</p>
-                    </div>
-                    <!--/.First column-->
-
-                    <!--Second column-->
-                    <div class="col-md-6">
-                        <h5 class="text-uppercase">Besoin D'assistance ?</h5>
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="#!" class="btn btn-primary">Contacter sur Facebook</a>
-                            </li>
-                            <li>
-                                <a href="#!" class="btn btn-danger">Contacter sur Google plus</a>
-                            </li>
-                            <li>
-                                <a href="#!" class="btn btn-success">Contacter le web Master</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!--/.Second column-->
+                <!--First column-->
+                <div class="col-md-6">
+                    <h5 class="text-uppercase"><b>DOTrack Infos</b></h5>
+                    <p>DOTrack vos procure assurance, flexibite, securite dans l'excution et le traitement de vos Documents . DOTrack est votre solution tout en un (chat, courrier, travail collaboratif, echange avec dautres entreprises du systeme, ...)</p>
                 </div>
-            </div>
-            <!--/.Footer Links-->
+                <!--/.First column-->
 
-            <!--Copyright-->
-            <div class="footer-copyright py-3 text-center" style="margin-top: 15px; margin-bottom: 15px; font-size: 0.9em">
-                <strong>Copyright
-                    <script>document.write(new Date().getFullYear());</script> All rights reserved |
-                    <a href="#" style="color: papayawhip;">DOTrack</a>
-                    <i class="fa fa-heart-o" aria-hidden="true"></i> by ZonePluS
+                <!--Second column-->
+                <div class="col-md-6">
+                    <h5 class="text-uppercase"><b>Besoin D'assistance ?</b><br><br></h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="#!" class="btn btn-primary">Contacter sur Facebook</a>
+                        
+                            <a href="#!" class="btn btn-danger">Contacter sur Google plus</a>
+                        
+                            <a href="#!" class="btn btn-success">Contacter le web Master</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/.Second column-->
             </div>
-            <!--/.Copyright-->
+        </div>
+        <!--/.Footer Links-->
 
-        </footer>
-        <!--/.Footer-->
+        <!--Copyright-->
+        <div class="footer-copyright py-3 text-center" style="margin-top: 1px; margin-bottom: 15px; font-size: 0.9em; padding:8px">
+            <strong>Copyright
+                <script>document.write(new Date().getFullYear());</script> All rights reserved |
+                <a href="#" style="color: papayawhip;">DOTrack</a>
+                <i class="fa fa-heart-o" aria-hidden="true"></i> by ZonePluS
+        </div>
+        <!--/.Copyright-->
+
+    </footer>
+    <!--/.Footer-->
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -1363,6 +1355,18 @@ desired effect
                 $('#submitFiles').submit()
             });
 
+            $('.cropped_image').on('click', function (ev) {
+                var dos = $('#documentFile').attr('data-pdos')
+                var pdos = $('#documentFile').attr('data-predoc')
+                var entr = $('#documentFile').attr('data-dos')
+
+                $('#dos').val(dos)
+                $('#pdos').val(pdos)
+                $('#entr').val(entr)
+
+                $('#submitImages').submit()
+            });
+
             /*$image_crop.croppie('result', {
                 type: 'canvas',
                 size: 'viewport'
@@ -1444,10 +1448,12 @@ desired effect
                             for (i in data) {
                                 if (data[i].use == '{{userID}}') {
                                     var color = 'bg-red'
-                                    var noms = data[i].use__login
+                                    var noms = data[i].use__nom
+                                    var pnoms = data[i].use__prenom
                                 } else {
                                     var color = 'bg-blue'
-                                    var noms = data[i].use__login
+                                    var noms = data[i].use__nom
+                                    var pnoms = data[i].use__prenom
                                 }
 
                                 if (data[i].status == 1 && data[i].use_id2 == '{{userID}}') {
@@ -1460,7 +1466,7 @@ desired effect
                                     + '<div class="timeline-item card">'
                                     + '<span class="time"><i class="fa fa-clock-o"></i>&nbsp;' + data[i].dates + '</span>'
 
-                                    + '<h3 class="timeline-header"><a href="#">' + noms + '</a></h3>'
+                                    + '<h3 class="timeline-header"><a href="#">' + pnoms + '&nbsp;'+ noms +'</a></h3>'
                                     + '<div class="timeline-body" style="background:#fff; padding-bottom:1px;"><p>' + data[i].libelle + '</p></div>' + statu + '</div></li>'
                                     + '')
                             }

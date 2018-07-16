@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/plugins/OwlCarousel2-2.2.1/animate.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/financial.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/financial_responsive.css' %}"> {% if request.resolver_match.view_name == "Connexion" or request.resolver_match.view_name == "Contact" or request.resolver_match.view_name == "Courrier" %}
+    <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/financial_responsive.css' %}"> {% if request.resolver_match.view_name == "Connexion" or request.resolver_match.view_name == "Contact" or request.resolver_match.view_name == "Courrier" or request.resolver_match.view_name == "Inscription" %}
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/contact.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/contact_responsive.css' %}"> {% endif %}
 </head>
@@ -71,14 +71,14 @@
                     </div>
                 </div>
             </div>
-            {% endif %} {% if request.resolver_match.view_name == "Connexion"%}
+            {% endif %} {% if request.resolver_match.view_name == "Connexion" %}
             <div class="home_background parallax-window login" data-parallax="scroll" data-image-src="{% static 'dotracks/images/financial.jpg' %}"
                 data-speed="0.3"></div>
             <div class="container login">
                 <div class="row">
                     <div class="col">
                         <div class="home_content">
-                            <div class="home_content_inner">
+                            <div class="home_content_inner" style="padding:40px">
                                 <div class="home_title">Accedez à votre compte via le formulaire</div>
                                 <div class="home_breadcrumbs">
                                     <ul>
@@ -86,6 +86,28 @@
                                             <a href="">{{ langue.form_menu_acceuil }}</a>
                                         </li>
                                         <li>{{ langue.form_menu_connexion }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}{% if request.resolver_match.view_name == "Inscription" %}
+            <div class="home_background parallax-window login" data-parallax="scroll" data-image-src="{% static 'dotracks/images/financial.jpg' %}"
+                data-speed="0.3"></div>
+            <div class="container login">
+                <div class="row">
+                    <div class="col">
+                        <div class="home_content">
+                            <div class="home_content_inner" style="padding:40px">
+                                <div class="home_title">Procurez vous un compte DOTrack</div>
+                                <div class="home_breadcrumbs">
+                                    <ul>
+                                        <li>
+                                            <a href="">{{ langue.form_menu_acceuil }}</a>
+                                        </li>
+                                        <li>{{ langue.form_menu_inscription }}</li>
                                     </ul>
                                 </div>
                             </div>

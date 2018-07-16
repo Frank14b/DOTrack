@@ -1,0 +1,1 @@
+web: gunicorn dotrack.wsgi --log-file -

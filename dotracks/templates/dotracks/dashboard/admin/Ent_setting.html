@@ -144,7 +144,9 @@
                             {% for elmts in listentr %}
                             <tr>
                                 <td style="font-size: 1.1em">
-                                    <a href="{{ baseurl }}/dashboard/company/{{ elmts.id }}/{{ lang_abbr }}/">{{ elmts.libelle }}</a>
+                                    <span class="badge badge-primary">
+                                        <a href="{{ baseurl }}/dashboard/company/{{ elmts.id }}/{{ lang_abbr }}/" style="color:#fff">{{ elmts.libelle }}</a>
+                                    </span>
                                 </td>
                                 <td style="font-size: 1.1em">{{ elmts.web }}</td>
                                 <td style="font-size: 1.1em">{{ elmts.tel }}</td>
@@ -205,12 +207,12 @@
                     <!-- form start -->
                     <form role="form" method="POST" action="{{ baseusrl }}/dashboard/admin/editEntr" id="editentreprise">
                         {% csrf_token %}
-                        <div class="box-body" id="EntcontentEdit">
+                        <div class="box-body" id="EntcontentEdit" style="background:#f5f5f5">
                             <div class="col-md-12">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">{{ langue.form_Entreprises }}</label>
-                                        <input type="text" required name="libelle" class="form-control entEditLibelle" id="exampleInputEmail1" placeholder="{{ langue.form_Entreprises }}"
+                                        <input type="text" disabled required name="libelle" class="form-control entEditLibelle" id="exampleInputEmail1" placeholder="{{ langue.form_Entreprises }}"
                                         />
                                     </div>
                                 </div>
@@ -259,8 +261,10 @@
                         </div>
 
                         <div class="box-footer" id="push">
-                            <button type="submit" class="btn btn-flat btn-primary">
-                                <i class="fa fa-save"></i>&nbsp; {{ langue.form_Enregistrer }}</button>
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-flat btn-primary">
+                                    <i class="fa fa-save"></i>&nbsp; {{ langue.form_Enregistrer }}</button>
+                            </div>
                         </div>
                     </form>
                 </div>

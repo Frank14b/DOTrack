@@ -1,0 +1,317 @@
+{% extends 'dotracks/dashboard/header.html' %} {% load static %} {% block content %}
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            {{ langue.form_utilisateurs }}
+            <small>DOTrack v1.0</small>
+        </h1>
+        <ol class="breadcrumb">
+            {% if request.session.d_user %}
+            <li>
+                <a href="{{baseurl}}/dashboard/admin/{{lang_abbr}}" data-toggle="tooltip" title="Synchronisation">
+                    <button class="btn btn-xs btn-default">
+                        <i class="fa fa-arrow-left"></i> {{langue.form_dashboard }} Admin</button>
+                </a>
+            </li>
+            {% endif %}
+            <li>
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> {{ langue.form_menu_acceuil }}</a>
+            </li>
+            <li class="active">{{ langue.form_Members }}</li>
+            <li class="active">{{ request.resolver_match.view_name }}
+                <span class="badge badge-info">{{ openDcument.libelle }}</span>
+            </li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+        <hr>
+
+        <div class="row hidden">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box card">
+                    <span class="info-box-icon bg-aqua">
+                        <i class="ion ion-ios-gear-outline"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">{{ langue.form_reglages }}</span>
+                        <span class="info-box-number">20
+                            <small>%</small>
+                        </span>
+                        <button class="btn btn-xs btn-default">Configurer</button>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box card">
+                    <span class="info-box-icon bg-red">
+                        <i class="fa fa-book"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">{{ langue.form_Documents }}</span>
+                        <span class="info-box-number">0,0</span>
+                        <button class="btn btn-xs btn-primary">{{ langue.form_consulter }}</button>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+
+            <!-- fix for small devices only -->
+            <div class="clearfix visible-sm-block"></div>
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box card">
+                    <span class="info-box-icon bg-green">
+                        <i class="fa fa-envelope"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Courriers</span>
+                        <span class="info-box-number">0
+                            <small>Recus</small>
+                        </span>
+                        <button class="btn btn-xs btn-primary">{{ langue.form_consulter }}</button>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box card">
+                    <span class="info-box-icon bg-yellow">
+                        <i class="ion ion-ios-people-outline"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">{{ langue.form_utilisateurs }}</span>
+                        <span class="info-box-number">{{ nbruser }}</span>
+                        <button class="btn btn-xs btn-default">{{ langue.form_consulter }}</button>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary card" style="border-radius: 0px;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title hidden">
+                            <i class="fa fa-building"></i>&nbsp; {{ request.session.d_Entr }} {{ request.resolver_match.view_name }} &nbsp;
+                        </h3>
+                        <div class="col-md-6">
+                            <div class="alert bg-blue">Consulter la
+                                <a href="#" class="badge badge-info" style="text-decoration: none;">Documentation</a> pour Demarrer votre Document</div>
+                        </div>
+                        <a class="btn btn-primary pull-right" href="{{ baseurl }}/Member/documents/{{ lang_abbr }}">
+                            <i class="fa fa-file"></i>&nbsp; Mes Documents</a>
+                        <a type="submit" id="mydocuimages" class="btn btn-primary pull-right">
+                            <i class="fa fa-image"></i>&nbsp; Mes Images</a>
+
+                    </div>
+                    <div class="box-body">
+                        <div class="col-md-12" style="background: #fff;">
+                            <div class="row" style="background: #fff;">
+                                {% if openDcument %}
+
+                                <div class="col-md-9 well" style="padding:12px;background:#fff;padding-bottom:25px;border-radius:0px">
+                                    <div class="col-md-12 well">
+                                        <p style="font-weight:bold; font-size:2em">
+                                            <i class="fa fa-file"></i>&nbsp;&nbsp; {{ openDcument.libelle }}</p>
+                                    </div>
+                                    <div data-valu="{{ openDcument.descipt }}" id="detailsOpenDoc">
+                                        <div class="col-md-12 alert text-center" style="background: #f5f5f5; padding:4px; color:#444; margin-top:10%;">
+                                            <center>
+                                                <img src="{% static 'dotracks/img/preloader.gif' %}" style="width: 100px; height: 100px; border-radius: 50%;" />
+                                                <br>
+                                            </center>
+                                        </div>
+                                    </div>
+
+                                    <div class="box-footer" id="push" style="background:none;">
+                                        <a href="{{ baseurl }}/Member/documents/{{ openDcument.libelle }}/edit/{{ lang_abbr }}" type="submit" class="btn btn-primary">
+                                            <i class="fa fa-pencil"></i>&nbsp; Modifier le Document</a>
+
+                                        <button type="button" class="btn btn-info">
+                                            <i class="fa fa-pencil"></i>&nbsp; Configuration</button>
+
+                                        <a type="reset" class="btn btn-warning delete" id="{{ openDcument.id }}" href="{{ baseurl }}/Member/documents/{{ openDcument.libelle }}/delete">
+                                            <i class="fa fa-trash"></i>&nbsp; Supprimer le Document</a>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="row">
+                                        {% if myDocument %}
+                                        <h4 style="margin-left:15px">
+                                            <b>Mes Documents</b>
+                                        </h4> {% for elmts in myDocument %}
+                                        <div class="col-md-12">
+                                            <div class="card-box card" style="min-height:100px;">
+                                                <div class="card-title">
+                                                    <h2>
+                                                        <img src="{% static 'dotracks/img/still_frame_entreprise_hd.jpg' %}" class="img-circle card hidden" style="width:50px; height:45px"> {{ elmts.libelle }}</h2>
+                                                    <p class="printDecode" data-valu="{{ elmts.descipt }}"></p>
+                                                </div>
+                                                <div class="card-link">
+                                                    <a href="{{ baseurl }}/Member/documents/{{ elmts.libelle }}/{{lang_abbr}}" class="c-link">Ouvrir le Document
+                                                        <i class="fa fa-angle-right"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %} {% endif %}
+                                    </div>
+                                </div>
+                                {% else %} {% if editDocument %}
+                                <div class="box-header" id="push" style="background:none;">
+                                    <a href="{{ baseurl }}/Member/documents/{{ editDocument.libelle }}/{{ lang_abbr }}" type="submit" class="btn btn-primary">
+                                        <i class="fa fa-close"></i>&nbsp; Annuler & Quitter</a>
+
+                                    <button type="button" id="savedocUPDATE" class="btn btn-success">
+                                        <i class="fa fa-save"></i>&nbsp; Enregistrer les Modifications</button>
+
+                                    <a type="reset" class="btn btn-warning delete" id="{{ openDcument.id }}" href="{{ baseurl }}/Member/documents/{{ openDcument.libelle }}/delete">
+                                        <i class="fa fa-trash"></i>&nbsp; Supprimer le Document</a>
+                                </div>
+                                <div class="box-body" id="EntcontentEdit">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1" class="hidden">{{ langue.form_Details }}</label>
+                                                <textarea name="Descript" id="doctextarea" required class="form-control" placeholder="{{ langue.form_Details }}" style="height:500px; width:100%"></textarea>
+                                            </div>
+                                        </div>
+                                        <!-- /.form  group -->
+                                    </div>
+                                </div>
+                                {% else %} {% if myDocument %}
+                                <div class="col-md-12">
+                                    <a href="{{ baseurl }}/Member/addDocx/{{lang_abbr}}">
+                                        <button class="btn bg-green btn-sm" style="font-size: 0.7em">
+                                            <i class="fa fa-file"></i>&nbsp; {{ langue.form_nouvelle }}</button>
+                                    </a>
+                                </div>
+                                <br>
+                                <style>
+                                    .dropdown-item {
+                                        padding: 12px;
+                                        float: left;
+                                        width: 100%;
+                                    }
+                                </style>
+                                <br> {% for elmts in myDocument %}
+                                <div class="col-md-4">
+                                    <div class="card-box card">
+                                        <div class="card-title">
+                                            <h2>{{ elmts.libelle }}</h2>
+                                            <p class="printDecode" data-valu="{{ elmts.descipt }}"></p>
+                                            <center>
+                                                <img src="{% static 'dotracks/img/still_frame_entreprise_hd.jpg' %}" class="img-circle card" style="width:130px; height:125px">
+                                            </center>
+                                        </div>
+                                        <div class="card-link">
+                                            <a href="{{ baseurl }}/Member/documents/{{ elmts.libelle }}/{{lang_abbr}}" class="c-link">Ouvrir le Document
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %} {% else %}
+                            </div>
+                            <div class="callout callout-primary">
+                                <h4>
+                                    <i class="icon fa fa-info"></i> I&nbsp; {{ langue.form_aucunedonne}}</h4>
+                                <p>{{ langue.form_aucunedonne_text}}</p>
+                                <br>
+                                <a href="#" data-toggle="modal" data-target="#addDossier" data-dos="0">
+                                    <button class="btn bg-aqua">
+                                        <i class="fa fa-plus"></i>&nbsp;{{ langue.form_nouvelle }}</button>
+                                </a>
+                            </div>
+                            {% endif %} {% endif %}{% endif %}
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<div class="modal fade" role="dialog" id="fileImage">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">
+                        <i class="fa fa-power-off"></i>
+                    </button>
+                </button>
+                <h4 class="modal-title">
+                    <i class="fa fa-image"></i>&nbsp; {{langue.form_choisir_photo}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <center>
+                                    <button class="btn btn-primary choose_image">
+                                        <i class="fa fa-image"></i>&nbsp; {{langue.form_choisir_photo}}</button>
+                                    <button class="btn btn-info image_crop-rotate" data-deg="-90" id="RotateAntiClockwise">
+                                        <i class="fa fa-arrow-left"></i>
+                                    </button>
+                                    <button class="btn btn-info image_crop-rotate" data-deg="90" id="RotateClockwise">
+                                        <i class="fa fa-arrow-right"></i>
+                                    </button>
+                                    <button class="btn btn-success cropped_image">Upload Image</button>
+                                </center>
+                                <br>
+                                <div id="upload-image">
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <input type="file" id="images" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

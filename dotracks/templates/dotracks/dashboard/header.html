@@ -9,6 +9,12 @@
     <title>DOTrack | {{ request.resolver_match.view_name }}</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.2.4/css/ionicons.min.css" />
+
     <link rel="stylesheet" href="{% static 'dotracks/css_/bootstrap.min.css' %}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{% static 'dotracks/css_/font-awesome.min.css' %}">
@@ -26,8 +32,13 @@
     <link rel="stylesheet" href="{% static 'dotracks/css_/all.css' %}">
     <!-- croppie -->
     <link rel="stylesheet" href="{% static 'dotracks/css_/croppie.css' %}">
+
+    <link rel="stylesheet" href="{% static 'dotracks/jquery-cropper-master/dist/cropper.min.css' %}">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="{% static 'dotracks/css_/bootstrap3-wysihtml5.min.css' %}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'dotracks/img/logo.png' %}" type="image/x-icon" />
 
     <!-- HTML5 Shim and Respond.js' %} IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js' %} doesn't work if you view the page via file:// -->
@@ -283,6 +294,93 @@
     .visible {
         display: block;
     }
+
+    #newNotifMess,
+    #newNotifMicro,
+    #divDOCIMAGE,
+    #STOPmodeMICro {
+        display: none;
+    }
+
+    .nin {
+        display: none;
+    }
+</style>
+
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Oswald|Poppins');
+    body {
+        /* font-family: 'Oswald', sans-serif; */
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .card-box {
+        background: #FAFAFA;
+        min-height: 300px;
+        position: relative;
+        padding: 30px 30px 20px;
+        margin-bottom: 20px;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .card-box:hover {
+        background: linear-gradient(to right, #1fa2ff17 0%, #12d8fa2b 51%, #1fa2ff36 100%);
+    }
+
+    .card-box:after {
+        display: block;
+        background: #2196F3;
+        border-top: 2px solid #2196F3;
+        content: '';
+        width: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+    }
+
+    .card-title h5 {
+        margin: 0;
+        padding-top: 5%;
+        color: #2196F3;
+        font-family: 'Oswald', sans-serif;
+        text-transform: uppercase;
+        font-size: 14px;
+        line-height: 1;
+        margin-bottom: 15px;
+    }
+
+    .card-title h2 {
+        margin: 0;
+        padding-top: 5%;
+        color: #2196F3;
+        font-family: 'Oswald', sans-serif;
+        text-transform: uppercase;
+        font-size: 20px;
+        line-height: 1;
+        margin-bottom: 15px;
+    }
+
+    .card-title p {
+        margin: 0;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .card-link a {
+        text-decoration: none;
+        font-family: 'Oswald', sans-serif;
+        color: #FF5722;
+        font-size: 15px;
+    }
 </style>
 
 <!--
@@ -311,7 +409,7 @@ desired effect
     <div class="wrapper">
 
         <!-- Main Header -->
-        <header class="main-header bg-blue">
+        <header class="main-header bg-blue card">
 
             <!-- Logo -->
             <a href="" class="logo hidden-sm hidden-xs">
@@ -336,7 +434,7 @@ desired effect
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
                         <!-- Messages: style can be found in dropdown.less-->
-                        <li class="dropdown messages-menu">
+                        <li class="dropdown messages-menu hidden">
                             <!-- Menu toggle button -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-envelope-o"></i>
@@ -352,15 +450,13 @@ desired effect
                                             <a href="#">
                                                 <div class="pull-left">
                                                     <!-- User Image -->
-                                                    <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
+                                                    <img src="http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png" class="img-circle" alt="User Image">
                                                 </div>
                                                 <!-- Message title and timestamp -->
                                                 <h4>
-                                                    Support Team
                                                     <small>
                                                         <i class="fa fa-clock-o"></i> 5 mins</small>
                                                 </h4>
-                                                <!-- The message -->
                                                 <p>Why not buy a new awesome theme?</p>
                                             </a>
                                         </li>
@@ -369,7 +465,7 @@ desired effect
                                     <!-- /.menu -->
                                 </li>
                                 <li class="footer">
-                                    <a href="#">See All Messages</a>
+                                    <a href="{{baseurl}}/Member/chat/{{lang_abbr}}">See All Messages</a>
                                 </li>
                             </ul>
                         </li>
@@ -380,20 +476,17 @@ desired effect
                             <!-- Menu toggle button -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-bell-o"></i>
-                                <span class="label label-warning">10</span>
+                                <span class="label label-warning nbrNotif"></span>
                             </a>
-                            <ul class="dropdown-menu">
-                                <li class="header">You have 10 notifications</li>
+                            <ul class="dropdown-menu card">
+                                <input type="hidden" id="newNbrNotif" />
+                                <li class="header">Vous avez
+                                    <span class="nbrNotif actuel">0</span> notifications
+                                </li>
                                 <li>
                                     <!-- Inner Menu: contains the notifications -->
-                                    <ul class="menu">
-                                        <li>
-                                            <!-- start notification -->
-                                            <a href="#">
-                                                <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                            </a>
-                                        </li>
-                                        <!-- end notification -->
+                                    <ul class="menu" id="contentNotif">
+
                                     </ul>
                                 </li>
                                 <li class="footer">
@@ -405,10 +498,11 @@ desired effect
                         <li class="dropdown tasks-menu">
                             <!-- Menu Toggle Button -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-flag-o"></i>&nbsp;&nbsp;
+                                <img src="{% static 'dotracks/img/' %}{% if lang_abbr == 'fr' %}dfr.png{% else %}{% if lang_abbr == 'en' %}den.jpeg{% else %}dch.png{% endif %}{% endif %}"
+                                    style="width:20px; height:20px; border-radius:50%; margin-top:-3px" />&nbsp;&nbsp;
                                 <b>{{ lang_abbr }}</b>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu card" style="width:200px;">
                                 <li class="header"></li>
                                 <li>
                                     <!-- Inner menu: contains the tasks -->
@@ -418,19 +512,19 @@ desired effect
                                             <a href="{{ baseUrl }}{{ request.get_full_path }}../fr">
                                                 <!-- Task title and progress text -->
                                                 <h3>
-                                                    <i class="fa fa-flag-o"></i>&nbsp;&nbsp; Francais - Fr (France)
+                                                    <img src="{% static 'dotracks/img/dfr.png' %}" style="width:20px; height:20px; border-radius:50%; margin-top:-3px" />&nbsp;&nbsp;Francais (fr-FR)
                                                 </h3>
                                             </a>
                                             <a href="{{ baseUrl }}{{ request.get_full_path }}../en">
                                                 <!-- Task title and progress text -->
                                                 <h3>
-                                                    <i class="fa fa-flag-o"></i>&nbsp;&nbsp;Englais - En (England)
+                                                    <img src="{% static 'dotracks/img/den.jpeg' %}" style="width:20px; height:25px; border-radius:50%; margin-top:-3px" />&nbsp;&nbsp;Englais (en-EN)
                                                 </h3>
                                             </a>
-                                            <a href="{{ baseUrl }}{{ request.get_full_path }}../ch">
+                                            <a class="hidden" href="{{ baseUrl }}{{ request.get_full_path }}../ch">
                                                 <!-- Task title and progress text -->
                                                 <h3>
-                                                    <i class="fa fa-flag-o"></i>&nbsp;&nbsp;Chinois - Ch (China)
+                                                    <img src="{% static 'dotracks/img/dch.png' %}" style="width:20px; height:20px; border-radius:50%; margin-top:-3px" />&nbsp;&nbsp;Chinois (ch-CH)
                                                 </h3>
                                             </a>
                                         </li>
@@ -447,45 +541,36 @@ desired effect
                             <!-- Menu Toggle Button -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <!-- The user image in the navbar-->
-                                <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="user-image" alt="User Image">
+                                <img src="{% if userInfo.photo != '0' %}{{ baseurl }}/{{ userInfo.photo }}{% else %}http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png{% endif %}"
+                                    class="user-image" alt="User Image">
                                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                 <span class="hidden-xs">
                                     {% if request.session.d_user%} {{ request.session.d_user }} {% else %} {{ request.session.d_member}} {% endif %}</span>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu card">
                                 <!-- The user image in the menu -->
                                 <li class="user-header">
-                                    <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
+                                    <img src="{% if userInfo.photo != '0' %}{{ baseurl }}/{{ userInfo.photo }}{% else %}http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png{% endif %}"
+                                        class="img-circle" alt="User Image">
 
                                     <p>
                                         {% if request.session.d_user%} {{ request.session.d_user }} {% else %} {{ request.session.d_member }} {% endif %}
                                         <small>{{ userInfo.typ__libeler}}, {{ userInfo.role}}</small>
                                     </p>
                                 </li>
-                                <!-- Menu Body 
-                                <li class="user-body">
-                                    <div class="row">
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Followers</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Sales</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Friends</a>
-                                        </div>
-                                    </div>
-                                     /.row
-                                </li>
-                                 Menu Footer-->
+
                                 <li class="user-footer">
                                     <div class="pull-left">
                                         <a href="{{ baseUrl }}/Member/profile/{{ lang_abbr }}/" class="btn btn-default btn-flat">
-                                            <i class="fa fa-user"></i> {{ langue.form_profile }}</a>
+                                            <span style="color:#fff">
+                                                <i class="fa fa-user"></i> {{ langue.form_profile }}</span>
+                                        </a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="{{ baseUrl }}/Member/logout/{{ lang_abbr }}/" class="btn btn-default btn-flat">
-                                            <i class="fa fa-power-off"></i> {{ langue.form_logout }}</a>
+                                        <a href="" id="deconnexionUser" class="btn btn-danger btn-flat">
+                                            <span style="color:#fff">
+                                                <i class="fa fa-power-off"></i> {{ langue.form_logout }}</a>
+                                        </span>
                                     </div>
                                 </li>
                             </ul>
@@ -501,14 +586,15 @@ desired effect
             </nav>
         </header>
         <!-- Left side column. contains the logo and sidebar -->
-        <aside class="main-sidebar z-depth-4 blue">
+        <aside class="main-sidebar z-depth-4 blue card">
 
             <!-- sidebar: style can be found in sidebar.less -->
-            <section class="sidebar mask rgba-black-strong waves-effect waves-light">
+            <section class="sidebar mask rgba-black-strong waves-effect waves-light card">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel">
                     <div class="pull-left image">
-                        <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
+                        <img src="{% if userInfo.photo != '0' %}{{ baseurl }}/{{ userInfo.photo }}{% else %}http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png{% endif %}"
+                            class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
                         <p>
@@ -547,7 +633,7 @@ desired effect
                         <a href="#" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-users"></i>
                             <span>{{ langue.form_utilisateurs }}</span>
-                            <span class="label pull-right bg-green" style="font-size: .8em">0</span>
+                            <span class="label pull-right bg-green" style="font-size: .8em">{{ nbruser }}</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -569,14 +655,14 @@ desired effect
                     </li>
 
                     <li class="menus" data-iden="2">
-                        <a href="{{ baseurl }}/dashboard/courrier/{{lang_abbr}}" class="" style="font-size: 0.9em; text-align: left">
+                        <a href="{{ baseurl }}/Member/courrier/{{lang_abbr}}" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-envelope"></i>
                             <span>{{ langue.form_courrier_box }}</span>
-                            
-                                <small class="label pull-right bg-yellow" style="font-size: .8em">0</small>
-                                <small class="label pull-right bg-green" style="font-size: .8em">0</small>
-                                <small class="label pull-right bg-red" style="font-size: .8em">0</small>
-                            
+
+                            <small class="label pull-right bg-yellow" style="font-size: .8em">0</small>
+                            <small class="label pull-right bg-green" style="font-size: .8em">0</small>
+                            <small class="label pull-right bg-red" style="font-size: .8em">0</small>
+
                         </a>
                     </li>
 
@@ -603,7 +689,7 @@ desired effect
                                     <i class="fa fa-plus"></i>{{ langue.form_nouvelle }}</a>
                             </li>
                             <li class="menus" data-iden="14">
-                                <a href="#">
+                                <a href="{{ baseurl }}/Member/documents/{{lang_abbr}}">
                                     <i class="fa fa-eye"></i>{{ langue.form_consulter }}</a>
                             </li>
                             <li class="menus" data-iden="0">
@@ -642,7 +728,7 @@ desired effect
                         <a href="{{ baseurl }}/dashboard/courriers/{{ lang_abbr }}" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-bar-chart"></i>
                             <span>{{ langue.form_Statistiques }}</span>
-                            <small class="label pull-right bg-blue" style="font-size: .8em">0</small>
+                            <small class="label pull-right bg-blue" style="font-size: .8em"></small>
                         </a>
                     </li>
 
@@ -673,17 +759,24 @@ desired effect
 
                     <li class="menus {%if request.resolver_match.view_name == 'Statistiques' %}active{%endif%}" data-iden="6">
                         <a href="{{ baseurl }}/dashboard/courriers/" class="" style="font-size: 0.9em; text-align: left">
-                            <i class="fa fa-users"></i>
-                            <span>Barbillard</span>
-
+                            <i class="fa fa-list"></i>
+                            <span>Anonces</span>
+                            <span class="label pull-right bg-green" style="font-size: .8em">0</span>
                         </a>
                     </li>
 
                     <li class="menus {%if request.resolver_match.view_name == 'Statistiques' %}active{%endif%}" data-iden="6">
                         <a href="{{ baseurl }}/dashboard/courriers/" class="" style="font-size: 0.9em; text-align: left">
-                            <i class="fa fa-bar-chart"></i>
-                            <span>Conference</span>
+                            <i class="fa fa-list"></i>
+                            <span>Collaboration</span>
+                            <span class="label pull-right bg-info" style="font-size: .8em"></span>
+                        </a>
+                    </li>
 
+                    <li class="">
+                        <a class="text-center btn btn-primary" style="font-size: 0.9em;" href="{{ baseurl }}/dashboard/documentation/{{ lang_abbr }}">
+                            <i class="fa fa-book" style="font-size: 1em; margin-left:-30px"></i>
+                            <span>Documentation</span>
                         </a>
                     </li>
                 </ul>
@@ -785,10 +878,10 @@ desired effect
                                 </div>
 
                                 <div class="box-footer" id="push">
-                                    <button type="submit" class="btn btn-flat btn-primary">
+                                    <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-save"></i>&nbsp; {{ langue.form_Enregistrer }}</button>
                                     <a href="{{baseurl}}/dashboard/company/users/{{lang_abbr}}">
-                                        <button type="button" class="btn btn-flat btn-default pull-right">
+                                        <button type="button" class="btn btn-default pull-right">
                                             <i class="fa fa-eye"></i>&nbsp; {{ langue.form_consulter }}</button>
                                     </a>
                                 </div>
@@ -855,12 +948,14 @@ desired effect
                                 </div>
 
                                 <div class="box-footer" id="push">
-                                    <button type="submit" class="btn btn-flat btn-primary">
-                                        <i class="fa fa-save"></i>&nbsp; {{ langue.form_Enregistrer }}</button>
-                                    <a href="{{baseurl}}/dashboard/company/users/{{lang_abbr}}">
-                                        <button type="button" class="btn btn-flat btn-default pull-right">
-                                            <i class="fa fa-eye"></i>&nbsp; {{ langue.form_consulter }}</button>
-                                    </a>
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-save"></i>&nbsp; {{ langue.form_Enregistrer }}</button>
+                                        <a href="{{baseurl}}/Member/dossiers/{{lang_abbr}}">
+                                            <button type="button" class="btn btn-default pull-right">
+                                                <i class="fa fa-eye"></i>&nbsp; {{ langue.form_consulter }}</button>
+                                        </a>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -877,18 +972,22 @@ desired effect
         <!-- /.modal -->
 
 
-        <div class="col-md-3 col-xs-12 col-sm-6" style="position: fixed; right: 0; bottom: 0; margin-bottom: -25px; z-index:99">
+        <div class="col-md-3 col-xs-12 col-sm-6 blocMiniChat" style="position: fixed; right: 0; bottom: 0; margin-bottom: -25px; z-index:99">
             <!-- DIRECT CHAT WARNING -->
             <div class="box box-primary direct-chat card z-depth-2 direct-chat-primary">
                 <div class="box-header with-border" style=" height: 35px;">
-                    <h3 class="box-title hidden-xs">{{ langue.form_Chat }}</h3>
+                    <h3 class="box-title hidden-xs">
+                        <a id="messegerLink" href="{{baseurl}}/Member/chat/{{lang_abbr}}" style="color:#777; font-size:0.7em">
+                            <b id="messeger"></b>
+                        </a>
+                    </h3>
 
                     <div class="box-tools pull-right">
                         <span data-toggle="tooltip" title="3 New Messages" class="badge bg-yellow">3</span>
                         <button type="button" class="btn btn-box-tool btnMinus btn-primary" data-widget="collapse" style="margin-top: -4px;">
                             <i class="fa fa-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-box-tool btn-success" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle"
+                        <button type="button" class="btn btn-box-tool btn-success btnListContact" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle"
                             style="margin-top: -4px">
                             <i class="fa fa-comments"></i>
                         </button>
@@ -908,7 +1007,15 @@ desired effect
                     <!-- Contacts are loaded here -->
                     <div class="direct-chat-contacts">
                         <ul class="contacts-list">
-
+                            {% for user in userList %} {% if request.session.d_userid != user.id %}
+                            <li class="list-group-item userDirectChat" style="margin-bottom: 0px; border-radius: 0px;" id="{{user.id}}">
+                                <a href="#">
+                                    <img class="profile-user-img img-responsive img-circle" src="{% if user.photo != '0' %}{{ baseurl }}/{{ user.photo }}{% else %}http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png{% endif %}"
+                                        alt="DOTrack" style="width: 37px;float: left;margin-top: -8px;margin-right:5px;">
+                                    <b>{{user.prenom}}&nbsp;{{user.nom}}</b>
+                                </a>
+                            </li>
+                            {% endif %} {% endfor %}
                         </ul>
                         <!-- /.contatcts-list -->
                     </div>
@@ -920,7 +1027,7 @@ desired effect
                             <p style="margin-top: 57px; color: #fff">
                                 <b>{{ langue.form_accederaunecicursale }} :</b>
                                 <br>
-                                <a href="#" class="btn btn-xs btn-flat btn-primary" data-toggle="modal" data-target="#viewCicursale">
+                                <a href="#" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#viewCicursale">
                                     {{ langue.form_consulter }}
                                     <i class="fa fa-arrow-circle-right"></i>
                                 </a>
@@ -931,15 +1038,48 @@ desired effect
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                    <form action="#" method="post">
-                        <div class="input-group">
-                            <input type="text" name="message" required="required" {% if request.session.dmemberid %} {% else %}disabled{% endif %} placeholder="Type Message ..."
-                                class="form-control">
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn btn-warning btn-flat">Send</button>
+                    <form action="{{ baseurl }}/Member/chatValidate" method="post" id="chatValidate2">
+                        <div class="">
+                            {% csrf_token %}
+                            <input type="hidden" value="001" class="fro" required name="useid2" id="iddirectchat" />
+                            <input type="hidden" class="form-control fro" id="use_id1" required name="use" value="1" />
+                            <input type="text" name="libelle" autocomplete="off" required id="inputChat" placeholder="&#xf118; Votre message ici ! ..."
+                                class="form-control fa fro" style="border:0px; width:100%; border-bottom:1px solid #f5f5f5" />
+                            <span class="input-group-btn hidden">
+                                <button type="submit" class="btn btn-success fro">
+                                    <i class="glyphicon glyphicon-arrow-right"></i>
+                                </button>
                             </span>
                         </div>
                     </form>
+
+                    <h4 style="margin-left:10px;">
+                        <a class="messThumb" data-value="&#xf087;">
+                            <i class="fa fa-thumbs-o-up text-blue"></i>
+                        </a> &nbsp;
+                        <a class="messThumb" data-value="&#xf165;">
+                            <i class="fa fa-thumbs-o-down text-blue"></i>
+                        </a> &nbsp;
+                        <a>
+                            <i class="fa fa-image text-red" data-toggle="tooltip" title="Images"></i>
+                        </a>
+                        &nbsp;
+                        <a>
+                            <i class="fa fa-paperclip" style="" data-toggle="tooltip" title="Files"></i>
+                        </a>
+                        &nbsp;
+                        <a class="messThumb" data-value="&#xf002;">
+                            <i class="fa fa-frown-o" data-toggle="tooltip" title="Angry"></i>
+                        </a>
+                        &nbsp;
+                        <a class="messThumb" data-value="&#xf118;">
+                            <i class="fa fa-smile-o" data-toggle="tooltip" title="Smile"></i>
+                        </a>
+                        &nbsp;
+                        <a>
+                            <i class="fa fa-microphone" data-toggle="tooltip" title="Voice"></i>
+                        </a>
+                    </h4>
                 </div>
                 <!-- /.box-footer-->
             </div>
@@ -949,47 +1089,63 @@ desired effect
 
 
         <!--Footer-->
-    <footer class="main-footer page-footer font-small blue pt-4 card z-depth-2 mt-4" style="font-size: 1.1em; min-height: 150px;">     
-        <!--Footer Links-->
-        <div class="container-fluid text-left text-md-left" style="min-height:150px;">
-            <div class="row">
+        <footer class="main-footer page-footer font-small blue pt-4 card z-depth-2 mt-4 card" style="font-size: 1.1em; min-height: 150px;">
+            <!--Footer Links-->
+            <div class="container-fluid text-left text-md-left" style="min-height:150px;">
+                <div class="row">
 
-                <!--First column-->
-                <div class="col-md-6">
-                    <h5 class="text-uppercase"><b>DOTrack Infos</b></h5>
-                    <p>DOTrack vos procure assurance, flexibite, securite dans l'excution et le traitement de vos Documents . DOTrack est votre solution tout en un (chat, courrier, travail collaboratif, echange avec dautres entreprises du systeme, ...)</p>
-                </div>
-                <!--/.First column-->
+                    <!--First column-->
+                    <div class="col-md-6 hidden">
+                        <h5 class="text-uppercase">
+                            <b>DOTrack Infos</b>
+                        </h5>
+                        <p>DOTrack vos procure assurance, flexibite, securite dans l'excution et le traitement de vos Documents
+                            . DOTrack est votre solution tout en un (chat, courrier, travail collaboratif, ...)</p>
+                    </div>
+                    <!--/.First column-->
 
-                <!--Second column-->
-                <div class="col-md-6">
-                    <h5 class="text-uppercase"><b>Besoin D'assistance ?</b><br><br></h5>
-                    <ul class="list-unstyled">
-                        <li>
-                            <a href="#!" class="btn btn-primary">Contacter sur Facebook</a>
-                        
-                            <a href="#!" class="btn btn-danger">Contacter sur Google plus</a>
-                        
-                            <a href="#!" class="btn btn-success">Contacter le web Master</a>
-                        </li>
-                    </ul>
+                    <!--Second column-->
+                    <div class="col-md-12">
+                        <center>
+                            <h5 class="text-uppercase">
+                                <b>Besoin D'assistance ?</b>
+                                <br>
+                                <br>
+                            </h5>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="#!" class="btn btn-primary">Contacter sur Facebook</a>
+
+                                    <a href="#!" class="btn btn-danger">Contacter sur Google plus</a>
+
+                                    <a href="#!" class="btn btn-success">Contacter le web Master</a>
+                                </li>
+                            </ul>
+                        </center>
+                    </div>
+                    <!--/.Second column-->
                 </div>
-                <!--/.Second column-->
             </div>
-        </div>
-        <!--/.Footer Links-->
+            <!--/.Footer Links-->
 
-        <!--Copyright-->
-        <div class="footer-copyright py-3 text-center" style="margin-top: 1px; margin-bottom: 15px; font-size: 0.9em; padding:8px">
-            <strong>Copyright
-                <script>document.write(new Date().getFullYear());</script> All rights reserved |
-                <a href="#" style="color: papayawhip;">DOTrack</a>
-                <i class="fa fa-heart-o" aria-hidden="true"></i> by ZonePluS
-        </div>
-        <!--/.Copyright-->
+            <!--Copyright-->
+            <div class="footer-copyright py-3 text-center" style="margin-top: 1px; margin-bottom: 15px; font-size: 0.9em; padding:8px">
+                <strong>Copyright
+                    <script>document.write(new Date().getFullYear());</script> All rights reserved |
+                    <a href="#" style="color: papayawhip;">DOTrack</a>
+                    <i class="fa fa-heart-o" aria-hidden="true"></i> by ZonePluS
+            </div>
+            <!--/.Copyright-->
 
-    </footer>
-    <!--/.Footer-->
+        </footer>
+        <!--/.Footer-->
+
+        <style>
+            #control-sidebar-theme-demo-options-tab,
+            .fa-wrench {
+                display: none;
+            }
+        </style>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -1010,36 +1166,23 @@ desired effect
             <div class="tab-content">
                 <!-- Home tab content -->
                 <div class="tab-pane active" id="control-sidebar-home-tab">
-                    <h3 class="control-sidebar-heading">Recent Activity</h3>
+                    <h3 class="control-sidebar-heading">Activites recentes</h3>
                     <ul class="control-sidebar-menu">
                         <li>
-                            <a href="javascript:;">
-                                <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-
-                                <div class="menu-info">
-                                    <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-
-                                    <p>Will be 23 on April 24th</p>
-                                </div>
+                            <a href="javascript:;" id="modeMICro" class="">
+                                <i class="fa fa-microphone"></i>
+                                Mode Micro
                             </a>
                         </li>
-                    </ul>
-                    <!-- /.control-sidebar-menu -->
-
-                    <h3 class="control-sidebar-heading">Tasks Progress</h3>
-                    <ul class="control-sidebar-menu">
+                        <li id="STOPmodeMICro">
+                            <a href="javascript:;" class="btn btn-danger">
+                                <i class="fa fa-close"></i>
+                                Arreter le Micro
+                            </a>
+                        </li>
                         <li>
-                            <a href="javascript:;">
-                                <h4 class="control-sidebar-subheading">
-                                    Custom Template Design
-                                    <span class="pull-right-container">
-                                        <span class="label label-danger pull-right">70%</span>
-                                    </span>
-                                </h4>
-
-                                <div class="progress progress-xxs">
-                                    <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-                                </div>
+                            <a href="javascript:;" class="badge badge-info">
+                                Aucune activite
                             </a>
                         </li>
                     </ul>
@@ -1047,23 +1190,13 @@ desired effect
 
                 </div>
                 <!-- /.tab-pane -->
-                <!-- Stats tab content -->
-                <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-                <!-- /.tab-pane -->
                 <!-- Settings tab content -->
                 <div class="tab-pane" id="control-sidebar-settings-tab">
                     <form method="post">
-                        <h3 class="control-sidebar-heading">General Settings</h3>
+                        <h3 class="control-sidebar-heading">Parametres Generaux</h3>
 
                         <div class="form-group">
-                            <label class="control-sidebar-subheading">
-                                Report panel usage
-                                <input type="checkbox" class="pull-right" checked>
-                            </label>
 
-                            <p>
-                                Some information about this general settings option
-                            </p>
                         </div>
                         <!-- /.form-group -->
                     </form>
@@ -1071,6 +1204,7 @@ desired effect
                 <!-- /.tab-pane -->
             </div>
         </aside>
+        <div id="SongNotif" style="position:fixed; left:-10000px; visibility:hidden"></div>
         <!-- /.control-sidebar -->
         <!-- Add the sidebar's background. This div must be placed
       immediately after the control sidebar -->
@@ -1081,11 +1215,6 @@ desired effect
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">
-                                <i class="fa fa-power-off"></i>
-                            </button>
-                        </button>
                         <h4 class="modal-title" id="modalHead">
                         </h4>
                     </div>
@@ -1095,15 +1224,94 @@ desired effect
                 </div>
             </div>
         </div>
+
+        <button id="deconnexionModalbtn" data-target="#messModal2" data-toggle="modal" style="visibility: hidden; position: fixed; left:0; bottom: 0"></button>
+        <div class="modal fade" role="dialog" id="messModal2">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            <center>
+                                Alert ! Vous etes sur le point de fermer votre session.
+                            </center>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <center>
+                            <img id="clickTolockScreen" class="card" src="{% static 'dotracks/img/pause.png' %}" style="width:40px; height:40px; border-radius:50%; margin-top:-3px; cursor:pointer"
+                            />
+                            <img id="clickToDeconnect" class="card" src="{% static 'dotracks/img/off.png' %}" style="width:40px; height:40px; border-radius:50%; margin-top:-3px; margin-left:15px; cursor:pointer"
+                            />
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+    <div class="row" id="newNotifMess" style="position:fixed; left:0; top:0; right:0; bottom:0; z-index:999999; background:linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7))">
+        <a href="#">
+            <div class="col-md-3 col-sm-6 col-xs-12" style="position: absolute; bottom:0">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua">
+                        <i class="fa fa-envelope-o"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Nouveau Message</span>
+                        <span class="info-box-number" style="font-weight:normal;">
+                            <small style="font-size:0.7em">jkad jsadasd kasdhjk ljasjdkd jsalkdajs dkas</small>
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+        </a>
+    </div>
+
+    <div class="row" id="newNotifMicro" style="position:fixed; left:0; top:0; right:0; bottom:0; z-index:999999; background:linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7))">
+        <a href="#">
+            <div class="col-md-3 col-sm-6 col-xs-12" style="position: absolute; bottom:0">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua">
+                        <i class="fa fa-microphone"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Micro en Marche</span>
+                        <span class="info-box-number" style="font-weight:normal;">
+                            <small style="font-size:0.7em">Utilisez le micro en mode DJ</small>
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+        </a>
+    </div>
+
+    <div id="defaultSessionMicro">
+    </div>
+
+    <div id="oo" class="hidden">
+        {{ editDocument.descipt }}
+    </div>
+
+
     <!-- ./wrapper -->
 
     <!-- REQUIRED JS SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.2.4/ionicons.js"></script>
 
     <!-- jQuery 3 -->
     <script src="{% static 'dotracks/js_/jquery.min.js' %}"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="{% static 'dotracks/js_/bootstrap.min.js' %}"></script>
+
+    <script src="{% static 'dotracks/jquery-cropper-master/dist/cropper.js' %}"></script>
+    <script src="{% static 'dotracks/jquery-cropper-master/dist/jqueryCropper.js' %}"></script>
 
     <script src="{% static 'dotracks/js_/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'dotracks/js_/dataTables.bootstrap.min.js' %}"></script>
@@ -1133,9 +1341,8 @@ desired effect
     <script src="{% static 'dotracks/js_/jquery.inputmask.extensions.js' %}"></script>
     <!-- iCheck 1.0.1 -->
     <script src="{% static 'dotracks/js_/icheck.min.js' %}"></script>
-    <!-- croppie -->
-    <script src="{% static 'dotracks/js_/croppie.js' %}"></script>
-    <script src="{% static 'dotracks/js_/ckeditor.js' %}"></script>
+
+    <script src="{% static 'dotracks/js_/ckeditor/ckeditor.js' %}"></script>
     <!-- Bootstrap WYSIHTML5 -->
     <script src="{% static 'dotracks/js_/bootstrap3-wysihtml5.all.min.js' %}"></script>
 
@@ -1145,6 +1352,30 @@ desired effect
 
     <script src="{% static 'dotracks/js_/mdb.min.js' %}"></script>
     <script src="{% static 'dotracks/js_/popper.min.js' %}"></script>
+
+    <script>
+        /*navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                const mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.start();
+
+                const audioChunks = [];
+                mediaRecorder.addEventListener("dataavailable", event => {
+                    audioChunks.push(event.data);
+                });
+
+                mediaRecorder.addEventListener("stop", () => {
+                    const audioBlob = new Blob(audioChunks);
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+                });
+
+                setTimeout(() => {
+                    mediaRecorder.stop();
+                }, 4000);
+            });*/
+    </script>
 
     <script>
         wow = new WOW({
@@ -1162,19 +1393,215 @@ desired effect
             //Money Euro
             $('[data-mask]').inputmask()
 
+            // var df = $('#defaultckEDITOR').()
+
+            CKEDITOR.replace('doctextarea')
+            CKEDITOR.config.height = "50em"
+
             //Flat red color scheme for iCheck
             $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
                 checkboxClass: 'icheckbox_flat-green',
                 radioClass: 'iradio_flat-green'
             })
         })
-    </script>
-
+    </script>doctextarea {% if editDocument %}
+    <script>
+        $(function () {
+            var data = $('#oo').text()
+            CKEDITOR.instances.doctextarea.setData(data)
+        })
+    </script> {% else %}
+    <script>
+        $(function () {
+            CKEDITOR.instances.doctextarea.setData('<h1><u>Heading Of the Text</u></h1><h4>Subheading</h4><p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth,the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, t ...</p><ul><li>List item one</li><li>List item two</li></ul><p>Thank you,</p><p>John Doe</p><table border="1" cellpadding="1" cellspacing="1" style="width:500px"><tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table>')
+        })
+    </script> {% endif %}
     <script>
         $(document).ready(function () {
+
+            $('.delete').on('click', function (e) {
+                var $this = $(this)
+                e.preventDefault()
+                if (confirm("Voulez vous vraimant supprimer cet element ?")) {
+                    var link = $this.attr('href')
+                    var id = $(this).attr('id')
+
+                    $.ajax({
+                        type: 'POST',
+                        url: link,
+                        data: { 'id': id, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data == 0) {
+
+                            } else {
+
+                            }
+                        }
+                    });
+                } else {
+                    return false;
+                }
+            })
+
+            $('#modeMICro').on('click', function () {
+                djMicrophone()
+                $('#newNotifMicro').fadeIn()
+                $('#newNotifMicro').on('click', function () {
+                    $(this).fadeOut()
+                })
+                $('#STOPmodeMICro').fadeIn()
+                $('#STOPmodeMICro').on('click', function () {
+                    window.location.reload()
+                })
+            })
+
+            $('#detailsOpenDoc').attr('', function () {
+                var val = $(this).attr('data-valu')
+                $(this).html(val)
+            })
+
+            $('.widthStatic').css({ 'heigth': '100px' })
+
+            $('#saveDoc').on('submit', function (e) {
+                e.preventDefault()
+                var ele = CKEDITOR.instances.doctextarea.getData();
+                if (ele != "") {
+                    $('#moreInfo').click()
+                } else {
+                    $('#modalHead').html("Operation annuler")
+                    $('#modalBody').html("<h4>Le Champ de saisie ne doit pas etre vide.</h4>")
+                    $('#messModalbtn').click()
+                }
+            });
+
+            $('#savedocUPDATE').on('click', function () {
+                var ele = CKEDITOR.instances.doctextarea.getData();
+                var data = $('#oo').html()
+                if (confirm("Voulez vous vraimant modifier cet element ?")) {
+                    //$('#moreInfo').click()
+                } else {
+                    $('#modalHead').html("Operation annuler")
+                    $('#modalBody').html("<h4>Aucune modification n'a ete opporter au document.</h4>")
+                    $('#messModalbtn').click()
+                }
+            })
+
+            function chooseSAVEdosCl() {
+                $('.openSAVEsdos2').on('click', function () {
+                    var $this = $('#saveDOSlist')
+
+                    $this.html('<div class="col-md-12 alert text-center" style="background: #f5f5f5; padding:1px; color:#444;margin-top:10px;"><center><img src="{% static "dotracks/img/preloader.gif" %}" style="width: 80px; height: 80px; border-radius: 50%;"/></center></div>')
+                    var id = $(this).attr('data-id')
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ baseusrl }}/Member/ChooseDossierSucById",
+                        data: { 'cic': '{{ userInfo.cic }}', 'dos': id, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                        //contentType: "application/json",
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data == 0) {
+                                $this.html('<div class="callout callout-warning" style="margin-top: 5px;"><h5>{{ langue.form_aucunedonne}}</h5></div>')
+                            } else {
+                                $this.html("")
+                                for (i in data) {
+                                    $this.append('<div class="col-md-3 col-sm-4 col-xs-6" style="position: relative;"><div class="btn-group">'
+                                        + '<span class="badge dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float:right; cursor:pointer; margin-bottom:-10px; background:#fff;">'
+                                        + '<i class="fa fa-angle-down" style="color:#333;"></i></span><div class="dropdown-menu" style="font-size:0.8em; padding:8px; width:40px">'
+                                        + '<a class="dropdown-item openSAVEsdos2" href="#" data-id="' + data[i].id + '">'
+                                        + '<i class="fa fa-eye"></i> Ouvrir</a><br><br>'
+                                        + '<a class="dropdown-item SAVEdosChoose" href="#" data-id="' + data[i].id + '">'
+                                        + '<i class="fa fa-check"></i> Choisir</a><div class="dropdown-divider"></div></div></div><div class="box box-widget widget-user" style=" cursor:pointer; float: left;"><center>'
+                                        + '<img src="{% static "dotracks/img/folder.png" %}" alt="" style="width: 80%; margin-top: 10px;" class="img-responsive">'
+                                        + '</center><p style="float: left;"><center style="font-weight:bold;margin-bottom: 2px;">' + data[i].libelle + '</center></p></div></div>');
+                                }
+
+                                SAVEdosChooseCl()
+
+                                chooseSAVEdosCl()
+                            }
+                        }
+                    })
+                })
+            }
+
+
+            $('#chooseSAVEdos').on('click', function () {
+                var $this = $('#saveDOSlist')
+
+                $this.html('<div class="col-md-12 alert text-center" style="background: #f5f5f5; padding:1px; color:#444;margin-top:10px;"><center><img src="{% static "dotracks/img/preloader.gif" %}" style="width: 80px; height: 80px; border-radius: 50%;"/></center></div>')
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ baseusrl }}/Member/ChooseDossierBySuc",
+                    data: { 'cic': '{{ userInfo.cic }}', 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    //contentType: "application/json",
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data == 0) {
+                            $this.html('<div class="callout callout-warning" style="margin-top: 5px;"><h5>{{ langue.form_aucunedonne}}</h5></div>')
+                        } else {
+                            $this.html("")
+                            for (i in data) {
+                                $this.append('<div class="col-md-3 col-sm-4 col-xs-6" style="position: relative;"><div class="btn-group">'
+                                    + '<span class="badge dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float:right; cursor:pointer; margin-bottom:-10px; background:#fff;">'
+                                    + '<i class="fa fa-angle-down" style="color:#333;"></i></span><div class="dropdown-menu" style="font-size:0.8em; padding:8px; width:40px">'
+                                    + '<a class="dropdown-item openSAVEsdos2" href="#" data-id="' + data[i].id + '">'
+                                    + '<i class="fa fa-eye"></i> Ouvrir</a><br><br>'
+                                    + '<a class="dropdown-item SAVEdosChoose" href="#" data-id="' + data[i].id + '">'
+                                    + '<i class="fa fa-check"></i> Choisir</a><div class="dropdown-divider"></div></div></div><div class="box box-widget widget-user" style=" cursor:pointer; float: left;"><center>'
+                                    + '<img src="{% static "dotracks/img/folder.png" %}" alt="" style="width: 80%; margin-top: 10px;" class="img-responsive">'
+                                    + '</center><p style="float: left;"><center style="font-weight:bold;margin-bottom: 2px;">' + data[i].libelle + '</center></p></div></div>');
+                            }
+
+                            SAVEdosChooseCl()
+
+                            chooseSAVEdosCl()
+                        }
+                    }
+                });
+            })
+
             setTimeout(function () {
                 $('.btnMinus').click();
             }, 100);
+
+            function SAVEdosChooseCl() {
+                $('.SAVEdosChoose').on('click', function () {
+                    var idDOS = $(this).attr('data-id')
+                    var libelle = $('#saveDOClibeller').val()
+                    var ele = CKEDITOR.instances.doctextarea.getData();
+
+                    if (libelle != "") {
+                        $('#modalHead').html("Operation en Cours")
+                        $('#modalBody').html("<h4>Veuillez Patienter Sauvegarde en cours d'operation...</h4>")
+                        $('#messModalbtn').click()
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{baseurl}}/Member/saveDOCcontent",
+                            data: { 'dos': idDOS, 'libelle': libelle, 'descipt': ele, 'cic': '{{ userInfo.cic }}', 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                            success: function (data) {
+                                //alert(data)
+                                if (data == 0) {
+                                    $('#modalHead').html("Operation Termine")
+                                    $('#modalBody').html("<h4>Sauvegarde effectue avec succes. Redirection en cours...</h4>")
+                                    setTimeout(function () {
+                                        window.location.href = "{{ baseurl }}/Member/documents/{{lang_abbr}}"
+                                    }, 500)
+                                } else {
+                                    $('#modalHead').html("Echec de l'operation")
+                                    $('#modalBody').html("<h4>Echec de l'operation Sauvegarde annuler</h4>")
+                                }
+                            }
+                        })
+                    } else {
+                        $('#modalHead').html("Operation annuler")
+                        $('#modalBody').html("<h4>Veuillez specifier un titre a votre document.</h4>")
+                        $('#messModalbtn').click()
+                    }
+                })
+            }
 
             $('#searchChat').keyup(function () {
                 var q = $(this).val()
@@ -1211,6 +1638,97 @@ desired effect
 
     <script>
         $(document).ready(function () {
+
+            $('.DOCIMAGE').on('click', function () {
+                var link = $(this).attr('data-link')
+                $('#divDOCIMAGE').fadeIn()
+                $('#contentDOCIMAGE').html('<center><img src="{% static "dotracks/img/preloader.gif" %}" style="width: 180px; height: 180px; border-radius: 50%;"/></center>')
+                setTimeout(function () {
+                    $('#contentDOCIMAGE').html('<center><img src="{{ baseurl }}/' + link + '" class="ninIMAGE"/></center>')
+                    $('.ninIMAGE').css({ 'width': '100%' })
+
+                    $('.ninIMAGE').mouseover(function () {
+                        $('.nin').fadeIn('slow')
+                    })
+                    $('.ninIMAGE').doubleclick(function () {
+                        $('.nin').css({ 'display': 'none' })
+                    })
+
+                    $('#zoom-plus').on('click', function () {
+                        var taille = $('.ninIMAGE').width()
+                        var sum = taille + 50
+                        $('.ninIMAGE').css({ 'width': sum + 'px' })
+                    })
+
+                    $('#zoom-moins').on('click', function () {
+                        var taille = $('.ninIMAGE').width()
+                        var sum = taille - 50
+                        $('.ninIMAGE').css({ 'width': sum + 'px' })
+                    })
+                }, 300)
+
+                var prevlink = $(this).prev('.DOCIMAGE').attr('id')
+                var nextlink = $(this).next('.DOCIMAGE').attr('id')
+
+                $('.nin-url').attr('data-prev-url', prevlink)
+                $('.nin-url').attr('data-next-url', nextlink)
+            })
+
+            $('.nin-prev').on('click', function () {
+                var link = $(this).attr('data-prev-url')
+                if (link != "") {
+                    $('#' + link).click()
+                }
+            })
+
+            $('.nin-next').on('click', function () {
+                var link = $(this).attr('data-next-url')
+                if (link != "") {
+                    $('#' + link).click()
+                }
+            })
+
+            $('#deconnexionUser').on('click', function (e) {
+                e.preventDefault()
+                $('#deconnexionModalbtn').click()
+            })
+
+            $('#clickToDeconnect').on('click', function () {
+                window.location.href = "{{ baseUrl }}/Member/logout/{{ lang_abbr }}/"
+            })
+
+            $('.MenuChat').on('click', function () {
+                $('#blockUsers').animate({ "width": "300px", "right": "0" })
+            })
+
+            $('.closeMenuChat').on('click', function () {
+                $('#blockUsers').animate({ "width": "0px", "right": "-50px" })
+            })
+
+            $('.changePicProfil').on('click', function () {
+
+                if (confirm("Modification de la photo de profil en cours ! Continuer l'operation ?")) {
+                    var link = $(this).attr('data-url')
+
+                    $('#modalBody').html("<h4>Mise a jour de la photo de profil en cours...</h4>")
+                    $('#messModalbtn').click()
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{baseurl}}/Member/changeProfil",
+                        data: { 'photo': link, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                        success: function (data) {
+                            if (data == 0) {
+                                window.location.reload()
+                            } else {
+                                $('#modalBody').html("<h4>Echec lors de mise a jour veuillez reessayer plutard...</h4>")
+                            }
+                        }
+                    })
+                } else {
+                    return false
+                }
+            })
 
             ///////////////////////////////////// initiated mouchard ///////////////////////////////////////
 
@@ -1267,12 +1785,17 @@ desired effect
                 var $this = $(this);
                 var ext = ['png', 'jpeg', 'jpg', 'gif', 'bmp'];
                 if ($.inArray($(this).val().split('.').pop().toLowerCase(), ext) === -1) {
-                    alert('Erreur: Format non Valide image requise');
                     $this.val("");
+
+                    $('#modalHead').html("Operation annuler")
+                    $('#modalBody').html("<h4>Erreur: Format non Valide image requise.</h4>")
+                    $('#messModalbtn').click()
+
                     $('.cropped_image').fadeOut();
                     $('#imgprofile').fadeIn();
                     $('#upload-image').hide();
                 } else {
+                    $('#formatImage').val($(this).val().split('.').pop().toLowerCase())
                     $('#imgprofile').hide();
                     $('#upload-image').fadeIn();
                     $('.cropped_image').fadeIn();
@@ -1283,14 +1806,17 @@ desired effect
             $('#fileDocx').change(function (e) {
                 e.preventDefault();
                 var $this = $(this);
-                var ext = ['pdf', 'docx', 'doc', 'pptx', 'html'];
+                var ext = ['pdf', 'docx', 'doc', 'pptx', 'html', 'txt'];
                 if ($.inArray($(this).val().split('.').pop().toLowerCase(), ext) === -1) {
-                    alert('Erreur: Format non Valide document requis');
+                    $('#modalHead').html("Operation annuler")
+                    $('#modalBody').html("<h4>Erreur: Format non Valide Document requis.</h4>")
+                    $('#messModalbtn').click()
                     $this.val("");
                     $('.cropped_file').fadeOut();
                     $('#imgprofile').fadeIn();
                     $('#upload-file').hide();
                 } else {
+                    $('#formatFichier').val($(this).val().split('.').pop().toLowerCase())
                     $('#imgprofile').hide();
                     $('#upload-file').fadeIn();
                     $('.cropped_file').fadeIn();
@@ -1300,48 +1826,14 @@ desired effect
         });
 
         $(document).ready(function () {
-            /*$image_crop = $('#upload-image').croppie({
-                enableExif: true,
-                viewport: {
-                    width: 400,
-                    height: 400,
-                    type: 'square'
-                },
-                boundary: {
-                    width: 400,
-                    height: 400
-                },
-                showZoomer: true,
-                enableResize: true,
-                enableOrientation: true
+
+            $('.messThumb').on('click', function () {
+                var actual = $('#chatMessage').val()
+                var texte = $(this).attr('data-value')
+
+                $('#chatMessage').val(actual + ' ' + texte)
+                //$('#addMess').submit()
             });
-
-            //$image_crop.croppie('bind');
-            $image_crop.croppie('setZoom', 0.8);
-
-            $("#RotateAntiClockwise").on("click", function () {
-                $image_crop.croppie('rotate', -90);
-            });
-            $("#RotateClockwise").on("click", function () {
-                $image_crop.croppie('rotate', 90);
-            });*/
-
-            /*$('#images').on('change', function () {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $image_crop.croppie('bind', {
-                        url: e.target.result,
-                        orientation: 4
-                    }).then(function () {
-                        console.log('jQuery bind complete');
-                    });
-
-                    $image_crop.result('blob').then(function (blob) {
-                        // do something with cropped blob
-                    });
-                }
-                reader.readAsDataURL(this.files[0]);
-            });*/
 
             $('.cropped_file').on('click', function (ev) {
                 var dos = $('#documentFile').attr('data-pdos')
@@ -1367,13 +1859,13 @@ desired effect
                 $('#submitImages').submit()
             });
 
-            /*$image_crop.croppie('result', {
-                type: 'canvas',
-                size: 'viewport'
-            }).then(function (response) {*/
             $('#submitImages').on('submit', function (e) {
                 var $this = $(this);
                 e.preventDefault()
+
+                $('#modalHead').html("Debut de l'operation")
+                $('#modalBody').html("<h4>Veuillez Patienter Operation en cours...</h4>")
+                $('#messModalbtn').click()
 
                 $.ajax({
                     url: "{{ baseusrl }}/Member/addFileImage",
@@ -1383,11 +1875,13 @@ desired effect
                     processData: false,
                     enctype: "multipart/form-data",
                     success: function (data) {
-                        if (data === 0) {
-                            alert('Transfert effectuer avec succes');
+                        if (data === '0') {
+                            $('#modalHead').html("Operation Termine")
+                            $('#modalBody').html("<h4>Enregistrement effectue avec succes.</h4>")
                             window.location.reload();
                         } else {
-                            alert('Transfert Annuler reessayer plutard');
+                            $('#modalHead').html("Echec de l'operation")
+                            $('#modalBody').html("<h4>Transfert Annuler reessayer plutard..</h4>")
                         }
                     }
                 });
@@ -1397,6 +1891,10 @@ desired effect
                 var $this = $(this);
                 e.preventDefault()
 
+                $('#modalHead').html("Debut de l'operation")
+                $('#modalBody').html("<h4>Veuillez Patienter Operation en cours...</h4>")
+                $('#messModalbtn').click()
+
                 $.ajax({
                     url: "{{ baseusrl }}/Member/addFileImage",
                     type: "POST",
@@ -1405,23 +1903,129 @@ desired effect
                     processData: false,
                     enctype: "multipart/form-data",
                     success: function (data) {
-                        if (data === 0) {
-                            alert('Transfert effectuer avec succes');
+                        if (data === '0') {
+                            $('#modalHead').html("Operation Termine")
+                            $('#modalBody').html("<h4>Enregistrement effectue avec succes.</h4>")
                             window.location.reload();
                         } else {
-                            alert('Transfert Annuler reessayer plutard');
+                            $('#modalHead').html("Echec de l'operation")
+                            $('#modalBody').html("<h4>Transfert Annuler reessayer plutard..</h4>")
                         }
                     }
                 });
             });
 
-            function chatViews() {
+            function chatViews(id) {
                 $.ajax({
                     type: 'POST',
                     url: "{{baseurl}}/Member/chatViews",
-                    data: { 'use2': '{{userID}}','use':'{{request.session.d_memberid}}', 'csrfmiddlewaretoken': '{{ csrf_token }}' },
-                    //contentType: "application/json",
+                    data: { 'id': id, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    success: function (data) {
+                        if (data != 0) {
+                            //alert(data)
+                        } else {
+                            //alert(data)
+                        }
+                    }
+                })
+            }
+
+            function loadNotif() {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{baseurl}}/Member/loadNotif",
+                    data: { 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data != 0) {
+                            $('#contentNotif').text('')
+                            for (i in data) {
+                                if (data[i].status == 0) {
+                                    var backg = 'background:#f5f5f5;'
+                                } else {
+                                    var backg = 'background:#fff;'
+                                }
+                                $('#contentNotif').append('<li style="' + backg + '" data-id="' + data[i].id + '" class="vuNotif"><a href="' + data[i].lien + '"><h6 style="margin-top:-4px;">' + data[i].libeller + '<small><i class="fa fa-clock-o" style="float:right"></i></small></h6><p style="margin-top:-10px">' + data[i].details + '</p></a></li>')
+                            }
+                        } else {
+                            //alert(data)
+                        }
+                    }
+                })
+            }
+
+            $('.notifications-menu').on('click', function (e) {
+                var $this = $(this);
+                e.preventDefault()
+
+                $('.vuNotif').attr('', function () {
+                    var id = $(this).attr('data-id')
+
+                    $.ajax({
+                        url: "{{ baseusrl }}/Member/vuNotif",
+                        type: "POST",
+                        data: { 'id': id, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                        success: function (data) {
+                            if (data === '0') {
+
+                            } else {
+
+                            }
+                        }
+                    });
+                });
+
+            });
+
+            function countNotif() {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{baseurl}}/Member/countNotif",
+                    data: { 'csrfmiddlewaretoken': '{{ csrf_token }}' },
                     //dataType: 'json',
+                    success: function (data) {
+                        var ancNbr = $('.actuel').text()
+                        if (data != 0) {
+                            if (ancNbr != data) {
+                                singSongNotif()
+                            } else {
+
+                            }
+                        }
+
+                        if (data != 0) {
+                            $('#newNbrNotif').val(data)
+                            $('.nbrNotif').text(data)
+                        } else {
+                            $('.nbrNotif').text(0)
+                        }
+                    }
+                })
+            }
+
+            setInterval(function () {
+                loadNotif('{{ request.session.d_memberid }}')
+                countNotif('{{ request.session.d_memberid }}')
+            }, 1000)
+
+            function singSongNotif() {
+                $('#newNotifMess').fadeIn()
+                $('#SongNotif').html('<audio autoplay><source src="{% static "dotracks/plugins/notif.mp3" %}"></audio>')
+
+                setTimeout(function () {
+                    $('#newNotifMess').fadeOut()
+                }, 3500)
+                setTimeout(function () {
+                    $('#SongNotif').html('')
+                }, 6500)
+            }
+
+            function addNotifMessage(id, message, lien) {
+                var mess = message;
+                $.ajax({
+                    type: 'POST',
+                    url: "{{baseurl}}/Member/notification",
+                    data: { 'use': id, 'libeller': 'Nouveau Message', 'lien': lien, 'details': mess, 'other': '', 'csrfmiddlewaretoken': '{{ csrf_token }}' },
                     success: function (data) {
                         if (data != 0) {
                             //alert(data)
@@ -1434,7 +2038,7 @@ desired effect
 
             function retriveChat() {
 
-                chatViews()
+                //chatViews('{{userID}}')
 
                 $.ajax({
                     type: 'POST',
@@ -1450,53 +2054,240 @@ desired effect
                                     var color = 'bg-red'
                                     var noms = data[i].use__nom
                                     var pnoms = data[i].use__prenom
+                                    var trash = '<a href="#" class="pull-right rply" data-val="' + data[i].libelle + '" style="margin-right:15px"><i class="fa fa-reply"></i></a>'
+                                    var float = 'right'
+                                    var back = '#eee; border-radius:6px 6px 6px 6px;'
+
+                                    if (data[i].status == 1) {
+                                        var classVUS = '';
+                                    } else {
+                                        var classVUS = 'markVus';
+                                    }
+
+                                    var alignText = "text-align:right;";
+
+                                    var commentChat = 'background:#868e96;color:#fff;padding:8px;border-radius:5px;margin-right:5px; margin-bottom:6px'
+                                    var boutt = 'background:#868e96;border:0px';
+
+                                    var statu = '';
+
                                 } else {
                                     var color = 'bg-blue'
                                     var noms = data[i].use__nom
                                     var pnoms = data[i].use__prenom
+                                    var trash = '<a href="#" class="pull-right" style="margin-right:15px; color:orange"><i class="fa fa-trash"></i></a>'
+                                    var float = 'left'
+                                    var back = '#2196f3!important; color:#fff; border-radius:6px 6px 6px 6px;'
+
+                                    var commentChat = 'background:#fff;color:#6f42c1;padding:8px;border-radius:5px;margin-right:5px;margin-bottom:6px'
+                                    var boutt = 'background:#fff;border:0px';
+                                    var classVUS = '';
+
+                                    if (data[i].status == 1) {
+                                        var statu = '<span class="pull-right" style="margin-top:-0px; margin-right:5px; color:skyblue">Vu&nbsp; <i class="fa fa-check"></i></span>'
+                                    } else {
+                                        var statu = ''
+                                    }
+
+                                    var alignText = "text-align:left;";
                                 }
 
-                                if (data[i].status == 1 && data[i].use_id2 == '{{userID}}') {
-                                    var statu = '<span class="pull-right" style="margin-top:-25px; margin-right:5px; color:skyblue">Vu&nbsp; <i class="fa fa-check"></i></span>'
-                                } else {
-                                    var statu = ""
-                                }
 
-                                $('#chatContent').append('<li><i class="fa fa-user ' + color + '"></i>'
-                                    + '<div class="timeline-item card">'
-                                    + '<span class="time"><i class="fa fa-clock-o"></i>&nbsp;' + data[i].dates + '</span>'
+                                $('#chatContent').append('<li data-id="' + data[i].id + '" class="' + classVUS + '"><i class="hidden fa fa-user ' + color + '"></i>'
+                                    + '<div class="timeline-item card" style="background:#fff; border:0px">'
+                                    + '<span class="time hidden"><i class="fa fa-clock-o"></i>&nbsp;' + data[i].dates + '</span>'
 
-                                    + '<h3 class="timeline-header"><a href="#">' + pnoms + '&nbsp;'+ noms +'</a></h3>'
-                                    + '<div class="timeline-body" style="background:#fff; padding-bottom:1px;"><p>' + data[i].libelle + '</p></div>' + statu + '</div></li>'
+                                    + '<h3 class="timeline-header" style="' + alignText + ' border:0px;"><a href="#"><img src="{{ baseurl }}/' + data[i].use__photo + '" style="width:30px; border-radius:50%;"/> ' + pnoms + '&nbsp;' + noms + '</a></h3>'
+                                    + '<div class="timeline-body fa" style="background:' + back + '; padding-bottom:1px; border:0px; float:' + float + '"><p id="textChat-' + i + '">' + data[i].libelle + '</p></div>' + statu + trash + '</div></li>'
                                     + '')
+
+                                //alert($('#textChat-'+i).text())
+                                $('#textChat-' + i).text($('#textChat-' + i).html().replace('@', '<a style="' + commentChat + '" href="#textChat-' + i + '"><button style="' + boutt + '">'))
+                                $('#textChat-' + i).html($('#textChat-' + i).text().replace('//', '</button></a>'))
                             }
+
+                            $('.rply').on('click', function (e) {
+                                var texte = $(this).attr('data-val')
+                                $('#chatMessage').val('@' + texte + ' // ')
+                            })
+
+                            $('.markVus').attr('', function () {
+                                var id = $(this).attr('data-id');
+                                chatViews(id)
+                            })
+
                         } else {
-                            $('#chatContent').html('<div class="callout callout-default">'
-                                + '<h4 style="margin-bottom: -1px;"><i class="icon fa fa-info"></i> I&nbsp; {{ langue.form_aucunedonne}}</h4>')
+                            $('#chatContent').html('<div class="col-md-1"></div><div class="col-md-10 card"><hr><div class="alert alert-primary bg-blue">Aucun message disponible</div><br>'
+                                + '<h2 class="mdc-theme--secondary mdc-typography--subheading1">Comment sa marche ?</h2><p class="mdc-typography--body1">'
+                                + 'Choisisez un utilisateurs dans vos contacts pour demarrer une discussion instantannee.</p>'
+                                + '<hr></div>')
                         }
                     }
                 })
             }
-            retriveChat()
+
+            if ('{{request.resolver_match.view_name}}' == 'Messagerie') {
+                setInterval(function () {
+                    retriveChat();
+                }, 1000)
+            }
+
+            $('.sender').on('click', function () {
+                var id = $(this).attr('data-user')
+                $('#iddirectchat').val(id)
+                directchat()
+                $('.contact').click()
+            })
+
+            $('.messThumb').on('click', function () {
+                var actual = $('#inputChat').val()
+                var texte = $(this).attr('data-value')
+
+                $('#inputChat').val(actual + ' ' + texte)
+                //$('#addMess').submit()
+            });
+
+            $('.userDirectChat').on('click', function () {
+                var user = $(this).attr('id')
+                $('.btnListContact').click()
+                $('#iddirectchat').val(user)
+                directchat()
+            })
+
+            function directchat() {
+                var $this = $(".direct-chat-messages")
+                var id = $('#iddirectchat').val()
+
+                //chatViews(id)
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{baseurl}}/Member/retriveChat",
+                    data: { 'use2': id, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    //contentType: "application/json",
+                    dataType: 'json',
+                    success: function (data) {
+                        //alert(data)
+                        if (data != 0) {
+                            $this.html('');
+                            var vu = "none"
+                            var color = ""
+                            var card = ""
+                            var status = ""
+                            for (i in data) {
+                                if ('{{ request.session.d_memberid }}' != data[i].use_id2) {
+                                    color = "left"
+                                    card = "#fff"
+                                    status = "etat"
+
+                                    directName = "display:none;"
+
+                                    if (data[i].status == 1 || '{{ request.session.d_memberid }}' == data[i].use_id2) {
+                                        vu = ""
+                                    } else {
+                                        vu = "none"
+                                    }
+
+                                    var commentChat = 'background:#fff;color:#333;padding:8px;border-radius:5px;margin-right:5px;margin-bottom:6px'
+                                    var boutt = 'background:#fff;border:0px';
+                                    var colu = ''
+
+                                } else {
+                                    color = "right"
+                                    card = "#fff"
+                                    vu = "none"
+                                    status = "etat2"
+
+                                    directName = "display:block;"
+
+                                    var commentChat = 'background:#fff;color:#fff;padding:8px;border-radius:5px;margin-right:5px; margin-bottom:6px'
+                                    var boutt = 'background:#fff;border:0px';
+                                    var colu = 'color:#6f42c1'
+
+                                    $('#messeger').html('<img class="direct-chat-img" src="{{ baseurl }}/' + data[i].use__photo + '" alt="message DOTrack user image" style="height:25px; width:25px; margin-top:-3px; margin-right:5px"/>' + data[i].use__prenom)
+                                    $('#messegerLink').attr('href', '{{baseurl}}/Member/chat/user' + id + '/{{lang_abbr}}')
+                                }
+
+                                $this.append('<div class="direct-chat-msg ' + color + '" ><div class="direct-chat-info clearfix"><span class="direct-chat-name pull-left" style="' + directName + '">' + data[i].use__nom + '&nbsp;' + data[i].use__prenom + '</span><span class="direct-chat-timestamp pull-right">' + data[i].dates + '</span></div><!-- /.direct-chat-info --><img class="direct-chat-img" src="{{ baseurl }}/' + data[i].use__photo + '" alt="message DOTrack user image" /><!-- /.direct-chat-img --><div class="direct-chat-text" id="textChat-' + i + '">' + data[i].libelle + '</div><!-- /.direct-chat-text --></div><!-- /.direct-chat-msg -->');
+
+                                $('#textChat-' + i).text($('#textChat-' + i).html().replace('@', '<div class="col-md-12" style="' + commentChat + '"><a href="#textChat-' + i + '" style="' + colu + '"><b style="' + boutt + '">'))
+                                $('#textChat-' + i).html($('#textChat-' + i).text().replace('//', '</b></a></div>'))
+
+                            }
+
+                            $('#clickbas').click()
+
+                        } else {
+                            $this.html('<section class="col-md-12 card"><hr><div class="alert alert-primary bg-blue">Aucun message disponible</div><br>'
+                                + '<h2 class="mdc-theme--secondary mdc-typography--subheading1">Comment sa marche ?</h2><p class="mdc-typography--body1">'
+                                + 'Choisisez un utilisateurs dans vos contacts pour demarrer une discussion instantannee.</p>'
+                                + '<hr></section>');
+                        }
+                    }
+                });
+            }
+
+            if ('{{request.resolver_match.view_name}}' != 'Messagerie') {
+                setInterval(function () {
+                    directchat();
+                }, 1000)
+            }
 
             $('.chatValidate').on('submit', function (e) {
                 e.preventDefault();
                 var $this = $(this);
                 $this.find('.fro').addClass('disabled')
                 setTimeout(function () {
+                    var use_id1 = $('#use_id1').val()
+                    var use_id2 = $('#use_id2').val()
+                    var chatMessage = $('#chatMessage').val()
+
                     $.ajax({
                         url: $this.attr('action'),
                         type: "POST",
-                        data: $this.serialize(),
+                        data: { 'libelle': chatMessage, 'use_id2': use_id2, 'use': use_id1, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
                         success: function (htm) {
                             if (htm !== "0") {
                             } else {
+                                $this.find('#chatMessage').val("")
+                                var lien = '{{baseurl}}/Member/chat/user' + use_id1 + '/{{lang_abbr}}';
+                                addNotifMessage(use_id2, chatMessage, lien)
+
                                 retriveChat()
                             }
                             $this.find('.fro').removeClass('disabled')
                         }
                     });
-                }, 3200);
+                }, 20);
+            });
+
+            $('#chatValidate2').on('submit', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                $this.find('.fro').addClass('disabled')
+                setTimeout(function () {
+                    var use_id1 = $('#use_id1').val()
+                    var use_id2 = $('#iddirectchat').val()
+                    var chatMessage = $('#inputChat').val()
+
+                    $.ajax({
+                        url: $this.attr('action'),
+                        type: "POST",
+                        data: { 'libelle': chatMessage, 'use_id2': use_id2, 'use': use_id1, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                        success: function (htm) {
+                            if (htm !== "0") {
+                            } else {
+                                $this.find('#inputChat').val("")
+                                var lien = '{{baseurl}}/Member/chat/user' + use_id1 + '/{{lang_abbr}}';
+                                addNotifMessage(use_id2, chatMessage, lien)
+
+                                directchat()
+                            }
+                            $this.find('.fro').removeClass('disabled')
+                        }
+                    });
+                }, 20);
+                $this.find('.fro').removeClass('disabled')
             });
 
             /////////////////////////////// Ajouter un utilisateur a la sucursale /////////////////////////////////////
@@ -1555,12 +2346,13 @@ desired effect
                         data: $this.serialize(),
                         success: function (htm) {
                             if (htm !== "0") {
+                                //alert(htm)
                                 $this.find('#reponses').html('<div class="alert" style="background: #f5f5f5; color: #ff6565; margin-top: -25px;">'
                                     + '<div class="col-md-12 text-center">'
                                     + htm + '</div></div>');
                                 $this.find('#push').show();
                             } else {
-                                //alert('succes');
+                                //alert(htm);
                                 $this.find('#reponses').html('<div class="alert"style="background: #f5f5f5; color: #4CAF50; margin-top: -25px;">'
                                     + '<div class="col-md-12 text-center">'
                                     + '{{ langue.form_User_Ajoute_avec_succes }} </div></div>');
@@ -1598,6 +2390,175 @@ desired effect
         })
     </script>
 
+    <script type="text/javascript">
+        "use strict";
+        var newwindow;
+
+        function SpeechRecognitionHotness() {
+
+            /* the following code opens the popunder... based on https://github.com/tuki/js-popunder
+            newwindow = window.open('popup.html', 'listener', 'height=500,width=450');
+            newwindow.blur();
+            newwindow.opener.window.focus();
+            window.self.window.focus();
+            window.focus();
+            var nothing = '';
+            var ghost = document.createElement("a");
+            ghost.href = "data:text/html,<scr" + nothing + "ipt>window.close();</scr" + nothing + "ipt>";
+            document.getElementsByTagName("body")[0].appendChild(ghost);
+            var clk = document.createEvent("MouseEvents");
+            clk.initMouseEvent("click", false, true, window, 0, 0, 0, 0, 0, true, false, false, true, 0, null);
+            ghost.dispatchEvent(clk);
+            ghost.parentNode.removeChild(ghost);*/
+
+            //activate legit SpeechRecognition
+
+            //var lang = 
+            var recognition = new webkitSpeechRecognition();
+            recognition.maxAlternatives = 1;
+            recognition.continuous = true;
+            recognition.lang = 'fr-FR';
+
+            // once you have permission to capture speech.
+            recognition.onstart = function (event) {
+                document.getElementById('instructions').removeAttribute("style");
+            };
+
+            // when speech results are received.
+            recognition.onresult = function (event) {
+                //show the text received
+                var transcript = event.results[event.resultIndex][0].transcript;
+                document.getElementById('chatMessage').value = transcript;
+                document.getElementById('success').removeAttribute("style");
+
+                //stop listening legitly and activate listening in the background.
+                recognition.abort();
+                //newwindow.startListening();
+            };
+
+            recognition.start();
+        }
+
+        //attach the function to the button.
+        document.getElementById('speechButton').addEventListener('click', SpeechRecognitionHotness, false);
+
+    </script>
+
+    <script type="text/javascript">
+
+        function djMicrophone() {
+            var webaudio_tooling_obj = function () {
+
+                var audioContext = new AudioContext();
+
+                console.log("audio is starting up ...");
+
+                var BUFF_SIZE = 16384;
+
+                var audioInput = null,
+                    microphone_stream = null,
+                    gain_node = null,
+                    script_processor_node = null,
+                    script_processor_fft_node = null,
+                    analyserNode = null;
+
+                if (!navigator.getUserMedia)
+                    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+                if (navigator.getUserMedia) {
+
+                    navigator.getUserMedia({ audio: true },
+                        function (stream) {
+                            start_microphone(stream);
+                        },
+                        function (e) {
+                            alert('Error capturing audio.');
+                        }
+                    );
+
+                } else { alert('getUserMedia not supported in this browser.'); }
+
+                // ---
+
+                function show_some_data(given_typed_array, num_row_to_display, label) {
+
+                    var size_buffer = given_typed_array.length;
+                    var index = 0;
+                    var max_index = num_row_to_display;
+
+                    console.log("__________ " + label);
+
+                    for (; index < max_index && index < size_buffer; index += 1) {
+
+                        console.log(given_typed_array[index]);
+                    }
+                }
+
+                function process_microphone_buffer(event) {
+
+                    var i, N, inp, microphone_output_buffer;
+
+                    microphone_output_buffer = event.inputBuffer.getChannelData(0); // just mono - 1 channel for now
+
+                    // microphone_output_buffer  <-- this buffer contains current gulp of data size BUFF_SIZE
+
+                    show_some_data(microphone_output_buffer, 5, "from getChannelData");
+                }
+
+                function start_microphone(stream) {
+
+                    gain_node = audioContext.createGain();
+                    gain_node.connect(audioContext.destination);
+
+                    microphone_stream = audioContext.createMediaStreamSource(stream);
+                    microphone_stream.connect(gain_node);
+
+                    script_processor_node = audioContext.createScriptProcessor(BUFF_SIZE, 1, 1);
+                    script_processor_node.onaudioprocess = process_microphone_buffer;
+
+                    microphone_stream.connect(script_processor_node);
+
+                    // --- enable volume control for output speakers
+
+                    document.getElementById('volume').addEventListener('change', function () {
+
+                        var curr_volume = this.value;
+                        gain_node.gain.value = curr_volume;
+
+                        console.log("curr_volume ", curr_volume);
+                    });
+
+                    // --- setup FFT
+
+                    script_processor_fft_node = audioContext.createScriptProcessor(2048, 1, 1);
+                    script_processor_fft_node.connect(gain_node);
+
+                    analyserNode = audioContext.createAnalyser();
+                    analyserNode.smoothingTimeConstant = 0;
+                    analyserNode.fftSize = 2048;
+
+                    microphone_stream.connect(analyserNode);
+
+                    analyserNode.connect(script_processor_fft_node);
+
+                    script_processor_fft_node.onaudioprocess = function () {
+
+                        // get the average for the first channel
+                        var array = new Uint8Array(analyserNode.frequencyBinCount);
+                        analyserNode.getByteFrequencyData(array);
+
+                        // draw the spectrogram
+                        if (microphone_stream.playbackState == microphone_stream.PLAYING_STATE) {
+
+                            show_some_data(array, 5, "from fft");
+                        }
+                    };
+                }
+            }(); //  webaudio_tooling_obj = function()
+        }
+    </script>
+
     <style>
         .crop_preview {
             background: #e1e1e1;
@@ -1616,6 +2577,84 @@ desired effect
             display: none;
         }
     </style>
+
+    <script>
+        $(function () {
+
+            $('#chooseImage').on('click', function () {
+                $('#id_file').click()
+            })
+
+            $('#id_file').change(function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                var ext = ['jpg', 'gif', 'jpeg', 'jfif', 'png'];
+                if ($.inArray($(this).val().split('.').pop().toLowerCase(), ext) === -1) {
+                    $this.val("");
+                    $('#modalHead').html("Operation annuler")
+                    $('#modalBody').html("<h4>Veuillez choisir une image valide puis reessayer.</h4>")
+                    $('#messModalbtn').click()
+                } else {
+                    /* SCRIPT TO OPEN THE MODAL WITH THE PREVIEW */
+                    if (this.files && this.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $("#image").attr("src", e.target.result);
+                            $("#modalCrop").modal("show");
+                        }
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                }
+            });
+
+            /* SCRIPTS TO HANDLE THE CROPPER BOX */
+            var $image = $("#image");
+            var cropBoxData;
+            var canvasData;
+            $("#modalCrop").on("shown.bs.modal", function () {
+                $image.cropper({
+                    viewMode: 1,
+                    aspectRatio: 1 / 1,
+                    minCropBoxWidth: 350,
+                    minCropBoxHeight: 350,
+                    dragCropBox: true,
+                    mouseWheelZoom: false,
+                    cropBoxResizable: false,
+                    ready: function () {
+                        $image.cropper("setCanvasData", canvasData);
+                        $image.cropper("setCropBoxData", cropBoxData);
+                    }
+                });
+            }).on("hidden.bs.modal", function () {
+                cropBoxData = $image.cropper("getCropBoxData");
+                canvasData = $image.cropper("getCanvasData");
+                $image.cropper("destroy");
+            });
+
+            $(".js-zoom-in").click(function () {
+                $image.cropper("zoom", 0.1);
+            });
+
+            $(".js-zoom-out").click(function () {
+                $image.cropper("zoom", -0.1);
+            });
+
+            $(".js-rotate-right").click(function () {
+                $image.cropper("rotate", "30deg");
+            });
+
+            /* SCRIPT TO COLLECT THE DATA AND POST TO THE SERVER */
+            $(".js-crop-and-upload").click(function () {
+                var cropData = $image.cropper("getData");
+                $("#id_x").val(cropData["x"]);
+                $("#id_y").val(cropData["y"]);
+                $("#id_height").val(cropData["height"]);
+                $("#id_width").val(cropData["width"]);
+                $("#formUpload").submit();
+            });
+
+        });
+    </script>
 </body>
 
 </html>

@@ -22,6 +22,11 @@
             <!-- small box -->
             <div class="box card">
                 <div class="box-header">
+                    
+                    {% if synchro == None %}    
+                    <div class="col-md-12"><div class="alert alert-info">Cliquer sur le boutton <i class="fa fa-check"></i> pour definir votre compte en tant que administrateur dans la succursale</div><br><br></div>
+                    {% endif %}
+
                     <h3 class="box-title"><i class="fa fa-users"></i>&nbsp; {{ langue.form_utilisateurs }} &nbsp;
                         <span class="pull-right badge bg-blue">{{ nbrUser }}</span>
                     </h3>
@@ -34,7 +39,6 @@
                                 <th style="font-size: 1.1em">{{ langue.form_nom}}</th>
                                 <th style="font-size: 1.1em">{{ langue.form_prenom }}</th>
                                 <th style="font-size: 1.1em">{{ langue.form_phone }}</th>
-                                <th style="font-size: 1.1em">date</th>
                                 <th style="font-size: 1.1em">{{ langue.form_outils}}</th>
                             </tr>
                         </thead>
@@ -53,16 +57,9 @@
                                     {{ elmts.prenom }}
                                 </td>
                                 <td style="font-size: 1.1em">{{ elmts.tel }}</td>
-                                <td style="font-size: 1.1em">{{ elmts.dates }}</td>
                                 <td style="font-size: 1.1em">
                                     <button class="btn btn-primary btn-sm edit" data-target="#editEntr" data-toggle="modal" id="{{ elmts.id }}">
                                         <i class="fa fa-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-danger btn-sm delete" id="{{ elmts.id }}">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                    <button class="btn btn-warning btn-sm desactiver" id="{{ elmts.id }}">
-                                        <i class="fa fa-power-off"></i>
                                     </button>
                                 </td>
                             </tr>

@@ -1,13 +1,27 @@
 {% load static %}
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>DOtrack | {{ request.resolver_match.view_name }}</title>
+
+    <script type="text/javascript" src="//platform.linkedin.com/in.js">
+        api_key: 86k284uod1rf7v
+        onLoad: OnLinkedInFrameworkLoad
+        authorize: true
+    </script>
+
+    <title>DOTrack | {{ request.resolver_match.view_name }}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Document Tracking Management">
+
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    <meta name="google-signin-client_id" content="372892415462-sb8jofrr1edggbfeka3mhtvegu12spfo.apps.googleusercontent.com">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/bootstrap4/bootstrap.min.css' %}">
     <link href="{% static 'dotracks/plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
@@ -18,9 +32,241 @@
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/financial_responsive.css' %}"> {% if request.resolver_match.view_name == "Connexion" or request.resolver_match.view_name == "Contact" or request.resolver_match.view_name == "Courrier" or request.resolver_match.view_name == "Inscription" %}
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/contact.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'dotracks/styles/contact_responsive.css' %}"> {% endif %}
+    <link rel="stylesheet" href="{% static 'dotracks/css_/AdminLTE.min.css' %}">
 </head>
 
 <body>
+
+    <style>
+        html::-webkit-scrollbar-track,
+        .scroll::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+            background-color: #aaa;
+            border-radius: 0px;
+            height: 8px;
+            width: 8px;
+            opacity: 0.5;
+        }
+
+        /* line 16, zonestyle.scss */
+
+        html::-webkit-scrollbar,
+        .scroll::-webkit-scrollbar {
+            width: 8px;
+            background-color: #f5f5f5;
+            cursor: pointer;
+            height: 8px;
+        }
+
+        /* line 23, zonestyle.scss */
+
+        html::-webkit-scrollbar:hover,
+        .scroll::-webkit-scrollbar:hover {
+            width: 8px;
+            background-color: #fff;
+            cursor: pointer;
+            height: 8px;
+        }
+
+        /* line 30, zonestyle.scss */
+
+        html::-webkit-scrollbar-thumb,
+        .scroll::-webkit-scrollbar-thumb {
+            border-radius: 0px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        /* line 35, zonestyle.scss */
+
+        HTML {
+            overflow-x: hidden;
+        }
+
+        /* line 38, zonestyle.scss */
+
+        .no_scroll {
+            overflow: hidden;
+        }
+
+        /* line 41, zonestyle.scss */
+
+        .scroll_v_h,
+        .scroll_h_v {
+            overflow: auto;
+        }
+
+        /* line 44, zonestyle.scss */
+
+        .scroll_v {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* line 48, zonestyle.scss */
+
+        .scroll_h {
+            overflow-x: auto;
+            overflow-y: hidden;
+            height: 8px;
+        }
+
+        /* line 53, zonestyle.scss */
+
+        .scroll_hover {
+            transition-duration: 0.6s;
+        }
+
+        /* line 54, zonestyle.scss */
+
+        .scroll_hover .scroll::-webkit-scrollbar {
+            width: 0px;
+            background-color: none;
+            cursor: pointer;
+            height: 0px;
+        }
+
+        /* line 63, zonestyle.scss */
+
+        .scroll_hover:hover .scroll::-webkit-scrollbar {
+            width: 8px;
+            background-color: #fff;
+            cursor: pointer;
+            height: 8px;
+        }
+
+        /* line 69, zonestyle.scss */
+
+        .scroll_hover:hover .scroll::-webkit-scrollbar-thumb {
+            background-color: #f5f5f5;
+        }
+
+        /* line 73, zonestyle.scss */
+
+        .scroll_bleu::-webkit-scrollbar-thumb {
+            background-color: #229CDD;
+            opacity: 0.5;
+        }
+
+        /* line 77, zonestyle.scss */
+
+        .scroll_bleu::-webkit-scrollbar-track {
+            background-color: #fff;
+            opacity: 0.5;
+            border: 1px solid lightblue;
+        }
+
+        /* line 82, zonestyle.scss */
+
+        .scroll_bleu::-webkit-scrollbar {
+            opacity: 0.5;
+        }
+
+        /* line 86, zonestyle.scss */
+
+        .scroll_hover:hover .scroll_bleu::-webkit-scrollbar-thumb {
+            background-color: #229CDD;
+            opacity: 0.5;
+        }
+
+        /* line 90, zonestyle.scss */
+
+        .scroll_hover:hover .scroll_bleu::-webkit-scrollbar-track {
+            background-color: #fff;
+            opacity: 0.5;
+            border: 1px solid lightblue;
+        }
+
+        /* line 95, zonestyle.scss */
+
+        .scroll_hover:hover .scroll_bleu::-webkit-scrollbar {
+            opacity: 0.5;
+        }
+
+        /* line 100, zonestyle.scss */
+
+        .scroll_noir::-webkit-scrollbar-thumb {
+            background-color: #555;
+            opacity: 0.5;
+        }
+
+        /* line 104, zonestyle.scss */
+
+        .scroll_noir::-webkit-scrollbar-track {
+            background-color: #fff;
+            opacity: 0.5;
+            border: 1px solid #aaa;
+        }
+
+        /* line 109, zonestyle.scss */
+
+        .scroll_noir::-webkit-scrollbar {
+            opacity: 0.5;
+        }
+
+        /* line 113, zonestyle.scss */
+
+        .scroll_hover:hover .scroll_noir::-webkit-scrollbar-thumb {
+            background-color: #555;
+            opacity: 0.5;
+        }
+
+        /* line 117, zonestyle.scss */
+
+        .scroll_hover:hover .scroll_noir::-webkit-scrollbar-track {
+            background-color: #fff;
+            opacity: 0.5;
+            border: 1px solid #aaa;
+        }
+
+        /* line 122, zonestyle.scss */
+
+        .scroll_hover:hover .scroll_noir::-webkit-scrollbar {
+            opacity: 0.5;
+        }
+
+        /* line 127, zonestyle.scss */
+
+        .scroll_red::-webkit-scrollbar-thumb {
+            background-color: red;
+            opacity: 0.5;
+        }
+
+        /* line 131, zonestyle.scss */
+
+        .scroll_red::-webkit-scrollbar-track {
+            background-color: #fff;
+            opacity: 0.5;
+            border: 1px solid lightcoral;
+        }
+
+        /* line 136, zonestyle.scss */
+
+        .scroll_red::-webkit-scrollbar {
+            opacity: 0.5;
+        }
+
+        /* line 140, zonestyle.scss */
+
+        .scroll_hover:hover .scroll_red::-webkit-scrollbar-thumb {
+            background-color: red;
+            opacity: 0.5;
+        }
+
+        /* line 144, zonestyle.scss */
+
+        .scroll_hover:hover .scroll_red::-webkit-scrollbar-track {
+            background-color: #fff;
+            opacity: 0.5;
+            border: 1px solid lightcoral;
+        }
+
+        /* line 149, zonestyle.scss */
+
+        .scroll_hover:hover .scroll_red::-webkit-scrollbar {
+            opacity: 0.5;
+        }
+    </style>
 
     <div class="super_container">
 
@@ -236,7 +482,7 @@
                                                 <img src="{% static 'dotracks/images/phone-call.svg' %}" class="svg" alt="">
                                                 <i class="fa fa-whatsapp" aria-hidden="true"></i>
                                                 <span>
-                                                    <a href="tel:+237655135017">698 92 44 16</a>
+                                                    <a href="tel:+237655135017">+237 698 92 44 16</a>
                                                 </span>
                                             </div>
                                             <div class="main_menu_email">
@@ -252,7 +498,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#">
+                                                    <a href="https://www.facebook.com/zoneplus2015" target="_blank">
                                                         <i class="fa fa-facebook" aria-hidden="true"></i>
                                                     </a>
                                                 </li>
@@ -262,7 +508,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#">
+                                                    <a href="https://api.whatsapp.com/send?phone=237698924416" target="_blank">
                                                         <i class="fa fa-whatsapp" aria-hidden="true"></i>
                                                     </a>
                                                 </li>
@@ -340,7 +586,7 @@
                                                 </a>
                                             </li>
                                             <li class="{% if request.resolver_match.view_name == 'Connexion' %} {{ active }} {% endif %}">
-                                                <a href="{{ baseUrl }}/connexion/{{ lang_abbr }}">
+                                                <a href="{{ baseUrl }}/connexion/{{ lang_abbr }}/#page-Login">
                                                     <i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;{{ langue.form_menu_connexion }}
                                                     <svg version="1.1" id="Layer_16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                         width="9px" height="5px" viewBox="0 0 9 5" enable-background="new 0 0 9 5"
@@ -571,12 +817,12 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="https://api.whatsapp.com/send?phone=237698924416" target="_blank">
                                             <i class="fa fa-whatsapp" aria-hidden="true"></i>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="https://www.facebook.com/zoneplus2015" target="_blank">
                                             <i class="fa fa-facebook" aria-hidden="true"></i>
                                         </a>
                                     </li>
@@ -602,7 +848,8 @@
                                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                                     Copyright &copy;
                                     <script>document.write(new Date().getFullYear());</script> All rights reserved | Template made by
-                                    <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                    <a href="https://colorlib.com" target="_blank">Colorlib</a> Powered by
+                                    <a href="">ZonePluS</a>
                                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                                 </div>
                             </div>
@@ -615,16 +862,16 @@
                                     <a href="#">Acceuil</a>
                                 </li>
                                 <li>
-                                    <a href="about.html">Apropos</a>
+                                    <a href="#">Apropos</a>
                                 </li>
                                 <li>
-                                    <a href="services.html">Courrier</a>
+                                    <a href="#">Courrier</a>
                                 </li>
                                 <li>
-                                    <a href="news.html">Contact</a>
+                                    <a href="#">Contact</a>
                                 </li>
                                 <li>
-                                    <a href="contact.html">Connexion</a>
+                                    <a href="#">Connexion</a>
                                 </li>
                             </ul>
                         </nav>
@@ -635,6 +882,21 @@
     </footer>
     </div>
 
+    <button id="messModalbtn" data-target="#messModal" data-toggle="modal" style="visibility: hidden; position: fixed; left:0; bottom: 0"></button>
+    <div class="modal fade" role="dialog" id="messModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalHead">
+                    </h4>
+                </div>
+                <div class="modal-body" id="modalBody">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="{% static 'dotracks/js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'dotracks/styles/bootstrap4/popper.js' %}"></script>
     <script src="{% static 'dotracks/styles/bootstrap4/bootstrap.min.js' %}"></script>
@@ -642,9 +904,34 @@
     <script src="{% static 'dotracks/plugins/easing/easing.js' %}"></script>
     <script src="{% static 'dotracks/plugins/parallax-js-master/parallax.min.js' %}"></script>
     <script src="{% static 'dotracks/js/custom.js' %}"></script>
+    <script src="{% static 'dotracks/js_/adminlte.min.js' %}"></script>
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <!-- iCheck 1.0.1 -->
+    <script src="{% static 'dotracks/js_/icheck.min.js' %}"></script>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer>
+    </script>
+
+    <script type="text/javascript">
+        var onloadCallback = function () {
+            grecaptcha.render('html_element', {
+                'sitekey': '6LdaQ2UUAAAAADnGIWKA0B5bXjCRpx9WBZ8kJpuB'
+            });
+        };
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
+
+            //Flat red color scheme for iCheck
+            $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green'
+            })
 
             ///////////////////////////////////// initiated mouchard ///////////////////////////////////////
 
@@ -710,41 +997,51 @@
         $(document).ready(function () {
             $('#loginForm').on('submit', function (e) {
                 e.preventDefault();
-                var $this = $(this);
-                $this.find('#reponses').show();
-                $this.find('#reponses').html('<div class="col-md-12 alert text-center" style="background: #f5f5f5;; padding:5px;"><center><img src="{% static "dotracks/img/preloader.gif" %}" style="width: 80px; height: 80px; border-radius: 50%;"/><br>En cours Vérification ...</center>'
-                    + '</div>');
-                $this.find('#push').hide();
-                setTimeout(function () {
-                    $.ajax({
-                        url: $this.attr('action'),
-                        type: "POST",
-                        data: $this.serialize(),
-                        success: function (htm) {
 
-                            if (htm !== "0") {
-                                $this.find('#reponses').html('<div class="alert" style="background: #f5f5f5; color: #ff6565; margin-top: -25px;">'
-                                    + '<div class="col-md-12 text-center">'
-                                    + htm + '</div></div>');
-                                $this.find('#push').show();
-                            } else {
-                                //alert('succes');
-                                $this.find('#reponses').html('<div class="alert"style="background: #f5f5f5; color: #4CAF50; margin-top: -25px;">'
-                                    + '<div class="col-md-12 text-center">'
-                                    + 'Redirection en cours </div></div>');
-                                $this.find('.form-control').val("");
+                var response = grecaptcha.getResponse();
+
+                if (response.length == 0) {
+                    $('#modalHead').html("reCaptcha Error")
+                    $('#modalBody').html("<h4>Veuillez Completer le reCaptcha avant de valider.</h4>")
+                    $('#messModalbtn').click()
+                }//reCaptcha not verified
+                else {
+                    var $this = $(this);
+                    $this.find('#reponses').show();
+                    $this.find('#reponses').html('<div class="col-md-12 alert text-center" style="background: #f5f5f5;; padding:5px;"><center><img src="{% static "dotracks/img/preloader.gif" %}" style="width: 80px; height: 80px; border-radius: 50%;"/><br>En cours Vérification ...</center>'
+                        + '</div>');
+                    $this.find('#push').hide();
+                    setTimeout(function () {
+                        $.ajax({
+                            url: $this.attr('action'),
+                            type: "POST",
+                            data: $this.serialize(),
+                            success: function (htm) {
+
+                                if (htm !== "0") {
+                                    $this.find('#reponses').html('<div class="alert" style="background: #f5f5f5; color: #ff6565; margin-top: -25px;">'
+                                        + '<div class="col-md-12 text-center">'
+                                        + htm + '</div></div>');
+                                    $this.find('#push').show();
+                                } else {
+                                    //alert('succes');
+                                    $this.find('#reponses').html('<div class="alert"style="background: #f5f5f5; color: #4CAF50; margin-top: -25px;">'
+                                        + '<div class="col-md-12 text-center">'
+                                        + 'Redirection en cours </div></div>');
+                                    $this.find('.form-control').val("");
+                                    setTimeout(function () {
+                                        window.location.href = "";
+                                    }, 2200);
+                                }
                                 setTimeout(function () {
-                                    window.location.href = "";
-                                }, 2200);
+                                    //$('.alert').hide('slow');
+                                }, 3500);
+                            }, error: function (htm) {
+                                alert('error please check your connection');
                             }
-                            setTimeout(function () {
-                                //$('.alert').hide('slow');
-                            }, 3500);
-                        }, error: function (htm) {
-                            alert('error please check your connection');
-                        }
-                    });
-                }, 3200);
+                        });
+                    }, 200);
+                }//reCaptch verified
             });
         });
 
@@ -803,6 +1100,249 @@
             },
         })*/
     </script>
+
+    <!-- WhatsHelp.io widget -->
+    <script type="text/javascript">
+        (function () {
+            var options = {
+                facebook: "150733011949272", // Facebook page ID
+                call_to_action: "Message us", // Call to action
+                position: "right", // Position may be 'right' or 'left'
+            };
+            var proto = document.location.protocol, host = "whatshelp.io", url = proto + "//static." + host;
+            var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = url + '/widget-send-button/js/init.js';
+            s.onload = function () { WhWidgetSendButton.init(host, proto, options); };
+            var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);
+        })();
+    </script>
+    <!-- /WhatsHelp.io widget -->
+
+    <script>
+        // This is called with the results from from FB.getLoginStatus().
+        function statusChangeCallback(response) {
+            console.log('statusChangeCallback');
+            console.log(response);
+            // The response object is returned with a status field that lets the
+            // app know the current login status of the person.
+            // Full docs on the response object can be found in the documentation
+            // for FB.getLoginStatus().
+            if (response.status === 'connected') {
+
+                // Logged into your app and Facebook.
+                testAPI();
+            } else {
+                // The person is not logged into your app or we are unable to tell.
+                document.getElementById('status').innerHTML = 'Please log ' +
+                    'into this app.';
+            }
+        }
+
+        function login() {
+            FB.login(function (response) {
+                checkLoginState()
+            }, { scope: 'public_profile,email' });
+        }
+
+        // This function is called when someone finishes with the Login
+        // Button.  See the onlogin handler attached to it in the sample
+        // code below.
+        function checkLoginState() {
+            FB.getLoginStatus(function (response) {
+                statusChangeCallback(response);
+            });
+        }
+
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '255179681935677',
+                cookie: false,  // enable cookies to allow the server to access 
+                // the session
+                xfbml: true,  // parse social plugins on this page
+                version: 'v3.0' // use graph api version 2.8
+            });
+
+            // Now that we've initialized the JavaScript SDK, we call 
+            // FB.getLoginStatus().  This function gets the state of the
+            // person visiting this page and can return one of three states to
+            // the callback you provide.  They can be:
+            //
+            // 1. Logged into your app ('connected')
+            // 2. Logged into Facebook, but not your app ('not_authorized')
+            // 3. Not logged into Facebook and can't tell if they are logged into
+            //    your app or not.
+            //
+            // These three cases are handled in the callback function.
+
+            FB.getLoginStatus(function (response) {
+                statusChangeCallback(response);
+            });
+
+        };
+
+        // Load the SDK asynchronously
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        // Here we run a very simple test of the Graph API after login is
+        // successful.  See statusChangeCallback() for when this call is made.
+        function testAPI() {
+            console.log('Welcome!  Fetching your information.... ');
+            FB.api('/me', { locale: 'en_US', fields: 'email, name, first_name, last_name, gender, picture' }, function (response) {
+
+                var email = response.email;
+                var name = response.name;
+                var nom = response.first_name;
+                var prenom = response.last_name;
+                var nomfinal = name;
+
+                FB.logout();
+
+                if (email == null) {
+                    $('#modalHead').html("Connexion Via Facebook Annuler")
+                    $('#modalBody').html("<h4>La connexion via facebook à été annuler. Veuillez Utiliser les autres options de connexion ou essayer de creer votre compte manuellement si vous n'en disposez pas encore.</h4>")
+                    $('#messModalbtn').click()
+                } else {
+                    $(document).ready(function () {
+                        $('#modalHead').html("Connexion En Cours...")
+                        $('#modalBody').html("<h4>Veuillez Patienter Nous Verifions vos Informations.</h4>")
+                        $('#messModalbtn').click()
+
+                        $.ajax({
+                            url: "{{ baseUrl }}/login/facebook",
+                            type: "POST",
+                            data: { 'login': nomfinal, 'email': email, 'password': '0', 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                            success: function (data) {
+                                if (data == "0") {
+                                    $('#modalHead').html("Connexion Terminer.")
+                                    $('#modalBody').html("<h4>Veuillez Patienter Vous serrez rediriger dans quelques secondes.</h4>")
+
+                                    window.location.reload();
+                                    //alert(email)
+                                    //alert(nomfinal)
+                                } else {
+                                    $('#modalHead').html("Echec de connexion...")
+                                    $('#modalBody').html("<h4>La Connexion a été interrompu. Echec lors de la verification du compte</h4>")
+                                }
+                            }
+                        });
+                    });
+                }
+
+                console.log('Successful login for: ' + response.email);
+                document.getElementById('status').innerHTML =
+                    'Thanks for logging in, ' + response.email + '!';
+            });
+        }
+
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            /*console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+             console.log('Name: ' + profile.getName());
+             console.log('Image URL: ' + profile.getImageUrl());
+             console.log('Email: ' + profile.getEmail());  This is null if the 'email' scope is not present.*/
+
+            var gemail = profile.getEmail();
+            var gname = profile.getGivenName();
+            var gnom = profile.getFamilyName();
+            var gprenom = profile.getGivenName();
+
+            //alert(profile.getEmail());
+
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                //console.log('User signed out.');
+            });
+
+            $(document).ready(function () {
+                $('#modalHead').html("Connexion En Cours...")
+                $('#modalBody').html("<h4>Veuillez Patienter Nous Verifions vos Informations.</h4>")
+                $('#messModalbtn').click()
+
+                $.ajax({
+                    url: "{{ baseUrl }}/login/facebook",
+                    type: "POST",
+                    data: { 'login': gname, 'email': gemail, 'password': '0', 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    success: function (data) {
+                        if (data == "0") {
+                            $('#modalHead').html("Connexion Terminer.")
+                            $('#modalBody').html("<h4>Veuillez Patienter Vous serrez rediriger dans quelques secondes.</h4>")
+
+                            window.location.reload();
+                            //alert(email)
+                            //alert(nomfinal)
+                        } else {
+                            $('#modalHead').html("Echec de connexion...")
+                            $('#modalBody').html("<h4>La Connexion a été interrompu. Echec lors de la verification du compte</h4>")
+                        }
+                    }
+                });
+            });
+
+        }
+    </script>
+
+    <script>
+
+        function OnLinkedInFrameworkLoad() {
+            IN.Event.on(IN, "auth", OnLinkedInAuth);
+        }
+
+        function OnLinkedInAuth() {
+            IN.API.Profile("me").fields(["firstName", "lastName", "emailAddress", "positions"]).result(ShowProfileData);
+        }
+
+        function ShowProfileData(profiles) {
+            var member = profiles.values[0];
+
+            var INname = member.firstName + ' ' + member.lastName;
+            var INemail = member.emailAddress;
+            var pictureUrl = profile.pictureUrls.values[0];
+            //var profileUrl = profile.publicProfileUrl;
+            //var country = profile.location.name;
+
+            if (typeof IN === 'object' && typeof IN.User === 'object' && IN.User.isAuthorized()) {
+                //user logged in linkedin
+                //call linkedin logout with websites logout function as callback
+                //alert("I m inside linkedin object check.."); //do you see this
+                IN.User.logout();
+            } else {
+                //alert('not in linkedIn')
+            }
+
+            $(document).ready(function () {
+                $('#modalHead').html("Connexion En Cours...")
+                $('#modalBody').html("<h4>Veuillez Patienter Nous Verifions vos Informations.</h4>")
+                $('#messModalbtn').click()
+
+                $.ajax({
+                    url: "{{ baseUrl }}/login/facebook",
+                    type: "POST",
+                    data: { 'login': INname, 'email': INemail, 'password': '0', 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    success: function (data) {
+                        if (data == "0") {
+                            $('#modalHead').html("Connexion Terminer.")
+                            $('#modalBody').html("<h4>Veuillez Patienter Vous serrez rediriger dans quelques secondes.</h4>")
+
+                            window.location.reload();
+                            //alert(email)
+                            //alert(nomfinal)
+                        } else {
+                            $('#modalHead').html("Echec de connexion...")
+                            $('#modalBody').html("<h4>La Connexion a été interrompu. Echec lors de la verification du compte</h4>")
+                        }
+                    }
+                });
+            });
+
+            //use information captured above
+        }
+    </script>
+
 </body>
 
 </html>

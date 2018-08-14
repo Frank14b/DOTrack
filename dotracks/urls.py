@@ -11,6 +11,7 @@ urlpatterns = {
     #url(r'^_@r/(?P<lang>\w+)/$', views.AdminR, name='Acceuil'),
     url(r'^(?P<lang>\w+)/$', views.acceuil, name='Acceuil'),
     url(r'^connexion/$', views.LoginadminLang, name='Connexion'),
+    url(r'^login/facebook', views.LoginFacebook),
     url(r'^connexion/(?P<lang>\w+)/$', views.Loginadmin, name='Connexion'),
     url(r'^inscription/(?P<lang>\w+)/$', views.Register, name='Inscription'),
     url(r'^apropos/(?P<lang>\w+)/$', views.About, name='Apropos'),
@@ -46,7 +47,7 @@ urlpatterns = {
     url(r'^dashboard/member/checkAcces', views.getMyAccess), #verifier mes droits dacces 
 
     url(r'^dashboard/courriers/(?P<lang>\w+)/$', views.courrier, name='Courriel Box'), #Courrier Admin
-    url(r'^dashboard/courrier/(?P<lang>\w+)/$', views.courriers, name='Courriel Box'), #Courrier Users
+    #url(r'^dashboard/courrier/(?P<lang>\w+)/$', views.courrier, name='Courriel Box'), #Courrier Users
 
     url(r'^dashboard/administrate/(?P<lang>\w+)/$', views.administrate, name='Administration'),
 
@@ -58,6 +59,12 @@ urlpatterns = {
     url(r'^dashboard/Member/(?P<lang>\w+)/$', views.adminMember, name='Administration'),
     url(r'^member/forgotPassword', views.forgotPassMember, name="Recuperation"),
     url(r'^Member/profile/(?P<lang>\w+)/$', views.Profile, name="Profile"),
+    url(r'^Member/documents/(?P<lang>\w+)/$', views.Document, name="Mes Documents"),
+
+    url(r'^Member/documents/(?P<pk>\w+)/(?P<lang>\w+)/$', views.DocumentOpen, name="Details du Document"),
+    url(r'^Member/documents/(?P<pk>\w+)/(?P<ob>\w+)/(?P<lang>\w+)/$', views.DocumentOperation, name="Configuration du Document"),
+
+    url(r'^Member/addMemberProfile', views.photo_list),
 
     url(r'^Member/users/(?P<lang>\w+)/$', views.Memberusers, name="Utilisateurs"),
     url(r'^Member/chat/(?P<lang>\w+)/$', views.MemberMessagerie, name="Messagerie"),
@@ -67,6 +74,7 @@ urlpatterns = {
     url(r'^Member/dossiers/(?P<lang>\w+)/$', views.DossierMember, name="Dossiers"),
     url(r'^Member/dossiers/(?P<pk>\d+)/(?P<lang>\w+)/$', views.openDossier, name="Dossiers"),
     url(r'^Member/addDocx/(?P<lang>\w+)/$', views.addDocuments, name="Documents"),
+    url(r'^Member/courrier/(?P<lang>\w+)/$', views.memberCourrier, name="Courrier"),
     url(r'^Member/addFileImage', views.addImageDoc),
     url(r'^Member/addFormatDoc', views.addFormatDoc),
     url(r'^Member/addTypeCourrier', views.addTypeCourrier),
@@ -77,9 +85,18 @@ urlpatterns = {
     url(r'^Member/chatValidate', views.EnvoiDuChat),
     url(r'^Member/retriveChat', views.recuperationChat),
     url(r'^Member/chatViews', views.messageLus),
+    url(r'^Member/notification', views.addNotif),
+    url(r'^Member/loadNotif', views.chargerNotification),
+    url(r'^Member/countNotif', views.conterNotification),
+    url(r'^Member/vuNotif', views.vuNotification),
+    url(r'^Member/ChooseDossierBySuc', views.getChooseDossierBySuc),
+    url(r'^Member/ChooseDossierSucById', views.getChooseDossierBySuc2),
+    url(r'^Member/saveDOCcontent', views.enregistrerDocument),
 
     url(r'^logout/(?P<lang>\w+)/$', views.Logout, name='logout'),
     url(r'^Member/logout/(?P<lang>\w+)/$', views.LogoutMember, name='logout'),
+
+    url(r'^Member/changeProfil', views.changeProfile),
 
     #url(r'^admin/', admin.site.urls),
 }

@@ -7,6 +7,7 @@ from django.views.generic import RedirectView
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 import uuid
+import shutil
 from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
 from .language import *
@@ -30,6 +31,8 @@ d_Entrid = None
 
 global active
 active = "active"
+
+global newLink
 
 
 def baseUrl():
@@ -88,6 +91,25 @@ def TraceMouchard(request):
             rp = 'echec'
     return HttpResponse(rp)
 
+def addNotif(request):
+    
+    if request.method == "POST":
+        form = notifForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.dates = timezone.now()
+            post.use = Users.objects.get(id=request.POST['use'])
+            post.libeller = request.POST['libeller']
+            post.details = request.POST['details']
+            post.status = 0
+            post.lien = request.POST['lien']
+            post.other = request.POST['other']
+            post.save()
+            rp = 0
+        else:
+            rp = 'echec'
+    return HttpResponse(rp)
+
 def LoginadminLang(request):
     return HttpResponseRedirect(baseUrl()+"connexion/"+defaultLang())
 
@@ -99,6 +121,17 @@ def acceuil(request, lang):
 
         return render(request, 'dotracks/index.html', {'active': active, 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang)})
 
+def addNbrConnexionAdmin(idA, actuel, request):
+    if request.method == "POST":
+        try:
+            nbr = Admin.objects.get(id=idA)
+            nbr.totalconnect = sum((actuel, 1),0)
+            nbr.lastconnect = timezone.now()
+            nbr.save()
+            data = True
+        except ObjectDoesNotExist:
+            data = False
+        return HttpResponse(data)
 
 def Loginadmin(request, lang):
     if "d_user" in request.session:
@@ -120,6 +153,8 @@ def Loginadmin(request, lang):
 
                     request.session['d_userid'] = dotrack.id
                     request.session['d_user'] = dotrack.login
+
+                    addNbrConnexionAdmin(dotrack.id, dotrack.totalconnect, request)
 
                     # return HttpResponseRedirect("/connexion/")
                     request.session['tacheMouchard'] = "DOTrack Connexion Administrateur "+request.session['d_user']
@@ -151,6 +186,20 @@ def CourrierUs(request, lang):
 
         return render(request, 'dotracks/courrier.html', {'active': active, 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang)})
 
+def memberCourrier(request, lang):
+    if "d_member" in request.session:
+        id = request.session['d_memberid']
+
+        if checkMyAccess(2, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
+        request.session['tacheMouchard'] = "Acces Espace Courrier DOTrack"
+
+        return render(request, 'dotracks/dashboard/courrier.html', {"userInfo": get_Userby_id(id), 'active': active, 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang)})
+    else:
+        return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+        
+
 def FindEntr(request):
     if 'd_user' in request.session:
         return HttpResponseRedirect("/")
@@ -165,6 +214,65 @@ def FindEntr(request):
             except ObjectDoesNotExist:
                 dat = 0
             return JsonResponse(dat, safe=False)
+
+def LoginFacebook(request):
+    if 'd_user' in request.session:
+        return HttpResponseRedirect("/dashboard/admin/"+checkLangAbbr(lang))
+    else:
+        if request.method == "POST":
+            try:
+                dotrack = Admin.objects.get(email=request.POST['email'])
+            except ObjectDoesNotExist:
+                dotrack = None
+            if dotrack == None:
+                form = RegisterAdmin(request.POST)
+                uform = usersForm(request.POST)
+                if form.is_valid():
+                    post = form.save(commit=False)
+                    post.dates = timezone.now()
+                    post.status = "0"
+                    #post.password = make_password(request.POST['password'])
+                    post.save()
+                    # 
+                    # Mailmess = "Merci d'avoir souscrit a DoTrack veuillez activer votre compte en suivant ce lien:"
+                    # """sendMail("Account_Validation", Mailmess,
+                    # "franckfontcha@gmail.com", post.email)"""    
+                    request.session['tacheMouchard'] = "Nouvelle Inscription Administrateur "+request.POST['email']
+                    
+                    if "d_memberid" in request.session:
+                        try:
+                            del request.session["d_memberid"]
+                            del request.session["d_member"]
+                        except ObjectDoesNotExist:
+                            answ =  None
+
+                    dotrack2 = Admin.objects.get(email=request.POST['email'])
+
+                    request.session['d_userid'] = dotrack2.id
+                    request.session['d_user'] = dotrack2.login
+
+                    # return HttpResponseRedirect("/connexion/")
+                    request.session['tacheMouchard'] = "DOTrack Connexion Administrateur "+request.session['d_user']
+                    return HttpResponse('0')
+
+                else:
+                    return HttpResponse('echec')
+            else:
+                if "d_memberid" in request.session:
+                    try:
+                        del request.session["d_memberid"]
+                        del request.session["d_member"]
+                    except ObjectDoesNotExist:
+                        answ =  None
+
+                request.session['d_userid'] = dotrack.id
+                request.session['d_user'] = dotrack.login
+
+                # return HttpResponseRedirect("/connexion/")
+                request.session['tacheMouchard'] = "DOTrack Connexion Administrateur "+request.session['d_user']
+                return HttpResponse('0')
+        else:
+            return render(request, 'dotracks/register.html', {'active': active, 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "reponseActive": "none"})
 
 
 def Register(request, lang):
@@ -341,26 +449,45 @@ def addTypeuse(request):
 
 
 def addUse(request):
-    if 'd_Entr' in request.session:
-        if request.method == "POST":
-            form = usersForm(request.POST)
-            if form.is_valid():
-                data = Users.objects.filter(
-                    Q(login=request.POST['login']) | Q(email=request.POST['email']))
-                if(data.count() == 0):
-                    post = form.save(commit=False)
-                    post.statut = 0
-                    post.dates = timezone.now()
-                    post.password = make_password(request.POST['login'])
-                    post.save()
-                    return HttpResponse('0')
-                else:
-                    return HttpResponse('Echec Login ou Email existant veuillez le modifier')
+    if request.method == "POST":
+        form = usersForm(request.POST)
+        if form.is_valid():
+            data = Users.objects.filter(
+                Q(login=request.POST['login']) | Q(email=request.POST['email']))
+            if(data.count() == 0):
+                post = form.save(commit=False)
+                post.statut = 0
+                post.photo = 0
+                post.totalconnect = 0
+                post.dates = timezone.now()
+                post.password = make_password(request.POST['login'])
+                post.save()
+                return HttpResponse('0')
             else:
-                return HttpResponse('Echec denregistrement : Erreur des champs')
-    else:
-        return HttpResponseRedirect("/")
+                return HttpResponse('Echec Login ou Email existant veuillez le modifier')
+        else:
+            return HttpResponse('Echec d\'enregistrement : Erreur des champs')
 
+
+def chargerNotification(request):
+    try:
+        id = request.session['d_memberid']
+        notif = Notifications.objects.filter(use=id).order_by('-id').values("id", "libeller", "lien", "details","dates","status").exclude(status="1")
+        if notif.count() != 0:
+            rs = list(notif)
+        else:
+            rs = 1
+    except ObjectDoesNotExist:
+            rs = 'erreur not mach'
+    return JsonResponse(rs, safe=False)
+
+def conterNotification(request):
+    try:
+        id = request.session['d_memberid']
+        notif = Notifications.objects.filter(use=id, status=0).count()
+    except ObjectDoesNotExist:
+        notif = ''
+    return HttpResponse(notif)
 
 def get_nbrEntr_by_me(id):
     nbr = Entreprise.objects.filter(
@@ -433,10 +560,10 @@ def get_TypUser_by_Entr(id):
     return typeUse
 
 
-def get_User_by_cic(id):
+def get_User_by_cic(id, myID):
     try:
-        typeUse = Users.objects.filter(cic=id).values(
-            'id', 'nom', 'prenom', 'typ__libeler', 'role', 'statut', 'cic__ville', 'cic__pays').exclude(statut="@alphaLock")
+        typeUse = Users.objects.filter(cic=id, statut=0).values(
+            'id', 'nom', 'prenom', 'typ__libeler', 'role', 'statut', 'cic__ville', 'cic__pays', 'photo').exclude(id=myID)
     except ObjectDoesNotExist:
         typeUse = None
     return typeUse
@@ -445,7 +572,7 @@ def get_User_by_cic(id):
 def get_User_by_Entr(id):
     try:
         typeUse = Users.objects.filter(cic__ent=id).values(
-            'id', 'nom', 'prenom', 'typ__libeler', 'role', 'statut', 'cic__ville', 'cic__pays').exclude(statut="@alphaLock")
+            'id', 'nom', 'prenom', 'typ__libeler', 'role', 'statut', 'cic__ville', 'cic__pays', 'photo').exclude(statut="@alphaLock")
     except ObjectDoesNotExist:
         typeUse = None
     return typeUse
@@ -454,7 +581,7 @@ def get_User_by_Entr(id):
 def get_User_by_Entr_limit(id):
     try:
         typeUse = Users.objects.filter(cic__ent=id).order_by('-id').exclude(statut="@alphaLock")[0:8].values(
-            'id', 'nom', 'prenom', 'typ__libeler', 'role', 'statut', 'cic__ville', 'cic__pays')
+            'id', 'nom', 'prenom', 'typ__libeler', 'role', 'statut', 'cic__ville', 'cic__pays', 'photo')
     except ObjectDoesNotExist:
         typeUse = None
     return typeUse
@@ -747,7 +874,7 @@ def adminMember(request, lang):
 
         request.session['tacheMouchard'] = "Nouvelle Connexion Membre "
 
-        return render(request, 'dotracks/dashboard/starter.html', {'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "nbruser": getNbrUserBySuc(id), "typuserlist": get_TypUser_by_Entr(ent)})
+        return render(request, 'dotracks/dashboard/starter.html', {'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "nbruser": getNbrUserBySuc(id), "typuserlist": get_TypUser_by_Entr(ent), "userList": get_User_by_cic(sucur, id)})
     else:
         return HttpResponseRedirect(baseUrl()+"/connexionMember/"+checkLangAbbr(lang))
 
@@ -756,6 +883,17 @@ def LoginMember2(request):
     request.session['tacheMouchard'] = "Espace Formulaire Connexion Membre"
     return HttpResponseRedirect(baseUrl()+"member/login/"+defaultLang())
 
+def addNbrConnexionMember(idA, actuel, request):
+    if request.method == "POST":
+        try:
+            nbr = Users.objects.get(id=idA)
+            nbr.totalconnect = sum((actuel, 1),0)
+            nbr.lastconnect = timezone.now()
+            nbr.save()
+            data = True
+        except ObjectDoesNotExist:
+            data = False
+        return HttpResponse(data)
 
 def LoginMember(request, lang):
     if "d_member" in request.session:
@@ -772,6 +910,9 @@ def LoginMember(request, lang):
                     request.session['d_memberid'] = dotrack.id
                     request.session['d_member'] = dotrack.login
                     # return HttpResponseRedirect("/connexion/")
+
+                    addNbrConnexionMember(dotrack.id, dotrack.totalconnect, request)
+
                     return HttpResponse('0')
                 else:
                     # return HttpResponseRedirect("/connexion/")
@@ -798,7 +939,7 @@ def LogoutMember(request, lang):
 def get_Userby_id(id):
     try:
         use = Users.objects.filter(id=id).values(
-            'id', 'nom', 'prenom', 'typ__libeler', 'role', 'statut', 'cic__ville', 'cic__pays', "cic", 'login', 'email', 'tel', 'typ', 'typ__libeler', 'typ__code', 'lastconnect', 'totalconnect', 'about', 'dates')[0]
+            'id', 'nom', 'prenom', 'typ__libeler', 'role', 'statut', 'cic__ville', 'cic__pays', "cic", 'login', 'email', 'tel', 'typ', 'typ__libeler', 'typ__code', 'lastconnect', 'totalconnect', 'about', 'dates', 'photo')[0]
     except ObjectDoesNotExist:
         use = None
     return use
@@ -839,9 +980,9 @@ def forgotPassMember(request):
 def Profile(request, lang):
     if "d_member" in request.session:
         id = request.session["d_memberid"]
-        request.session['tacheMouchard'] = "Espace Profil Membre "+request.session["d_member"]
+        #request.session['tacheMouchard'] = "Espace Profil Membre "+request.session["d_member"]
 
-        return render(request, 'dotracks/dashboard/Profile.html', {'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id)})
+        return render(request, 'dotracks/dashboard/Profile.html', {'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "profilePic":getMemberPicture(id), "allMouchard":getMemberMouchard(id)})
     else:
         return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
 
@@ -876,13 +1017,31 @@ def getMyAccess(request):
         rs = 1
     return HttpResponse(rs)
 
+def checkMyAccess(idpage, id):
+    try:
+        iduser = id
+        b = Users.objects.filter(id=iduser)[0].typ
+        v = Acceder.objects.get(ids=b, mod=idpage)
+        rs = 0
+    except ObjectDoesNotExist:
+        rs = 1
+    return rs
+
 
 def Memberusers(request, lang):
     if "d_member" in request.session:
         id = request.session["d_memberid"]
+
+        if checkMyAccess(9, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
         idCic = Users.objects.get(id=id).cic
 
-        return render(request, 'dotracks/dashboard/MemberUsers.html', {'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "userList": get_User_by_cic(idCic)})
+        sucu = Users.objects.get(id=id)
+        sucur = Cicursale.objects.get(id=sucu.cics())
+        ent = Entreprise.objects.get(id=sucur.entr())
+
+        return render(request, 'dotracks/dashboard/MemberUsers.html', {'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "userList": get_User_by_cic(idCic, id), "nbruser": getNbrUserBySuc(id), "typuserlist": get_TypUser_by_Entr(ent)})
     else:
         return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
 
@@ -890,9 +1049,13 @@ def Memberusers(request, lang):
 def MemberMessagerie(request, lang):
     if "d_member" in request.session:
         id = request.session["d_memberid"]
+
+        if checkMyAccess(3, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
         idCic = Users.objects.get(id=id).cic
 
-        return render(request, 'dotracks/dashboard/MemberChat.html', {'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "userList": get_User_by_cic(idCic)})
+        return render(request, 'dotracks/dashboard/MemberChat.html', {'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "userList": get_User_by_cic(idCic, id)})
     else:
         return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
 
@@ -900,6 +1063,10 @@ def MemberMessagerie(request, lang):
 def MemberMessagerie2(request, lang, pk):
     if "d_member" in request.session:
         id = request.session["d_memberid"]
+
+        if checkMyAccess(3, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
         idCic = Users.objects.get(id=id).cic
         a, b = pk.split('user')
 
@@ -910,7 +1077,7 @@ def MemberMessagerie2(request, lang, pk):
         else:
             chat = 0
 
-        return render(request, 'dotracks/dashboard/MemberChat.html', {'userID':b, 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "userList": get_User_by_cic(idCic), "chat": chat})
+        return render(request, 'dotracks/dashboard/MemberChat.html', {'userID':b, 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "userList": get_User_by_cic(idCic, id), "chat": chat})
     else:
         return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
 
@@ -919,7 +1086,7 @@ def recuperationChat(request):
         if request.method == "POST":
             id = request.session["d_memberid"]
             b = request.POST['use2']
-            mess = Chat.objects.filter(Q(use_id2=b) | Q(use_id2=id), Q(use=id) | Q(use=b)).values('id', 'use', 'use_id2', 'libelle', 'dates','use__nom', 'use_id2__nom', 'use__prenom', 'use_id2__prenom', 'status').order_by('-id')
+            mess = Chat.objects.filter(Q(use_id2=b) | Q(use_id2=id), Q(use=id) | Q(use=b)).values('id', 'use', 'use_id2', 'libelle', 'dates','use__nom', 'use_id2__nom','use__photo','use_id2__photo', 'use__prenom', 'use_id2__prenom', 'status').order_by('-id')
             if(mess.count() != 0):
                 chat = list(mess)
             else:
@@ -931,16 +1098,27 @@ def messageLus(request):
     if 'd_member' in request.session:
         if request.method == "POST":
             try:
-                val = Chat.objects.filter(Q(use=request.POST['use2']), Q(use_id2=request.POST['use']))
-                nbr = val.count()
-                for i in range(0, nbr):
-                    post = Chat.objects.get(use=request.POST['use'])
-                    post.status = 1
-                    post.save()
-                    rp = 0
+                post = Chat.objects.get(id=request.POST['id'])
+                post.status = 1
+                post.save()
+                rp = 0
+                return HttpResponse(rp)
             except:
                 rp = 'Erreur not mach'
-            return HttpResponse(nbr)
+                return HttpResponse(rp)
+
+def vuNotification(request):
+    if 'd_member' in request.session:
+        if request.method == "POST":
+            try:
+                post = Notifications.objects.get(id=request.POST['id'])
+                post.status = 2
+                post.save()
+                rp = 0
+                return HttpResponse(rp)
+            except:
+                rp = 'Erreur not mach'
+                return HttpResponse(rp)
 
 def EnvoiDuChat(request):
     if 'd_member' in request.session:
@@ -963,6 +1141,10 @@ def EnvoiDuChat(request):
 
 def getSearchChat(request):
     if "d_member" in request.session:
+
+        if not request.POST:
+            return HttpResponseRedirect(baseUrl()+"member/login/")
+
         id = request.session["d_memberid"]
         try:
             idsurcu = Users.objects.get(id=id).cic
@@ -980,24 +1162,35 @@ def getSearchChat(request):
 
 def addDossier(request):
     if 'd_member' in request.session:
+
+        if not request.POST:
+            return HttpResponseRedirect(baseUrl()+"member/login/")
+
         if request.method == "POST":
+
+            newLink = 0
+
             form = dossierForm(request.POST)
             if form.is_valid():
                 Sucur = Cicursale.objects.filter(id=request.POST['cic'])[0]
                 entr = Sucur.entrName()
                 post = form.save(commit=False)
                 if not request.POST['dos']:
-                    if not os.path.exists('dotracks/entreprises/'+entr+'/'+Sucur.ville+'_'+Sucur.pays+'/'+request.POST['libelle']):
-                        os.makedirs('dotracks/entreprises/'+entr+'/'+Sucur.ville +
+                    if not os.path.exists('dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville+'_'+Sucur.pays+'/'+request.POST['libelle']):
+                        os.makedirs('dotracks/static/dotracks/entreprises/'+entr+'/'+Sucur.ville +
                                     '_'+Sucur.pays+'/'+request.POST['libelle'])
+                        
+                        newLink = 'static/dotracks/entreprises/'+entr+'/'+Sucur.ville +'_'+Sucur.pays+'/'+request.POST['libelle']
                 else:
                     libDos = Dossiers.objects.get(
-                        id=request.POST['dos']).libelle
-                    if not os.path.exists('dotracks/entreprises/'+entr+'/'+Sucur.ville+'_'+Sucur.pays+'/'+libDos+'/'+request.POST['libelle']):
-                        os.makedirs('dotracks/entreprises/'+entr+'/'+Sucur.ville +
-                                    '_'+Sucur.pays+'/'+libDos+'/'+request.POST['libelle'])
+                        id=request.POST['dos']).link
+                    if not os.path.exists('dotracks/'+libDos+'/'+request.POST['libelle']):
+                        os.makedirs('dotracks/'+libDos+'/'+request.POST['libelle'])
+
+                        newLink = libDos+'/'+request.POST['libelle']
 
                 post.status = 0
+                post.link = newLink
                 post.dates = timezone.now()
                 post.cic = Cicursale.objects.get(id=request.POST['cic'])
                 if request.POST['dos']:
@@ -1015,9 +1208,68 @@ def addDossier(request):
 def DossierMember(request, lang):
     if "d_member" in request.session:
         id = request.session["d_memberid"]
+
+        if checkMyAccess(15, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
         idCic = Users.objects.get(id=id).cic
 
-        return render(request, 'dotracks/dashboard/Dossiers.html', {'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "dossierList": getDossierBySuc(idCic)})
+        sucu = Users.objects.get(id=id)
+        sucur = Cicursale.objects.get(id=sucu.cics())
+        ent = Entreprise.objects.get(id=sucur.entr())
+
+        return render(request, 'dotracks/dashboard/Dossiers.html', {"nbruser": getNbrUserBySuc(id), "typuserlist": get_TypUser_by_Entr(ent), 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "dossierList": getDossierBySuc(idCic), "userList": get_User_by_cic(idCic, id)})
+    else:
+        return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
+def Document(request, lang):
+    if "d_member" in request.session:
+        id = request.session["d_memberid"]
+
+        if checkMyAccess(4, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
+        idCic = Users.objects.get(id=id).cic
+
+        sucu = Users.objects.get(id=id)
+        sucur = Cicursale.objects.get(id=sucu.cics())
+        ent = Entreprise.objects.get(id=sucur.entr())
+
+        return render(request, 'dotracks/dashboard/Documents.html', {"myDocument": getDocuments(sucu), "nbruser": getNbrUserBySuc(id), "typuserlist": get_TypUser_by_Entr(ent), 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "dossierList": getDossierBySuc(idCic), "userList": get_User_by_cic(idCic, id)})
+    else:
+        return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
+def DocumentOpen(request, lang, pk):
+    if "d_member" in request.session:
+        id = request.session["d_memberid"]
+
+        if checkMyAccess(4, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
+        idCic = Users.objects.get(id=id).cic
+
+        sucu = Users.objects.get(id=id)
+        sucur = Cicursale.objects.get(id=sucu.cics())
+        ent = Entreprise.objects.get(id=sucur.entr())
+
+        return render(request, 'dotracks/dashboard/Documents.html', {"openDcument":getDocumentsDetails(pk), "myDocument": getDocuments(sucu), "nbruser": getNbrUserBySuc(id), "typuserlist": get_TypUser_by_Entr(ent), 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "dossierList": getDossierBySuc(idCic), "userList": get_User_by_cic(idCic, id)})
+    else:
+        return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
+def DocumentOperation(request, lang, pk, ob):
+    if "d_member" in request.session:
+        id = request.session["d_memberid"]
+
+        if checkMyAccess(4, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
+        idCic = Users.objects.get(id=id).cic
+
+        sucu = Users.objects.get(id=id)
+        sucur = Cicursale.objects.get(id=sucu.cics())
+        ent = Entreprise.objects.get(id=sucur.entr())
+        if(ob == "edit"):
+            return render(request, 'dotracks/dashboard/Documents.html', {"editDocument":getDocumentsDetails(pk), "myDocument": getDocuments(sucu), "nbruser": getNbrUserBySuc(id), "typuserlist": get_TypUser_by_Entr(ent), 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "dossierList": getDossierBySuc(idCic), "userList": get_User_by_cic(idCic, id)})
     else:
         return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
 
@@ -1025,9 +1277,17 @@ def DossierMember(request, lang):
 def openDossier(request, lang, pk):
     if "d_member" in request.session:
         id = request.session["d_memberid"]
+
+        if checkMyAccess(15, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
         idCic = Users.objects.get(id=id).cic
 
-        return render(request, 'dotracks/dashboard/openDossiers.html', {'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "dossierInfo": getDossierInfos(pk), "predossierInfo": getPreDossierInfos(pk), "sdossierList": getsDossierBySuc(pk), "docList": getDocumentsBySuc(pk), "docListfile":getDocumentFilesBySuc(pk)})
+        sucu = Users.objects.get(id=id)
+        sucur = Cicursale.objects.get(id=sucu.cics())
+        ent = Entreprise.objects.get(id=sucur.entr())
+
+        return render(request, 'dotracks/dashboard/openDossiers.html', {"nbruser": getNbrUserBySuc(id), "typuserlist": get_TypUser_by_Entr(ent), 'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "dossierInfo": getDossierInfos(pk), "predossierInfo": getPreDossierInfos(pk), "sdossierList": getsDossierBySuc(pk), "docList": getDocumentsBySuc(pk), "docListfile":getDocumentFilesBySuc(pk), "docListDOC":getDocumentBySuc(pk), "userList": get_User_by_cic(idCic, id)})
     else:
         return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
 
@@ -1035,32 +1295,34 @@ def openDossier(request, lang, pk):
 def addDocuments(request, lang):
     if "d_member" in request.session:
         id = request.session["d_memberid"]
+
+        if checkMyAccess(4, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
         idCic = Users.objects.get(id=id).cic
 
-        return render(request, 'dotracks/dashboard/ajouterDocuments.html', {'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "dossierList": getDossierBySuc(idCic)})
+        sucu = Users.objects.get(id=id)
+        sucur = Cicursale.objects.get(id=sucu.cics())
+        ent = Entreprise.objects.get(id=sucur.entr())
+
+        return render(request, 'dotracks/dashboard/ajouterDocuments.html', {"nbruser": getNbrUserBySuc(id), "typuserlist": get_TypUser_by_Entr(ent),'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "dossierList": getDossierBySuc(idCic), "userList": get_User_by_cic(idCic, id)})
     else:
         return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
 
 
 def addImageDoc(request):
     if "d_member" in request.session:
+
+        if not request.POST:
+            return HttpResponseRedirect(baseUrl()+"member/login/")
+
         if request.method == 'POST':
             doc = Dossiers.objects.get(id=request.POST['entr'])
             Sucur = Cicursale.objects.get(id=doc.sucur())
             entr = Sucur.entrName()
 
-            if not request.POST['pdos']:
-                pathh = 'dotracks/entreprises/'+entr+'/'+Sucur.ville + \
-                    '_'+Sucur.pays+'/'+request.POST['dos']+'/'
-                pathhbd = 'dotracks/entreprises/'+entr+'/'+Sucur.ville + \
-                    '_'+Sucur.pays+'/'+request.POST['dos']+'/'
-            else:
-                pathh = 'dotracks/entreprises/'+entr+'/'+Sucur.ville+'_' + \
-                    Sucur.pays+'/' + \
-                        request.POST['pdos']+'/'+request.POST['dos']+'/'
-                pathhbd = 'dotracks/entreprises/'+entr+'/'+Sucur.ville+'_' + \
-                    Sucur.pays+'/' + \
-                    request.POST['pdos']+'/'+request.POST['dos']+'/'
+            pathh = 'dotracks/'+doc.link+'/'
+            pathhbd = doc.link+'/'
 
             handle_uploaded_file(
                 request.FILES['imageP'], request.POST['libelle'], request, Sucur, pathh)
@@ -1074,7 +1336,7 @@ def addImageDoc(request):
                 post.status = 0
                 post.descipt = pathhbd+request.POST['libelle']
                 post.dates = timezone.now()
-                post.for_field = Format.objects.get(id=3)
+                post.for_field = Format.objects.get(extension=request.POST['ext'])
                 post.save()
                 return HttpResponse("0")
             else:
@@ -1108,10 +1370,41 @@ def getDossierBySuc(cic):
         dos = None
     return dos
 
+def getChooseDossierBySuc(request):
+    try:
+        if not request.POST:
+            return HttpResponseRedirect(baseUrl()+"member/login/")
+
+        cic = request.POST['cic']
+        dos = Dossiers.objects.filter(cic=cic, dos=None).values('id', 'libelle', 'abreviation', 'status').exclude(status="1")
+        if dos.count() != 0:
+            rs = list(dos)
+        else:
+            rs = 0
+    except ObjectDoesNotExist:
+        rs =0
+    return JsonResponse(rs, safe=False)
+
+def getChooseDossierBySuc2(request):
+    try:
+        if not request.POST:
+            return HttpResponseRedirect(baseUrl()+"member/login/")
+
+        cic = request.POST['cic']
+        id = request.POST['dos']
+        dos = Dossiers.objects.filter(cic=cic, dos=id).values('id', 'libelle', 'abreviation', 'status').exclude(status="1")
+        if dos.count() != 0:
+            rs = list(dos)
+        else:
+            rs = 0     
+    except ObjectDoesNotExist:
+        rs = 0
+    return JsonResponse(rs, safe=False)
+
 
 def getDossierInfos(dos):
     try:
-        doc = Dossiers.objects.get(id=dos)
+        doc = Dossiers.objects.filter(id=dos, status=0).values('id', 'libelle', 'abreviation', 'status', 'dos__libelle', 'dos')[0]
     except ObjectDoesNotExist:
         doc = None
     return doc
@@ -1133,6 +1426,19 @@ def getsDossierBySuc(dos):
         doc = None
     return doc
 
+def getDocuments(ids):
+    try:
+        doc = Documents.objects.filter(use=ids, files='0')
+    except ObjectDoesNotExist:
+        doc = None
+    return doc
+
+def getDocumentsDetails(pk):
+    try:
+        doc = Documents.objects.get(libelle=pk)
+    except ObjectDoesNotExist:
+        doc = None
+    return doc
 
 def getDocumentsBySuc(dos):
     try:
@@ -1144,6 +1450,13 @@ def getDocumentsBySuc(dos):
 def getDocumentFilesBySuc(dos):
     try:
         doc = Documents.objects.filter(dos=dos, for_field__libelle="document").values('id','libelle','for_field__extension', 'status','dates','dos','cic','use')
+    except ObjectDoesNotExist:
+        doc = None
+    return doc
+
+def getDocumentBySuc(dos):
+    try:
+        doc = Documents.objects.filter(dos=dos, files="0").values('id','libelle','status','dates','dos','cic','use')
     except ObjectDoesNotExist:
         doc = None
     return doc
@@ -1197,8 +1510,26 @@ def getAdminMouchard(iduser):
         forma = None
     return forma
 
+def getMemberMouchard(iduser):
+    try:
+        forma = Mouchard.objects.filter(use=iduser).exclude(statut="@alphaLock").order_by('-id')
+    except ObjectDoesNotExist:
+        forma = None
+    return forma
+
+def getMemberPicture(iduser):
+    try:
+        pic = User_profile.objects.filter(use=iduser).exclude(status="3").order_by('-id')
+    except ObjectDoesNotExist:
+        pic = None
+    return pic
+
 def addFormatDoc(request):
     if 'd_user' in request.session:
+
+        if not request.POST:
+            return HttpResponseRedirect(baseUrl())
+
         if request.method == "POST":
             try:
                 form = formatForm(request.POST)
@@ -1218,6 +1549,9 @@ def addFormatDoc(request):
 
 def addTypeCourrier(request):
     if 'd_user' in request.session:
+        if not request.POST:
+            return HttpResponseRedirect(baseUrl())
+
         if request.method == "POST":
             try:
                 form = typecourrierForm(request.POST)
@@ -1234,9 +1568,39 @@ def addTypeCourrier(request):
                 rp = 'Erreur not mach'
             return HttpResponse(rp)
 
+def enregistrerDocument(request):
+    if 'd_member' in request.session:
+
+        if not request.POST:
+            return HttpResponseRedirect(baseUrl()+"member/login/")
+
+        if request.method == "POST":
+            try:
+                form = docForm(request.POST)
+                if form.is_valid():
+                    post = form.save(commit=False)
+                    post.status = 0
+                    post.files = 0
+                    post.descipt = request.POST['descipt']
+                    post.libelle = request.POST['libelle']
+                    post.dates = timezone.now()
+                    post.cic = Cicursale.objects.get(id=request.POST['cic'])
+                    post.dos = Dossiers.objects.get(id=request.POST['dos'])
+                    post.use = Users.objects.get(id=request.session['d_memberid'])
+                    post.save()
+                    rp = 0
+                else:
+                    rp = "Echec lors de lenregistrement !"
+            except:
+                rp = 'Erreur not mach'
+            return HttpResponse(rp)
+
 
 def addTypeArchives(request):
     if 'd_user' in request.session:
+        if not request.POST:
+            return HttpResponseRedirect(baseUrl())
+
         if request.method == "POST":
             try:
                 form = typearchivesForm(request.POST)
@@ -1269,3 +1633,36 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+def photo_list(request):
+
+    if not request.POST:
+            return HttpResponseRedirect(baseUrl()+"member/login/")
+
+    if request.method == 'POST':
+
+        userpic = Users.objects.get(id=request.POST['use'])
+
+        form = PhotoProfilMemberForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save(request.POST['use'])
+
+            userpic.photo = 'static/dotracks/user_profile/'+request.FILES['photo'].name
+            userpic.save()
+    else:
+        form = PhotoProfilMemberForm()
+
+    return HttpResponseRedirect("profile/"+defaultLang())
+
+def changeProfile(request):
+
+    if not request.POST:
+            return HttpResponseRedirect(baseUrl()+"member/login/")
+
+    if request.method == 'POST':
+        userpic = Users.objects.get(id=request.session['d_memberid'])
+        userpic.photo = request.POST['photo']
+        userpic.save()
+        return HttpResponse('0')
+    else:
+        return HttpResponse('1')

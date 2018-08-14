@@ -16,7 +16,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             {% if request.session.d_user %}
             <li>
                 <a href="{{baseurl}}/dashboard/admin/{{lang_abbr}}" data-toggle="tooltip" title="Synchronisation">
-                    <button class="btn btn-xs btn-flat btn-default">
+                    <button class="btn btn-xs btn-default">
                         <i class="fa fa-arrow-left"></i> {{langue.form_dashboard }} Admin</button>
                 </a>
             </li>
@@ -31,9 +31,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </section>
 
     <!-- Main content -->
-    <section class="content container-fluid"><hr>
+    <section class="content container-fluid">
+        <hr>
 
-        <div class="row">
+        <div class="row hidden">
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box card">
                     <span class="info-box-icon bg-aqua">
@@ -45,7 +46,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <span class="info-box-number">20
                             <small>%</small>
                         </span>
-                        <button class="btn btn-xs btn-flat btn-default">Configurer</button>
+                        <button class="btn btn-xs btn-default">Configurer</button>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -61,7 +62,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="info-box-content">
                         <span class="info-box-text">{{ langue.form_Documents }}</span>
                         <span class="info-box-number">0,0</span>
-                        <button class="btn btn-xs btn-flat btn-primary">{{ langue.form_consulter }}</button>
+                        <button class="btn btn-xs btn-primary">{{ langue.form_consulter }}</button>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -83,7 +84,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <span class="info-box-number">0
                             <small>Recus</small>
                         </span>
-                        <button class="btn btn-xs btn-flat btn-primary">{{ langue.form_consulter }}</button>
+                        <button class="btn btn-xs btn-primary">{{ langue.form_consulter }}</button>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -99,7 +100,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="info-box-content">
                         <span class="info-box-text">{{ langue.form_utilisateurs }}</span>
                         <span class="info-box-number">{{ nbruser }}</span>
-                        <button class="btn btn-xs btn-flat btn-default">{{ langue.form_consulter }}</button>
+                        <button class="btn btn-xs btn-default">{{ langue.form_consulter }}</button>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -113,44 +114,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="col-md-12">
                 <div class="box box-primary card" style="border-radius: 0px;">
                     <div class="box-header with-border">
-                        <h3 class="box-title">
+                        <h3 class="box-title hidden">
                             <i class="fa fa-building"></i>&nbsp; {{ request.session.d_Entr }} {{ request.resolver_match.view_name }} &nbsp;
                         </h3>
+                        <div class="col-md-6">
+                            <div class="alert bg-blue">Consulter la
+                                <a href="#" class="badge badge-info" style="text-decoration: none;">Documentation</a> pour Demarrer votre Document</div>
+                        </div>
+                        <a type="submit" href="{{ baseurl }}/Member/documents/{{ lang_abbr }}" class="btn btn-primary pull-right">
+                            <i class="fa fa-file"></i>&nbsp; Mes Documents</a>
+                        <a type="submit" id="mydocuimages" class="btn btn-primary pull-right">
+                            <i class="fa fa-image"></i>&nbsp; Mes Images</a>
+
                     </div>
                     <div class="box-body">
                         <div class="col-md-12" style="background: #fff;">
-                            <div class="col-md-8" style="background: #f5f5f5;">
+                            <div class="row" style="background: #f5f5f5;">
                                 <!-- form start -->
-                                <form role="form" method="POST" action="{{ baseusrl }}/dashboard/admin/editEntr" id="editentreprise">
+                                <form role="form" method="POST" id="saveDoc">
                                     {% csrf_token %}
                                     <div class="box-body" id="EntcontentEdit">
                                         <div class="col-md-12">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1">{{ langue.form_libeller }}</label>
-                                                    <input type="text" required name="libelle" class="form-control entEditLibelle" id="exampleInputEmail1" placeholder="{{ langue.form_libeller }}"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <input type="hidden" name="editEntreprise" />
-                                            <!-- phone mask -->
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1amn">{{ langue.form_user }}</label>
-                                                    <select name="typ" class="form-control select2" required id="exampleInputEmail1amn" style="width: 100%;">
-                                                        {% for elmts in typuserlist %}
-                                                        <option value="{{ elmts.id }}">{{ elmts.libeler }} ({{ elmts.code }})</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                    <!-- /.input group -->
-                                                </div>
-                                            </div>
 
-                                            <div class="col-md-12">
+
+                                            <div class="row">
                                                 <div class="form-group">
-                                                    <label for="exampleInputEmail1">{{ langue.form_Details }}</label>
-                                                    <textarea name="Descript" required class="form-control entEditDescript textarea" placeholder="{{ langue.form_Details }}"
-                                                        style="height:500px"></textarea>
+                                                    <label for="exampleInputEmail1" class="hidden">{{ langue.form_Details }}</label>
+                                                    <textarea name="Descript" id="doctextarea" required class="form-control entEditDescript" placeholder="{{ langue.form_Details }}"
+                                                        style="height:500px; width:100%"></textarea>
                                                 </div>
                                             </div>
                                             <!-- /.form  group -->
@@ -162,19 +153,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                     </div>
 
-                                    <div class="box-footer" id="push">
-                                        <center>
-                                            <button type="submit" class="btn btn-flat btn-primary">
-                                                <i class="fa fa-save"></i>&nbsp; {{ langue.form_Enregistrer }}</button>
-                                        </center>
+                                    <div class="box-footer" id="push" style="background:none;">
+                                        <button type="submit" id="saveDocu" class="btn btn-primary">
+                                            <i class="fa fa-save"></i>&nbsp; {{ langue.form_Enregistrer }}</button>
+
+                                        <button type="button" class="btn btn-info">
+                                            <i class="fa fa-trash"></i>&nbsp; Enregistrer comme brouillon</button>
+
+                                        <button type="reset" class="btn btn-warning">
+                                            <i class="fa fa-close"></i>&nbsp; Annuler</button>
                                     </div>
                                 </form>
-                            </div>
-
-                            <div class="col-md-4" style="background: #fff; min-height: 200px;">
-                                <center>
-                                    <h1 style="margin-top: 50%">Apercu du Document</h1>
-                                </center>
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -210,7 +199,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <div class="row">
                                 <div class="col-md-12 text-center">
                                     <center>
-                                        <button class="btn btn-primary btn-flat choose_image">
+                                        <button class="btn btn-primary choose_image">
                                             <i class="fa fa-image"></i>&nbsp; {{langue.form_choisir_photo}}</button>
                                         <button class="btn btn-info image_crop-rotate" data-deg="-90" id="RotateAntiClockwise">
                                             <i class="fa fa-arrow-left"></i>
@@ -227,6 +216,64 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                                 <div class="col-md-12">
                                     <input type="file" id="images" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a id="moreInfo" data-target="#moreInfos" data-toggle="modal" style="visibility: hidden;position: fixed;left: -1000;"></a>
+    <div class="modal fade" role="dialog" id="moreInfos">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">
+                            <i class="fa fa-power-off"></i>
+                        </button>
+                    </button>
+                    <h4 class="modal-title">
+                        <i class="fa fa-save"></i>&nbsp; Enregistrement du Document</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="saveDOClibeller">{{ langue.form_libeller }}</label>
+                                            <input type="text" required name="libelle" class="form-control" id="saveDOClibeller" placeholder="{{ langue.form_libeller }}"
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="svt" style="cursor: pointer;">
+                                                <button class="btn btn-primary"><i class="fa fa-trash"></i> Sauvegarde Temporaire</button>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="saveDocument" />
+                                    <!-- phone mask -->
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="cursor: pointer;" id="chooseSAVEdos">
+                                            <label for="exampleInputEmail1">Choisir le repertoire</label>
+                                            <center>
+                                                <img src="{% static 'dotracks/img/folder.png' %}" width="40%" />
+                                            </center>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" id="saveDOSlist">
+
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <button class="btn btn-primary hidden">
+                                            <i class="fa fa-save"></i>&nbsp; Enregistrer</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

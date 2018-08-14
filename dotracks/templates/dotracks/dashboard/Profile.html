@@ -32,7 +32,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </section>
 
     <!-- Main content -->
-    <section class="content"><hr>
+    <section class="content">
+        <hr>
 
         <div class="row">
             <div class="col-md-3">
@@ -40,7 +41,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Profile Image -->
                 <div class="box box-primary card">
                     <div class="box-body box-profile">
-                        <img class="profile-user-img img-responsive img-circle" src="{% static 'dotracks/dist/img/user4-128x128.jpg' %}" alt="User profile picture">
+                        <img class="profile-user-img img-responsive img-circle" src="{% if userInfo.photo != '0' %}{{ baseurl }}/{{ userInfo.photo }}{% else %}http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png{% endif %}" alt="User profile picture">
 
                         <h3 class="profile-username text-center">{{userInfo.nom}}&nbsp;{{userInfo.prenom}}</h3>
 
@@ -48,17 +49,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <br>{{userInfo.role}}</p>
 
                         <ul class="list-group list-group-unbordered">
-                            <li class="list-group-item">
-                                <b>{{langue.form_lastConnexion}}</b>
+                            <li class="list-group-item hidden">
+                                <b>{{langue.form_lastDeconnexion}}</b>
                                 <a class="pull-right">1,322</a>
                             </li>
-                            <li class="list-group-item">
-                                <b>{{langue.form_lastDeconnexion}}</b>
-                                <a class="pull-right">543</a>
+                            <li class="list-group-item" style="padding-bottom:25px;">
+                                <b>{{langue.form_lastConnexion}}</b>
+                                <a class="pull-right">{{userInfo.lastconnect}}</a>
                             </li>
                             <li class="list-group-item">
                                 <b>{{langue.form_Totalconnexion}}</b>
-                                <a class="pull-right">13,287</a>
+                                <a class="pull-right badge badge-primary">{{userInfo.totalconnect}}</a>
                             </li>
                         </ul>
 
@@ -81,22 +82,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <i class="fa fa-book margin-r-5"></i> {{langue.form_description}}</strong>
 
                         <p class="text-muted">
-                            B.S. in Computer Science from the University of Tennessee at Knoxville
+                            {{userInfo.about}}
                         </p>
 
                         <hr>
-
-                        <strong>
-                            <i class="fa fa-map-marker margin-r-5"></i> {{langue.form_location}}</strong>
-
-                        <p class="text-muted">Malibu, California</p>
-
-                        <hr>
-
-                        <strong>
-                            <i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -115,166 +104,149 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <li>
                             <a href="#settings" data-toggle="tab">{{ langue.form_reglages }}</a>
                         </li>
+                        <li>
+                            <a href="#picture" data-toggle="tab">Photo de Profile</a>
+                        </li>
                     </ul>
                     <div class="tab-content">
+                        <div class="tab-pane" id="picture">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- FORM TO UPLOAD THE IMAGES -->
+                                    <form method="post" action="{{ baseusrl }}/Member/addMemberProfile" enctype="multipart/form-data" id="formUpload">
+                                        {% csrf_token %}
+
+                                        <center>
+                                            <h2 style="margin-top:60px">Ajouter une photo de Profil
+                                                <br>
+                                                <br>
+                                            </h2>
+                                            <a id="chooseImage">
+                                                <h3>Choisir un fichier Image</h3>
+                                                <img src="http://media.idownloadblog.com/wp-content/uploads/2016/03/Generic-profile-image-002.png" class="img-responsive"
+                                                />
+                                            </a>
+                                            <h3>Photo de Profil actuel</h3>
+                                            <img src="{% if userInfo.photo != '0' %}{{ baseurl }}/{{ userInfo.photo }}{% else %}http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png{% endif %}" alt="..." style="margin:8px; border-radius:10px" class="card">
+                                        </center>
+                                        <div class="col-md-12" style="display:none;">
+                                            <input type="file" id="id_file" class="form-control" name="photo" />
+                                            <input type="text" id="id_x" class="form-control" name="x" />
+                                            <input type="text" id="id_y" class="form-control" name="y" />
+                                            <input type="text" id="id_width" class="form-control" name="width" />
+                                            <input type="text" id="id_height" class="form-control" name="height" />
+                                            <input type="number" class="form-control" value="{{ request.session.d_memberid }}" name="use" />
+                                        </div>
+                                        <hr>
+                                    </form>
+
+                                    <!-- MODAL TO CROP THE IMAGE -->
+                                    <div class="modal fade" id="modalCrop">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                                                        <span>&times;</span>
+                                                    </button>
+                                                    <h4 class="modal-title">Veuillez rogner l'image</h4>
+                                                </div>
+                                                <div class="modal-body scroll" style="overflow-x:auto; overflow-y:auto; max-height:450px;">
+                                                    <img src="" id="image" style="max-width:100%;">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="btn-group pull-left" role="group">
+                                                        <button type="button" class="btn btn-default js-zoom-in">
+                                                            <span class="glyphicon glyphicon-zoom-in"></span>
+                                                        </button>
+                                                        <button type="button" class="btn btn-default js-zoom-out">
+                                                            <span class="glyphicon glyphicon-zoom-out"></span>
+                                                        </button>
+                                                        <button type="button" class="btn btn-default js-rotate-right">
+                                                            <span class="fa fa-spinner"></span>
+                                                        </button>
+                                                    </div>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Anuler</button>
+                                                    <button type="button" class="btn btn-primary js-crop-and-upload">Rogner & Uploader</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="active tab-pane" id="activity">
-                            <!-- Post -->
-                            <div class="post">
-                                <div class="user-block">
-                                    <img class="img-circle img-bordered-sm" src="{% static 'dotracks/dist/img/user1-128x128.jpg' %}" alt="user image">
-                                    <span class="username">
-                                        <a href="#">Jonathan Burke Jr.</a>
-                                        <a href="#" class="pull-right btn-box-tool">
-                                            <i class="fa fa-times"></i>
-                                        </a>
-                                    </span>
-                                    <span class="description">Shared publicly - 7:30 PM today</span>
+                            <div class="box-body scroll scroll_bleu" style="overflow-x: auto">
+                                <div class="alert bg-primary">
+                                    <p>
+                                        Votre traffic general sur l'application
+                                    </p>
                                 </div>
-                                <!-- /.user-block -->
-                                <p>
-                                    Lorem ipsum represents a long-held tradition for designers, typographers and the like. Some people hate it and argue for
-                                    its demise, but others ignore the hate as they create awesome tools to help create filler
-                                    text for everyone from bacon lovers to Charlie Sheen fans.
-                                </p>
-                                <ul class="list-inline">
-                                    <li>
-                                        <a href="#" class="link-black text-sm">
-                                            <i class="fa fa-share margin-r-5"></i> Share</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="link-black text-sm">
-                                            <i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-                                    </li>
-                                    <li class="pull-right">
-                                        <a href="#" class="link-black text-sm">
-                                            <i class="fa fa-comments-o margin-r-5"></i> Comments (5)
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <input class="form-control input-sm" type="text" placeholder="Type a comment">
+                                <table id="example1" class="table table-bordered table-striped" style="font-size: 1.1em">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th style="font-size: 1.1em">IP</th>
+                                            <th style="font-size: 1.1em">{{ langue.form_libeller }}</th>
+                                            <th style="font-size: 1.1em">Dates</th>
+                                            <th style="font-size: 1.1em">Taches</th>
+                                            <th style="font-size: 1.1em">{{ langue.form_outils}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for elmts in allMouchard|slice:":100" %}
+                                        <tr>
+                                            <td style="font-size: 1.1em">
+                                                <center>
+                                                    <button class="btn btn-info btn-sm delete" id="{{ elmts.id }}" data-toggle="tooltip" title="Voir les Details">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
+                                                </center>
+                                            </td>
+                                            <td style="font-size: 1.1em">{{ elmts.ip }}</td>
+                                            <td style="font-size: 1.1em">{{ elmts.page }}</td>
+                                            <td style="font-size: 1.1em">{{ elmts.date }}</td>
+                                            <td style="font-size: 1.1em">{{ elmts.tache }}</td>
+                                            <td style="font-size: 1.1em">
+                                                <center>
+                                                    <button class="btn btn-success btn-sm desactiver" id="{{ elmts.id }}" data-toggle="tooltip" title="Marquer Comme Vus">
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+                                                </center>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
-                            <!-- /.post -->
-
-                            <!-- Post -->
-                            <div class="post clearfix">
-                                <div class="user-block">
-                                    <img class="img-circle img-bordered-sm" src="{% static 'dotracks/dist/img/user7-128x128.jpg' %}" alt="User Image">
-                                    <span class="username">
-                                        <a href="#">Sarah Ross</a>
-                                        <a href="#" class="pull-right btn-box-tool">
-                                            <i class="fa fa-times"></i>
-                                        </a>
-                                    </span>
-                                    <span class="description">Sent you a message - 3 days ago</span>
-                                </div>
-                                <!-- /.user-block -->
-                                <p>
-                                    Lorem ipsum represents a long-held tradition for designers, typographers and the like. Some people hate it and argue for
-                                    its demise, but others ignore the hate as they create awesome tools to help create filler
-                                    text for everyone from bacon lovers to Charlie Sheen fans.
-                                </p>
-
-                                <form class="form-horizontal">
-                                    <div class="form-group margin-bottom-none">
-                                        <div class="col-sm-9">
-                                            <input class="form-control input-sm" placeholder="Response">
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <button type="submit" class="btn btn-danger pull-right btn-block btn-sm">Send</button>
-                                        </div>
-                                    </div>
-                                </form>
+                            <div class="box-footer text-center">
+                                <a href="#" class="uppercase btn btn-primary" style="font-size: 0.8em;">Marquer tous comme Vus</a>
                             </div>
-                            <!-- /.post -->
-
-                            <!-- Post -->
-                            <div class="post">
-                                <div class="user-block">
-                                    <img class="img-circle img-bordered-sm" src="{% static 'dotracks/dist/img/user6-128x128.jpg' %}" alt="User Image">
-                                    <span class="username">
-                                        <a href="#">Adam Jones</a>
-                                        <a href="#" class="pull-right btn-box-tool">
-                                            <i class="fa fa-times"></i>
-                                        </a>
-                                    </span>
-                                    <span class="description">Posted 5 photos - 5 days ago</span>
-                                </div>
-                                <!-- /.user-block -->
-                                <div class="row margin-bottom">
-                                    <div class="col-sm-6">
-                                        <img class="img-responsive" src="{% static 'dotracks/dist/img/photo1.png' %}" alt="Photo">
-                                    </div>
-                                    <!-- /.col -->
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <img class="img-responsive" src="{% static 'dotracks/dist/img/photo2.png' %}" alt="Photo">
-                                                <br>
-                                                <img class="img-responsive" src="{% static 'dotracks/dist/img/photo3.jpg' %}" alt="Photo">
-                                            </div>
-                                            <!-- /.col -->
-                                            <div class="col-sm-6">
-                                                <img class="img-responsive" src="{% static 'dotracks/dist/img/photo4.jpg' %}" alt="Photo">
-                                                <br>
-                                                <img class="img-responsive" src="{% static 'dotracks/dist/img/photo1.png' %}" alt="Photo">
-                                            </div>
-                                            <!-- /.col -->
-                                        </div>
-                                        <!-- /.row -->
-                                    </div>
-                                    <!-- /.col -->
-                                </div>
-                                <!-- /.row -->
-
-                                <ul class="list-inline">
-                                    <li>
-                                        <a href="#" class="link-black text-sm">
-                                            <i class="fa fa-share margin-r-5"></i> Share</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="link-black text-sm">
-                                            <i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-                                    </li>
-                                    <li class="pull-right">
-                                        <a href="#" class="link-black text-sm">
-                                            <i class="fa fa-comments-o margin-r-5"></i> Comments (5)
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <input class="form-control input-sm" type="text" placeholder="Type a comment">
-                            </div>
-                            <!-- /.post -->
                         </div>
                         <!-- /.tab-pane -->
                         <div class="tab-pane" id="timeline">
                             <!-- The timeline -->
                             <ul class="timeline timeline-inverse">
                                 <!-- timeline time label -->
-                                <li class="time-label">
-                                    <span class="bg-red">
-                                        10 Feb. 2014
-                                    </span>
+                                <li>
+                                    <i class="fa fa-clock-o bg-gray"></i>
                                 </li>
                                 <!-- /.timeline-label -->
                                 <!-- timeline item -->
-                                <li>
+                                <li style="margin-top:50px">
                                     <i class="fa fa-envelope bg-blue"></i>
 
                                     <div class="timeline-item">
                                         <span class="time">
                                             <i class="fa fa-clock-o"></i> 12:05</span>
 
-                                        <h3 class="timeline-header">
+                                        <h3 class="timeline-header hidden">
                                             <a href="#">Support Team</a> sent you an email</h3>
 
-                                        <div class="timeline-body">
-                                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle quora plaxo
-                                            ideeli hulu weebly balihoo...
+                                        <div class="timeline-body">...
                                         </div>
-                                        <div class="timeline-footer">
+                                        <div class="timeline-footer hidden">
                                             <a class="btn btn-primary btn-xs">Read more</a>
                                             <a class="btn btn-danger btn-xs">Delete</a>
                                         </div>
@@ -290,7 +262,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <i class="fa fa-clock-o"></i> 5 mins ago</span>
 
                                         <h3 class="timeline-header no-border">
-                                            <a href="#">Sarah Young</a> accepted your friend request
+                                            ...
                                         </h3>
                                     </div>
                                 </li>
@@ -303,13 +275,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <span class="time">
                                             <i class="fa fa-clock-o"></i> 27 mins ago</span>
 
-                                        <h3 class="timeline-header">
+                                        <h3 class="timeline-header hidden">
                                             <a href="#">Jay White</a> commented on your post</h3>
 
                                         <div class="timeline-body">
-                                            Take me to your leader! Switzerland is small and neutral! We are more like Germany, ambitious and misunderstood!
+                                            ...
                                         </div>
-                                        <div class="timeline-footer">
+                                        <div class="timeline-footer hidden">
                                             <a class="btn btn-warning btn-flat btn-xs">View comment</a>
                                         </div>
                                     </div>
@@ -317,9 +289,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <!-- END timeline item -->
                                 <!-- timeline time label -->
                                 <li class="time-label">
-                                    <span class="bg-green">
-                                        3 Jan. 2014
-                                    </span>
                                 </li>
                                 <!-- /.timeline-label -->
                                 <!-- timeline item -->
@@ -328,16 +297,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                     <div class="timeline-item">
                                         <span class="time">
-                                            <i class="fa fa-clock-o"></i> 2 days ago</span>
+                                            <i class="fa fa-clock-o"></i></span>
 
                                         <h3 class="timeline-header">
-                                            <a href="#">Mina Lee</a> uploaded new photos</h3>
+                                            Mes Photos de Profil</h3>
 
                                         <div class="timeline-body">
-                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                            {% if profilePic %}{% for pic in profilePic %}
+                                            <img data-url="{{ pic.photo }}" src="{{ baseurl }}/{{ pic.photo }}" alt="..." style="margin:8px; width:20%; border-radius:50%; cursor:pointer; {% if userInfo.photo == pic.photo %}opacity:0.4{% endif %}" class="card {% if userInfo.photo != pic.photo %}changePicProfil{% endif %}"> {% endfor %}{% else %}
+                                            
+                                            <div class="callout callout-success">
+                                                <h4>
+                                                    <i class="icon fa fa-info"></i> I&nbsp; {{ langue.form_aucunedonne}}</h4>
+                                                <a href="#picture" data-toggle="tab">
+                                                    <button class="btn  bg-aqua">
+                                                        <i class="fa fa-plus"></i>&nbsp; Ajouter une Photo</button>
+                                                </a>
+                                            </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </li>
@@ -351,8 +328,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                         <div class="tab-pane" id="settings">
                             <div class="row">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-10">
+                                <div class="col-md-12">
                                     <div class="box box-primary">
                                         <div class="box-header with-border">
                                             <div class="alert alert-default alert-dismissible col-md-10">

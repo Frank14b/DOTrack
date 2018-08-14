@@ -9,7 +9,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            {{ langue.form_utilisateurs }}
             <small>DOTrack v1.0</small>
         </h1>
         <ol class="breadcrumb">
@@ -34,7 +33,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <section class="content container-fluid">
         <hr>
 
-        <div class="row">
+        <div class="row hidden">
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box card">
                     <span class="info-box-icon bg-aqua">
@@ -113,11 +112,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary card" style="border-radius: 0px;">
+                    <!-- Card -->
+                    <div class="card hidden">
+
+                        <!-- Card image -->
+
+                        <div class="view zoom" style="background:url('{% static 'dotracks/img/still_frame_entreprise_hd.jpg' %}')center/cover; min-height: 250px;">
+                            <img src="http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png" class="img-circle hidden" alt="Image of ballons flying over canyons with mask pattern one."
+                                style="margin-top: 35px; margin-left: 15px;">
+                            <div class="mask pattern-3 flex-center waves-effect waves-light">
+                                <p class="white-text hidden" style="font-size: 2.3em">" Bienvenue Administrateur {{ request.session.d_user }} "</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card -->
+
                     <div class="box-header with-border">
                         <h3 class="box-title">
                             <i class="fa fa-building"></i>&nbsp; {{ request.session.d_Entr }} {{ request.resolver_match.view_name }} &nbsp;
                             <span class="label label-success pull-right" style="font-size: .7em;">{{ dossierList.count }} Dossiers</span>
                         </h3>
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title hidden">
+                            <i class="fa fa-building"></i>&nbsp; {{ request.session.d_Entr }} {{ request.resolver_match.view_name }} &nbsp;
+                        </h3>
+                        <div class="col-md-6">
+                            <div class="alert bg-blue">Consulter la
+                                <a href="#" class="badge badge-info" style="text-decoration: none;">Documentation</a> pour Demarrer votre Document</div>
+                        </div>
+                        <a type="submit" href="{{ baseurl }}/Member/documents/{{ lang_abbr }}" class="btn btn-primary pull-right">
+                            <i class="fa fa-file"></i>&nbsp; Mes Documents</a>
+
                     </div>
                     <div class="box-body">
 
@@ -132,25 +158,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                                 <br>
                                 <style>
-                                   .dropdown-item{
-                                       padding: 12px;
-                                       float: left;
-                                       width: 100%;
-                                   }
+                                    .dropdown-item {
+                                        padding: 12px;
+                                        float: left;
+                                        width: 100%;
+                                    }
                                 </style>
                                 <br> {% for elmts in dossierList %}
-                                <div class="col-md-2" style="position: relative;">
+                                <div class="col-md-2 col-sm-4 col-xs-6" style="position: relative;">
 
                                     <div class="btn-group">
-                                        <span class="badge dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            style="float:right; cursor:pointer; margin-bottom:-10px; background:#fff;">
+                                        <span class="badge dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float:right; cursor:pointer; margin-bottom:-10px; background:#fff;">
                                             <i class="fa fa-angle-down" style="color:#333;"></i>
                                         </span>
 
                                         <div class="dropdown-menu" style="font-size:0.8em">
-                                            <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/{{ lang_abbr }}"><i class="fa fa-eye"></i> Ouvrir</a>
-                                            <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/share"><i class="fa fa-share"></i> Partager</a>
-                                            <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/download"><i class="fa fa-download"></i> Telecharger</a>
+                                            <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/{{ lang_abbr }}">
+                                                <i class="fa fa-eye"></i> Ouvrir</a>
+                                            <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/share">
+                                                <i class="fa fa-share"></i> Partager</a>
+                                            <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/download">
+                                                <i class="fa fa-more"></i> More...</a>
                                             <div class="dropdown-divider"></div>
                                         </div>
                                     </div>

@@ -10,11 +10,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Card image -->
 
-    <div class="view zoom" style="background:url('{% static 'dotracks/img/1.jpg' %}')center/cover; min-height: 250px;">
-      <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="Image of ballons flying over canyons with mask pattern one."
-        style="margin-top: 35px; margin-left: 15px;">
+    <div class="view zoom" style="background:url('{% static 'dotracks/img/still_frame_entreprise_hd.jpg' %}')center/cover; min-height: 250px;">
+      <img src="{% if userInfo.photo != '0' %}{{ baseurl }}/{{ userInfo.photo }}{% else %}http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png{% endif %}" class="img-circle card hidden" alt="Image of ballons flying over canyons with mask pattern one."
+        style="margin-top: 25px; margin-left: 35px;">
       <div class="mask pattern-1 flex-center waves-effect waves-light">
-        <p class="white-text" style="font-size: 2.3em">" Bienvenue Utilisateur {{ request.session.d_user }} "</p>
+        <p class="white-text hidden" style="font-size: 2.3em">" Bienvenue Utilisateur {{ request.session.d_user }} "</p>
       </div>
     </div>
   </div>
@@ -49,6 +49,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <hr>
 
     <div class="row">
+
       <div class="col-md-3 col-sm-6 col-xs-12">
         <div class="info-box card">
           <span class="info-box-icon bg-aqua">
@@ -128,7 +129,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="col-md-12">
           <div class="jumbotron">
               <h1 class="h1-responsive">{{langue.form_menu_apropos}}, DOTrack !</h1>
-              <p class="lead">DOTrack vos procure assurance, flexibite, securite dans l'excution et le traitement de vos Documents
+              <p class="lead" style="color:#444">DOTrack vos procure assurance, flexibite, securite dans l'excution et le traitement de vos Documents
                   . DOTrack est votre solution tout en un (chat, courrier, travail collaboratif, echange avec dautres
                   entreprises du systeme, ...)</p>
               <hr class="my-2">

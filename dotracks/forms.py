@@ -1,5 +1,7 @@
 from django import forms
 from .models import *
+from PIL import Image
+from django.core.files import File
 
 
 class LoginForm(forms.ModelForm):
@@ -55,11 +57,15 @@ class dossierForm(forms.ModelForm):
         model = Dossiers
         fields = ('cic', 'libelle', 'status', 'abreviation', 'dos', 'dates')
 
+class notifForm(forms.ModelForm):
+    class Meta:
+        model = Notifications
+        fields = ('use', 'libeller', 'details', 'status', 'lien', 'other', 'dates')
 
 class docForm(forms.ModelForm):
     class Meta:
         model = Documents
-        fields = ('for_field', 'libelle', 'descipt', 'status', 'dates')
+        fields = ('libelle', 'status', 'dates')
 
 class formatForm(forms.ModelForm):
     class Meta:
@@ -85,3 +91,37 @@ class chatForm(forms.ModelForm):
     class Meta:
         model = Chat
         fields = ('use', 'use_id2', 'libelle', 'status', 'dates')
+
+class PhotoProfilMemberForm(forms.ModelForm):
+    x = forms.FloatField(widget=forms.HiddenInput())
+    y = forms.FloatField(widget=forms.HiddenInput())
+    width = forms.FloatField(widget=forms.HiddenInput())
+    height = forms.FloatField(widget=forms.HiddenInput())
+
+    class Meta:
+        model = User_profile
+        fields = ('photo', 'x', 'y', 'width', 'height', )
+        widgets = {
+            'photo': forms.FileInput(attrs={
+                'accept': 'image/*'  # this is not an actual validation! don't rely on that!
+            })
+        }
+
+    def save(self, user):
+        pic = super(PhotoProfilMemberForm, self).save(commit=False)
+        pic.status = 0
+        pic.use = Users.objects.get(id=user)
+        pic.save()
+
+        x = self.cleaned_data.get('x')
+        y = self.cleaned_data.get('y')
+        w = self.cleaned_data.get('width')
+        h = self.cleaned_data.get('height')
+
+        image = Image.open(pic.photo)
+        cropped_image = image.crop((x, y, w+x, h+y))
+        resized_image = cropped_image.resize((200, 200), Image.ANTIALIAS)
+        resized_image.save(pic.photo.path)
+
+        
+        return pic

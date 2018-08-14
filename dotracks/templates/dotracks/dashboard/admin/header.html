@@ -242,14 +242,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>DOTrack | {{ request.resolver_match.view_name }}</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.2.4/css/ionicons.min.css"/>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="{% static 'dotracks/css_/bootstrap.min.css' %}">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{% static 'dotracks/css_/font-awesome.min.css' %}">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="{% static 'dotracks/css_/ionicons.min.css' %}">
+
     <link rel="stylesheet" href="{% static 'dotracks/css_/dataTables.bootstrap.min.css' %}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{% static 'dotracks/css_/AdminLTE.min.css' %}">
@@ -276,6 +277,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
     <link rel="stylesheet" href="{% static 'dotracks/css_/mdb.min.css' %}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'dotracks/img/logo.png' %}" type="image/x-icon" />
 </head>
 <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
 
@@ -354,7 +358,7 @@
                                             <a href="#">
                                                 <div class="pull-left">
                                                     <!-- User Image -->
-                                                    <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
+                                                    <img src="http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png" class="img-circle" alt="User Image">
                                                 </div>
                                                 <!-- Message title and timestamp -->
                                                 <h4>
@@ -407,10 +411,11 @@
                         <li class="dropdown tasks-menu">
                             <!-- Menu Toggle Button -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-flag-o"></i>
+                                <img src="{% static 'dotracks/img/' %}{% if lang_abbr == 'fr' %}dfr.png{% else %}{% if lang_abbr == 'en' %}den.jpeg{% else %}dch.png{% endif %}{% endif %}"
+                                    style="width:20px; height:20px; border-radius:50%; margin-top:-3px" />&nbsp;&nbsp;
                                 <b>{{ lang_abbr }}</b>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu card" style="width:200px;">
                                 <li class="header"></li>
                                 <li>
                                     <!-- Inner menu: contains the tasks -->
@@ -420,19 +425,19 @@
                                             <a href="{{ baseUrl }}{{ request.get_full_path }}../fr">
                                                 <!-- Task title and progress text -->
                                                 <h3>
-                                                    <i class="fa fa-flag-o"></i>&nbsp;&nbsp; Francais - Fr (France)
+                                                    <img src="{% static 'dotracks/img/dfr.png' %}" style="width:20px; height:20px; border-radius:50%; margin-top:-3px" />&nbsp;&nbsp;Francais (fr-FR)
                                                 </h3>
                                             </a>
                                             <a href="{{ baseUrl }}{{ request.get_full_path }}../en">
                                                 <!-- Task title and progress text -->
                                                 <h3>
-                                                    <i class="fa fa-flag-o"></i>&nbsp;&nbsp;Englais - En (England)
+                                                    <img src="{% static 'dotracks/img/den.jpeg' %}" style="width:20px; height:25px; border-radius:50%; margin-top:-3px" />&nbsp;&nbsp;Englais (en-EN)
                                                 </h3>
                                             </a>
-                                            <a href="{{ baseUrl }}{{ request.get_full_path }}../ch">
+                                            <a class="hidden" href="{{ baseUrl }}{{ request.get_full_path }}../ch">
                                                 <!-- Task title and progress text -->
                                                 <h3>
-                                                    <i class="fa fa-flag-o"></i>&nbsp;&nbsp;Chinois - Ch (China)
+                                                    <img src="{% static 'dotracks/img/dch.png' %}" style="width:20px; height:20px; border-radius:50%; margin-top:-3px" />&nbsp;&nbsp;Chinois (ch-CH)
                                                 </h3>
                                             </a>
                                         </li>
@@ -449,14 +454,14 @@
                             <!-- Menu Toggle Button -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <!-- The user image in the navbar-->
-                                <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="user-image" alt="User Image">
+                                <img src="http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png" class="user-image" alt="User Image">
                                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                 <span class="hidden-xs">{{ request.session.d_user }}</span>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu card">
                                 <!-- The user image in the menu -->
                                 <li class="user-header">
-                                    <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
+                                    <img src="http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png" class="img-circle" alt="User Image">
 
                                     <p>
                                         {{ request.session.d_user }} - Admin
@@ -493,7 +498,7 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
+                    <img src="http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
                     <p>
@@ -518,11 +523,10 @@
                     <a class="text-center" style="font-size: 0.9em; text-align: left" href="{{ baseurl }}/dashboard/courriers/{{ lang_abbr }}">
                         <i class="fa fa-envelope" style="font-size: 1em"></i>
                         <span>{{ langue.form_courrier_box }}</span>
-                        <span class="pull-right-container">
                             <small class="label pull-right bg-yellow" style="font-size: .8em">0</small>
                             <small class="label pull-right bg-green" style="font-size: .8em">0</small>
                             <small class="label pull-right bg-red" style="font-size: .8em">0</small>
-                        </span>
+                      
                     </a>
                 </li>
 
@@ -552,6 +556,8 @@
                     </ul>
                 </li>
 
+                {%if request.session.d_Entr%} 
+
                 <li class="treeview menus {%if request.resolver_match.view_name == 'Utilisateurs'%}active{%endif%}" data-iden="1">
                     <a class="" style="font-size: .9em; text-align: left" href="">
                         <i class="fa fa-users"></i>
@@ -572,6 +578,50 @@
                         </li>
                         
                     </ul>
+                </li>
+
+                <li class="{%if request.resolver_match.view_name == 'Courriel Box' %}active{%endif%}">
+                    <a class="text-center" style="font-size: 0.9em; text-align: left" href="{{ baseurl }}/dashboard/documents/{{ lang_abbr }}">
+                        <i class="fa fa-file" style="font-size: 1em"></i>
+                        <span>{{ langue.form_Documents }}</span>
+                            <small class="label pull-right bg-yellow" style="font-size: .8em">0</small>
+                        
+                    </a>
+                </li>
+
+                <li class="{%if request.resolver_match.view_name == 'Courriel Box' %}active{%endif%}">
+                    <a class="text-center" style="font-size: 0.9em; text-align: left" href="{{ baseurl }}/dashboard/archives/{{ lang_abbr }}">
+                        <i class="fa fa-archive" style="font-size: 1em"></i>
+                        <span>{{ langue.form_archives }}</span>
+                            <small class="label pull-right bg-yellow" style="font-size: .8em">0</small>
+                        
+                    </a>
+                </li>
+
+                <li class="{%if request.resolver_match.view_name == 'Cicursale' %}active{%endif%}">
+                    <a class="text-center" style="font-size: 0.9em; text-align: left" href="#"  data-toggle="modal" data-target="#viewCicursale">
+                        <i class="fa fa-building" style="font-size: 1em"></i>
+                        <span>{{ langue.form_Cicursale }}</span>
+                            <small class="label pull-right bg-info" style="font-size: .8em">{{ nbrCicr }}</small>
+                        
+                    </a>
+                </li>
+                {% else %} 
+                <li class="">
+                    <a class="text-center" href="#" style="font-size: 0.9em; text-align: left">
+                        <i class="fa fa-building" style="font-size: 1em"></i>
+                        <span>{{ langue.form_Cicursale }}</span>
+                            <small class="label pull-right bg-info" style="font-size: .8em">choisir une entrprise</small>
+                        
+                    </a>
+                </li>        
+                {% endif %}
+
+                <li class="">
+                    <center><a class="text-center btn btn-primary" style="font-size: 0.9em; text-align: left" href="{{ baseurl }}/dashboard/documentation/{{ lang_abbr }}">
+                        <i class="fa fa-book" style="font-size: 1em"></i>
+                        <span>Documentation</span>
+                    </a></center>
                 </li>
 
             </ul>
@@ -632,7 +682,9 @@
                     </div>
                 </div>
 
+            <div class="row">
                 {% block content %} {% endblock %}
+            </div>
 
             </section>
             <!-- /.content -->
@@ -745,6 +797,8 @@
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body scroll scroll_bleu" style="overflow-x: auto">
+                                        <div class="col-md-12"><span class="badge badge-info">Cliquer sur le boutton <i class="fa fa-users"></i> pour activer la succursale que vous voulez administrer</span><br></div>
+                                        <div class="col-md-12"><span class="badge badge-success">Cliquer sur le boutton <i class="fa fa-arrow-right"></i> pour acceder a la succursale</span></div>
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
@@ -780,7 +834,7 @@
                                                         </button>
                                                     </a>
                                                     <a href="{{ baseurl }}/dashboard/sucursale/{{ elmts.id }}/acceder/{{ lang_abbr }}/">
-                                                        <button class="btn btn-success btn-sm desactiver" id="{{ elmts.id }}">
+                                                        <button class="btn btn-success btn-sm" id="{{ elmts.id }}">
                                                             <i class="fa fa-arrow-right"></i>
                                                         </button>
                                                     </a>
@@ -982,6 +1036,7 @@
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title">{{ langue.form_champ_obligatoire }}</h3>
+                            <div class="col-md-12"><span class="badge badge-success">La Fonction est facultative selon la poste qui sera attribuer au membre (e.g : DG Adjoint)</span></div>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
@@ -1259,6 +1314,7 @@
     </div>
     <!-- ./wrapper -->
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.2.4/ionicons.js"></script>
     <!-- jQuery 3 -->
     <script src="{% static 'dotracks/js_/jquery.min.js' %}"></script>
     <!-- Bootstrap 3.3.7 -->
@@ -1294,7 +1350,7 @@
     <script src="{% static 'dotracks/js_/icheck.min.js' %}"></script>
     <!-- croppie -->
     <script src="{% static 'dotracks/js_/croppie.js' %}"></script>
-    <script src="{% static 'dotracks/js_/ckeditor.js' %}"></script>
+    <script src="{% static 'dotracks/js_/ckeditor/ckeditor.js' %}"></script>
     <!-- Bootstrap WYSIHTML5 -->
     <script src="{% static 'dotracks/js_/bootstrap3-wysihtml5.all.min.js' %}"></script>
 
@@ -1340,6 +1396,10 @@
         $(function () {
             //Initialize Select2 Elements
             $('.select2').select2()
+
+            CKEDITOR.replace('compose-textarea')
+
+            //$("textarea").wysihtml5();
             //Money Euro
             $('[data-mask]').inputmask()
 
@@ -2103,6 +2163,23 @@
             display: none;
         }
     </style>
+
+    <!-- WhatsHelp.io widget -->
+<script type="text/javascript">
+    (function () {
+        var options = {
+            facebook: "150733011949272", // Facebook page ID
+            call_to_action: "Message us", // Call to action
+            position: "left", // Position may be 'right' or 'left'
+        };
+        var proto = document.location.protocol, host = "whatshelp.io", url = proto + "//static." + host;
+        var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = url + '/widget-send-button/js/init.js';
+        s.onload = function () { WhWidgetSendButton.init(host, proto, options); };
+        var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);
+    })();
+</script>
+<!-- /WhatsHelp.io widget -->
+
 </body>
 
 </html>

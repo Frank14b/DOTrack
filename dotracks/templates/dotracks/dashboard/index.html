@@ -8,7 +8,7 @@
         <!-- Card image -->
 
         <div class="view zoom" style="background:url('{% static 'dotracks/img/apple-iphone-books-desk2.jpg' %}')center/cover; min-height: 250px;">
-            <img src="{% static 'dotracks/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="Image of ballons flying over canyons with mask pattern one." style="margin-top: 35px; margin-left: 15px;">
+            <img src="http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png" class="img-circle" alt="Image of ballons flying over canyons with mask pattern one." style="margin-top: 35px; margin-left: 15px;">
             <div class="mask pattern-1 flex-center waves-effect waves-light">
                 <p class="white-text" style="font-size: 2.3em">" Bienvenue Administrateur {{ request.session.d_user }} "</p>
             </div>
@@ -42,30 +42,20 @@
             <div class="box box-danger">
                 <div class="box-header with-border">
                     <h3 class="box-title">{{ langue.form_Latest_Members }}</h3>
-
-                    <!--<div class="box-tools pull-right">
-                        <span class="label label-danger">{{ nbrUser }} {{ langue.form_NewMembers }}</span>
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>-->
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body no-padding card z-depth-2">
                     <ul class="users-list clearfix">
                         {% for elmts in userList %}
                         <li class=" wow animated jello">
-                            <img src="{% static 'dotracks/dist/img/avatar6.png' %}" alt="DOTrack">
+                            <img src="{% if elmts.photo != '0' %}{{ baseurl }}/{{ elmts.photo }}{% else %}http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png{% endif %}" alt="DOTrack">
                             <a class="users-list-name" href="{{baseurl}}/dashboard/company/user/{{ elmts.id }}/profile/{{lang_abbr}}">{{ elmts.nom }} {{ elmts.prenom }}</a>
                             <span class="users-list-name" style="font-size: 0.7em; opacity: 0.5;">{{ elmts.typ__libeler }} , {{ elmts.role }}
                                 <br>{{ elmts.cic__ville }}( {{ elmts.cic__pays }} )</span>
                         </li>
                         {% endfor %} {% if preg != "1" %} {% for i in preg %}
                         <li style="min-height: 60px;">
-                            <img src="{% static 'dotracks/dist/img/avatar6.png' %}" alt="DOTrack" style="opacity: 0.35;">
+                            <img src="http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png" alt="DOTrack" style="opacity: 0.35;">
                             <a class="users-list-name" href="#" data-target="#addUsers" data-toggle="modal" style="opacity: 0.3;">{{ langue.form_ajouter}}</a>
                             <span class="users-list-date" style="opacity: 0.3;font-size: 0.7em;">
                                 <br>

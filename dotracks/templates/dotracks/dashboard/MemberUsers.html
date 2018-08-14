@@ -134,7 +134,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </div>
                                     </div>
                                     <div class="widget-user-image" style="z-index: 99; border: 0px;">
-                                        <img class="img-circle" src="{% static 'dotracks/dist/img/avatar6.png' %}" alt="User Avatar" style="border: 0px;">
+                                        <img class="img-circle" src="{% if elmts.photo != '0' %}{{ baseurl }}/{{ elmts.photo }}{% else %}http://esrilanka.org/mcqpal/backend/dist/img/user2-160x160.png{% endif %}" alt="User Avatar" style="border: 0px;">
                                     </div>
                                     <div class="box-footer hover">
                                         <div class="row">

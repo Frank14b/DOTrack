@@ -5,8 +5,11 @@
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
 #   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
-from django.db import models
 
+import os
+
+from django.db import models
+from django.core.files.storage import FileSystemStorage
 
 class Acceder(models.Model):
     mod = models.ForeignKey('Module', models.DO_NOTHING, db_column='Mod_id', primary_key=False)  # Field name made lowercase.
@@ -25,6 +28,8 @@ class Admin(models.Model):
     password = models.CharField(max_length=254, blank=True, null=True)
     dates = models.DateTimeField(blank=True, null=True)
     status = models.IntegerField(blank=True, null=True)
+    totalconnect = models.IntegerField(blank=True, null=True)
+    lastconnect = models.CharField(max_length=254, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -49,7 +54,7 @@ class Archives(models.Model):
 class Chat(models.Model):
     use = models.ForeignKey('Users', models.DO_NOTHING, db_column='Use_id', related_name="envoie")  # Field name made lowercase.
     use_id2 = models.ForeignKey('Users', models.DO_NOTHING, db_column='Use_id2', related_name="recoit")  # Field name made lowercase.
-    libelle = models.CharField(max_length=254, blank=True, null=True)
+    libelle = models.TextField(blank=True, null=True)
     status = models.IntegerField(blank=True, null=True)
     dates = models.DateTimeField(blank=True, null=True)
 
@@ -113,6 +118,7 @@ class Documents(models.Model):
     descipt = models.CharField(max_length=254, blank=True, null=True)
     status = models.IntegerField(blank=True, null=True)
     dates = models.CharField(max_length=254, blank=True, null=True)
+    files = models.CharField(max_length=254, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -126,6 +132,7 @@ class Dossiers(models.Model):
     abreviation = models.CharField(max_length=254, blank=True, null=True)
     status = models.IntegerField(blank=True, null=True)
     dates = models.CharField(max_length=254, blank=True, null=True)
+    link = models.CharField(max_length=500, blank=True, null=True)
 
     def sucur(self):
         try:
@@ -212,6 +219,19 @@ class Mouchard(models.Model):
     class Meta:
         managed = True
         db_table = 'mouchard'
+
+class Notifications(models.Model):
+    use = models.ForeignKey('Users', models.DO_NOTHING, db_column='Use_id')  # Field name made lowercase.
+    libeller = models.CharField(max_length=254, blank=True, null=True)
+    details = models.CharField(max_length=254, blank=True, null=True)
+    lien = models.CharField(max_length=254, blank=True, null=True)
+    status = models.CharField(max_length=254, blank=True, null=True)
+    other = models.CharField(max_length=254, blank=True, null=True)
+    dates = models.DateTimeField(blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'notifications'
 
 
 class Perception(models.Model):
@@ -321,7 +341,7 @@ class Users(models.Model):
     lastconnect = models.CharField(max_length=200, blank=True, null=True)
     totalconnect = models.IntegerField(blank=True, null=True)
     about = models.CharField(max_length=253, blank=True, null=True)
-    photo = models.CharField(max_length=254, blank=True, null=True)
+    photo = models.ImageField()
 
     def cics(self):
         try:
@@ -337,3 +357,23 @@ class Users(models.Model):
     class Meta:
         managed = True
         db_table = 'users'
+
+
+class User_profile(models.Model):
+
+    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+    STATIC_ROOT = os.path.join(PROJECT_ROOT)
+
+    upload_storage = FileSystemStorage(location=STATIC_ROOT, base_url='/user_profile')
+
+    use = models.ForeignKey(Users, models.DO_NOTHING, db_column='Use_id')  # Field name made lowercase.
+    status = models.CharField(max_length=254, blank=True, null=True)
+    dates = models.DateTimeField(auto_now_add=True)
+    photo = models.ImageField(upload_to='static/dotracks/user_profile/', storage=upload_storage)
+
+    class Meta:
+        managed = True
+        db_table = 'user_profile'
+        verbose_name = 'photo'
+        verbose_name_plural = 'photos'

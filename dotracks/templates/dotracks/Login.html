@@ -4,24 +4,28 @@
     .home_slider_container, .contactt, .courr {
         display: none;
     }
+    .btn-social{
+        cursor:pointer;
+    }
 </style>
-
+<div class="" id="page-Login" style="margin-bottom:30px;"></div>
 <!-- Contact -->
 
 <div class="contact">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 contact_form_col" style="margin-top:-80px;">
+            <div class="col-md-8 contact_form_col" style="margin-top:-80px;">
                 <div class="section_title_container">
                     <div class="section_subtitle">Document Tracking</div>
                     <div class="section_title">Formulaire de Connexion</div>
                 </div>
-                <div class="contact_form_container">
-                    <form  action="" method="POST" id="loginForm" class="contact_form">
-                        <div class="row">
+                <div class="contact_form_container card">
+                    <div class="col-md-12">
+                        <form  action="" method="POST" id="loginForm" class="contact_form">
+                           <div class="row">
                             <div class="col-md-6">
                                 {% csrf_token %}
-                                <input type="email" name="email" class="input_item" placeholder="Votre Email" required="required">
+                                <input type="email" name="email" class="input_item" placeholder="Votre Email" required="required" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
                             </div>
                             <div class="col-md-6">
                                 <input type="password" name="password" class="input_item" placeholder="Votre Mot de Passe" required="required">
@@ -30,16 +34,51 @@
                                 <input type="checkbox"> Se souvenir de moi
                             </div>
                             <hr>
-                            <div class="col-md-12"><a href=""><i class="fa fa-eye"></i>&nbsp;Mot de passe oublier ?</a> &nbsp;|&nbsp; <a  href="{{ baseUrl }}/inscription/{{ lang_abbr }}/">Creer un Compte</a></div>
-                             
+                            <div class="col-md-12"><a href=""><i class="fa fa-eye"></i>&nbsp;Mot de passe oublier ?</a> &nbsp;|&nbsp; <a  href="{{ baseUrl }}/inscription/{{ lang_abbr }}/#page-register">Creer un Compte</a></div>
+
+                            <div class="col-md-12"><div class="g-recaptcha" data-sitekey="6LdaQ2UUAAAAADnGIWKA0B5bXjCRpx9WBZ8kJpuB"></div></div>
+                            
                             <div class="col-md-12"><hr>
                                 <button id="push" type="submit" class="contact_button trans_200" value="Submit">Connexion</button>
                             </div>
                             <div class="alert col-md-12" id="reponses">
 
                             </div>
+                            <div class="col-md-12"><div class="col-md-12"><h4><center><b>OU</b></center></h4>
+                                
+                            </div>
+                           </div>
+                        </form>
+                            <div class="col-md-12">
+                                <div class="row">
+                                            <div class="col-md-3" style="position:relative;">
+                                                
+                                                <button onclick="javascript:login();" type="button" class="btn btn-block btn-social btn-primary btn-facebook" style="color:#fff;">
+                                                     <i class="fa fa-facebook"></i> Sign in with Facebook
+                                                </button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="g-signin2" data-onsuccess="onSignIn" style="visibility:visible; margin-top:-0px"></div>
+                                                <a class="btn btn-block btn-social btn-google hidden" style="color:#fff; display:none;">
+                                                    <i class="fa fa-google-plus" style="margin-left:5px"></i> Sign in with Google
+                                                </a>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <script type="in/Login"></script>
+                                                <a class="btn btn-block btn-social btn-linkedin" style="color:#fff; display:none;">
+                                                    <i class="fa fa-linkedin"></i> Sign in with LinkedIn
+                                                </a>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <a class="btn btn-block btn-social btn-twitter" style="color:#fff;">
+                                                    <i class="fa fa-twitter"></i> Sign in with Twitter
+                                                </a>
+                                            </div>
+                                </div>
+                            </div>
+                            <hr>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">

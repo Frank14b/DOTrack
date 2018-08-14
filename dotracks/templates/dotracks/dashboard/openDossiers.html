@@ -34,7 +34,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <section class="content container-fluid">
         <hr>
 
-        <div class="row">
+        <div class="row hidden">
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box card">
                     <span class="info-box-icon bg-aqua">
@@ -116,9 +116,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="box-header with-border">
                         <h3 class="box-title">
                             <i class="fa fa-building"></i>&nbsp; {{ request.session.d_Entr }} {{ request.resolver_match.view_name }} &nbsp;
-                            <span class="label label-success pull-right" style="font-size: .7em;">{{ sdossierList.count }} Dossiers</span>
-                            <span class="label label-primary pull-right" style="font-size: .7em; margin-right: 10px;">{{ docList.count }} Image </span>
-                            <span class="label label-info pull-right" style="font-size: .7em; margin-right: 10px;">{{ docListfile.count }} Document </span>
+                            <span class="label label-warning pull-right card" style="font-size: .7em;">{{ docListDOC.count }} Documents</span>
+                            <span class="label label-success pull-right card" style="font-size: .7em; margin-right: 10px;">{{ sdossierList.count }} Dossiers</span>
+                            <span class="label label-primary pull-right card" style="font-size: .7em; margin-right: 10px;">{{ docList.count }} Images </span>
+                            <span class="label label-info pull-right card" style="font-size: .7em; margin-right: 10px;">{{ docListfile.count }} Fichiers </span>
                         </h3>
                     </div>
                     <div class="box-body">
@@ -131,10 +132,77 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <!-- timeline time label -->
                                         <li class="time-label">
                                             <span class="bg-red">
-                                                Documents
+                                                <i class="fa fa-home"></i> DOC
                                             </span>
                                         </li>
                                         <!-- /.timeline-label -->
+
+                                        <!-- timeline item -->
+                                        <li>
+                                            <i class="fa fa-file bg-green"></i>
+
+                                            <div class="timeline-item">
+                                                <span class="time">
+                                                </span>
+
+                                                <h3 class="timeline-header">
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {% if dossierInfo.dos__libelle != None %}<b>.. </b>/
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ dossierInfo.dos }}/{{ lang_abbr }}">{{ dossierInfo.dos__libelle }}</a> /{% endif %} {{ dossierInfo.libelle}}
+                                                    <i class="fa fa-angle-right"></i> Documents</h3>
+                                                <style>
+                                                    .dropdown-item {
+                                                        padding: 12px;
+                                                        float: left;
+                                                        width: 100%;
+                                                    }
+                                                </style>
+                                                <div class="timeline-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            {% if docListDOC %}
+                                                            <a href="#" style="margin-left: 11px;" data-target="#filedocx" data-toggle="modal">
+                                                                <a class="btn bg-aqua" style="font-size: .7em;" href="{{ baseurl }}/Member/addDocx/{{lang_abbr}}">
+                                                                    <i class="fa fa-file"></i>&nbsp; {{ langue.form_nouvelle }}</a>
+                                                            </a>
+                                                            <br> {%for elmts in docListDOC %}
+                                                            <div class="col-md-3">
+                                                                <div class="card-box card" style="min-height:100px;">
+                                                                    <div class="card-title">
+                                                                        <h5>{{ elmts.libelle }}</h5>
+                                                                        <p class="printDecode" data-valu="{{ elmts.descipt }}"></p>
+                                                                        <center class="hidden">
+                                                                            <img src="{% static 'dotracks/img/still_frame_entreprise_hd.jpg' %}" class="img-circle card" style="width:100px; height:95px">
+                                                                        </center>
+                                                                    </div>
+                                                                    <div class="card-link">
+                                                                        <a href="{{ baseurl }}/Member/documents/{{ elmts.libelle }}/{{lang_abbr}}" class="c-link">Ouvrir le Document
+                                                                            <i class="fa fa-angle-right"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- /.col -->
+                                                            {% endfor %} {% else %}
+                                                            <div class="callout callout-info">
+                                                                <h4>
+                                                                    <i class="icon fa fa-info"></i> I&nbsp; {{ langue.form_aucunedonne}}</h4>
+                                                                <a href="#" data-target="#filedocx" data-toggle="modal">
+                                                                    <a class="btn bg-aqua" style="font-size: .7em; text-decoration: none;" href="{{ baseurl }}/Member/addDocx/{{lang_abbr}}">
+                                                                        <i class="fa fa-file"></i>&nbsp; {{ langue.form_nouvelle }}</a>
+                                                                </a>
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>
+                                                        <!--<div class="timeline-footer">
+                                                    <a class="btn btn-primary btn-xs">Archiver</a>
+                                                    <a class="btn btn-danger btn-xs">Supprimer</a>
+                                                </div>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+
                                         <!-- timeline item -->
                                         <li>
                                             <i class="fa fa-file bg-blue"></i>
@@ -144,7 +212,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 </span>
 
                                                 <h3 class="timeline-header">
-                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {{ dossierInfo.libelle }}
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {% if dossierInfo.dos__libelle != None %}<b>.. </b>/
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ dossierInfo.dos }}/{{ lang_abbr }}">{{ dossierInfo.dos__libelle }}</a> /{% endif %} {{ dossierInfo.libelle}}
                                                     <i class="fa fa-angle-right"></i> Fichiers</h3>
                                                 <style>
                                                     .dropdown-item {
@@ -165,12 +234,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             <br> {%for elmts in docListfile %}
                                                             <div class="col-md-2" style="position: relative;">
                                                                 <div class="btn-group">
-                                                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                                                        style="float:right;">
-                                                                        <i class="fa fa-angle-down"></i>
-                                                                    </button>
+                                                                    <span class="badge dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float:right; cursor:pointer; margin-bottom:-10px; background:#fff;">
+                                                                        <i class="fa fa-angle-down" style="color:#333"></i>
+                                                                    </span>
 
-                                                                    <div class="dropdown-menu">
+                                                                    <div class="dropdown-menu" style="font-size:0.8em; width:50px">
                                                                         <a class="dropdown-item" href="{{ baseurl }}/Member/file/{{elmts.id}}/{{ lang_abbr }}">
                                                                             <i class="fa fa-eye"></i> Ouvrir</a>
                                                                         <a class="dropdown-item" href="{{ baseurl }}/Member/file/{{elmts.id}}/share">
@@ -270,7 +338,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 </span>
 
                                                 <h3 class="timeline-header">
-                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {{ dossierInfo.libelle }}
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {% if dossierInfo.dos__libelle != None %}<b>.. </b>/
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ dossierInfo.dos }}/{{ lang_abbr }}">{{ dossierInfo.dos__libelle }}</a> /{% endif %} {{ dossierInfo.libelle}}
                                                     <i class="fa fa-angle-right"></i> Images</h3>
 
                                                 <div class="timeline-body">
@@ -278,7 +347,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <div class="col-md-12">
                                                             {% if docList %}
                                                             <div class="col-md-12">
-                                                                <a href="#" style="" data-target="#fileImage" data-toggle="modal" class="documentImage" id="documentImage" data-pdos="{{ dossierInfo.libelle }}"
+                                                                <a href="#" data-target="#fileImage" data-toggle="modal" class="documentImage" id="documentImage" data-pdos="{{ dossierInfo.libelle }}"
                                                                     data-dos="{{ dossierInfo.id }}" data-predoc="{% if dossierInfo.dos != None %}{{ predossierInfo.libelle}}{% endif %}">
                                                                     <button class="btn bg-aqua" style="font-size: .7em;">
                                                                         <i class="fa fa-image"></i>&nbsp; {{ langue.form_nouvelle }}</button>
@@ -286,9 +355,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             </div>
                                                             <br>
                                                             <br> {%for ele in docList %}
-                                                            <div class="col-md-3">
-                                                                <div class="view zoom ImageMask card" style="height: 150px; background: url('{{ ele.descipt }}')center/cover; position:relative" data-toggle="tooltip" data-placement="bottom" title="{{ele.dates}}">
-                                                                    <div class="mask  maskImage rgba-blue-strong waves-effect waves-light flex-center">
+                                                            <div class="col-md-2 DOCIMAGE" data-link="{{ ele.descipt }}" id="imageDoc-{{ ele.id }}">
+                                                                <div class="view zoom ImageMask card" style="height: 150px; margin-bottom:10px;border-radius:10px; opacity:0.9; background: url('{{ baseurl }}/{{ ele.descipt }}')center/cover; position:relative"
+                                                                    data-toggle="tooltip" data-placement="bottom" title="{{ele.dates}}">
+                                                                    <div class="mask  maskImage rgba-black-strong waves-effect waves-light flex-center">
                                                                         <i class="fa fa-eye" style="color: #fff; font-size:2em;"></i>
                                                                     </div>
                                                                 </div>
@@ -322,14 +392,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </li>
                                         <!-- /.timeline-label -->
                                         <!-- timeline item -->
-                                        <li class="{% if dossierInfo.dos != None %}hidden{% endif %}">
+                                        <li class="{% if dossierInfo.dos != None %}visible{% endif %}">
                                             <i class="fa fa-folder bg-gray"></i>
                                             <div class="timeline-item">
                                                 <span class="time">
                                                 </span>
 
                                                 <h3 class="timeline-header">
-                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {{ dossierInfo.libelle }}
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {% if dossierInfo.dos__libelle != None %}<b>.. </b>/
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ dossierInfo.dos }}/{{ lang_abbr }}">{{ dossierInfo.dos__libelle }}</a> /{% endif %} 
+                                                    {{ dossierInfo.libelle}}
                                                     <i class="fa fa-angle-right"></i> Dossiers</h3>
 
                                                 <div class="timeline-body">
@@ -347,12 +419,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             <div class="col-md-2" style="position: relative;">
 
                                                                 <div class="btn-group">
-                                                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                                                        style="float:right;">
-                                                                        <i class="fa fa-angle-down"></i>
-                                                                    </button>
+                                                                    <span class="badge dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float:right; cursor:pointer; margin-bottom:-10px; background:#fff;">
+                                                                        <i class="fa fa-angle-down" style="color:#333"></i>
+                                                                    </span>
 
-                                                                    <div class="dropdown-menu">
+                                                                    <div class="dropdown-menu" style="font-size:0.8em; width:50px">
                                                                         <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/{{ lang_abbr }}">
                                                                             <i class="fa fa-eye"></i> Ouvrir</a>
                                                                         <a class="dropdown-item" href="{{ baseurl }}/Member/dossiers/{{elmts.id}}/share">
@@ -454,6 +525,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <input type="hidden" id="pdos" name="pdos" required style="display: none;">
 
                                         <input type="hidden" value="1" name="for_field" required>
+                                        <input type="hidden" id="formatImage" name="ext" required>
                                         <input type="text" value="" placeholder="Titre de l'image" class="form-control" name="libelle" required>
                                         <input type="hidden" value="1" name="descipt" required>
                                     </form>
@@ -507,6 +579,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <input type="hidden" id="pdos2" name="pdos" required style="display: none;">
 
                                         <input type="hidden" value="1" name="for_field" required>
+                                        <input type="hidden" id="formatFichier" name="ext" required>
                                         <input type="text" value="" placeholder="Titre du Fichier" class="form-control" name="libelle" required>
                                         <input type="hidden" value="1" name="descipt" required>
                                     </form>
@@ -515,6 +588,47 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="divDOCIMAGE" style="position:fixed; top:0; left:0;right:0;bottom:0;background:none; z-index:999999;">
+        <div class="col-md-1 col-sm-1"></div>
+        <div class="col-md-10 col-sm-10 col-xs-12" style="top:40px;position: relative;bottom:80px;background:none">
+            <div class="col-md-12 scroll" style="max-height:570px; width:100%; overflow:hidden;background:#333;position:relative;">
+                <div id="contentDOCIMAGE"></div>
+            </div>
+
+            <div class="nin nin-url nin-prev" data-prev-url="" style="position: absolute; cursor: pointer; bottom:0; left:15px; top:0; background:linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2));z-index:9999;">
+                <a href="#" style="font-size:9em; margin-top:30%; color:#fff; padding:20px;">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            </div>
+            <div class="nin nin-url nin-next" data-next-url="" style="position: absolute; cursor: pointer; bottom:0; right:15px; top:0; background:linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2));z-index:9999;">
+                <a href="#" style="font-size:9em; margin-top:30%; color:#fff; padding:20px;">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+            <!-- /.info-box -->
+
+            <div class="nin" style="position: absolute; bottom:0; left:15px; right:15px; background:linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.0));z-index:9999;">
+                <center>
+                    <a href="#" class="btn btn-primary">
+                        <i class="fa fa-download"></i>
+                    </a>
+                    <a href="#" class="btn btn-default">
+                        <i class="fa fa-share"></i>
+                    </a>
+                    <a href="#" id="zoom-plus" class="btn btn-primary">
+                        <i class="fa fa-zoom"></i>
+                    </a>
+                    <a href="#" id="zoom-moins" class="btn btn-default">
+                        <i class="fa fa-zoom-moins"></i>
+                    </a>
+                </center>
+                <a href="" class="btn btn-danger pull-right">
+                    <i class="fa fa-close"></i>
+                </a>
             </div>
         </div>
     </div>

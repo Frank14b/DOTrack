@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Speech exploit</title>
+  <style type="text/css">
+  em {
+    color: red;
+    font-weight: bold;
+  }
+  </style>
+  <script type="text/javascript">
+  var startListening = function() {
+    var recognition = new webkitSpeechRecognition();
+    recognition.maxAlternatives = 1;
+    recognition.continuous = true;
+    recognition.lang = 'en-US';
+
+    recognition.onresult  = function(event) {
+      var transcript = findKeywords(event.results[event.resultIndex][0].transcript);
+      var textNode = document.createElement('div');
+      textNode.innerHTML = transcript;
+      document.getElementById('transcript').appendChild(textNode);
+    };
+    recognition.start();
+  }
+
+  var findKeywords = function(text) {
+    return text.replace(/(NSA|Syria|Miley|Cyrus)/ig, '<em>$1</em>')
+  }
+  </script>
+</head>
+<body>
+  <div id="transcript"></div>
+</body>
+</html>

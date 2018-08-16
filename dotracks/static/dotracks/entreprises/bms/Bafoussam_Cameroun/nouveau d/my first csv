@@ -1,0 +1,402 @@
+"id";"libelle";"descipt";"status";"dates";"Cic_id";"Dos_id";"For_id";"Use_id";"files"
+"2";"DEVIS EREC";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/EREC/DEVIS EREC";"0";"2018-08-05 22:33:09";"1";"1";"3";"2";NULL
+"3";"plan localisation";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/EREC/plan localisation";"0";"2018-08-05 22:35:54";"1";"1";"3";"2";NULL
+"4";"logo tchonang";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/EREC/logo tchonang";"0";"2018-08-05 22:58:54";"1";"1";"3";"2";NULL
+"5";"Fiche preinsciption tchonang";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/EREC/Fiche preinsciption tchonang";"0";"2018-08-05 22:59:40";"1";"1";"1";"2";NULL
+"6";"geolocal";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/EREC/geolocal";"0";"2018-08-05 23:04:41";"1";"1";"6";"2";NULL
+"7";"django upload image";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/EREC/django upload image";"0";"2018-08-05 23:08:00";"1";"1";"7";"2";NULL
+"10";"capture rogne dotrack";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/EREC/capture rogne dotrack";"0";"2018-08-06 19:25:43";"1";"1";"8";"1";NULL
+"11";"echo";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/EREC/echo";"0";"2018-08-08 15:18:20";"1";"1";"3";"3";NULL
+"12";"equipe bms";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/EREC/important/equipe bms";"0";"2018-08-08 16:40:05";"1";"2";"3";"3";NULL
+"13";"marqueting";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/EREC/important/marqueting";"0";"2018-08-08 16:41:53";"1";"2";"3";"3";NULL
+"14";"scolarite";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/EREC/scolarite";"0";"2018-08-09 04:02:38";"1";"1";"2";"3";NULL
+"19";"makeZone";"<h1><a id=""www.google.com"" name=""www.google.com"">Test Document du Frank14b</a></h1>
+
+<table align=""center"" border=""1"" cellpadding=""1"" cellspacing=""1"" style=""width:500px"" summary=""Le test du repere et du devis du chantier 13"">
+	<caption>Le Repere</caption>
+	<thead>
+		<tr>
+			<th scope=""col"">&nbsp;</th>
+			<th scope=""col"">&nbsp;</th>
+			<th scope=""col"">&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><em><strong>#makeZone</strong></em></p>
+";"0";"2018-08-09 10:54:44";"1";"1";NULL;"2";"0"
+"20";"default";"<h1>Heading Of the Text</h1>
+
+<p>Subheading</p>
+
+<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth,the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, t ...</p>
+
+<ul>
+	<li>List item one</li>
+	<li>List item two</li>
+</ul>
+
+<p>Thank you,</p>
+
+<p>John Doe</p>
+
+<table border=""1"" cellpadding=""1"" cellspacing=""1"" style=""width:500px"">
+	<tbody>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+";"0";"2018-08-09 13:27:32";"1";"1";NULL;"3";"0"
+"21";"rapportabc";"<h1><strong><ins><a href=""https://www.facebook.com"">Heading Of the Text</a></ins></strong></h1>
+
+<p>Subheading</p>
+
+<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth,the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, t ...</p>
+
+<ul>
+	<li>List item one</li>
+	<li>List item two</li>
+</ul>
+
+<p>Thank you,</p>
+
+<p>John Doe</p>
+
+<hr />
+<ol>
+	<li>
+	<h1>Heading Of the Text</h1>
+	</li>
+</ol>
+
+<p>Subheading</p>
+
+<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth,the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, t ...</p>
+
+<ul>
+	<li>List item one</li>
+	<li>List item two</li>
+</ul>
+
+<p>Thank you,</p>
+
+<p>John Doe</p>
+
+<hr />
+<ol>
+	<li>
+	<h1>Heading Of the Text</h1>
+	</li>
+</ol>
+
+<p>Subheading</p>
+
+<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth,the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, t ...</p>
+
+<ul>
+	<li>List item one</li>
+	<li>List item two</li>
+</ul>
+
+<p>Thank you,</p>
+
+<p>John Doe</p>
+
+<p>&nbsp;</p>
+
+<h1>Heading Of the Text</h1>
+
+<p>Subheading</p>
+
+<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth,the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, t ...</p>
+
+<ul>
+	<li>List item one</li>
+	<li>List item two</li>
+</ul>
+
+<p>Thank you,</p>
+
+<p>John Doe</p>
+
+<p>&nbsp;</p>
+";"0";"2018-08-10 05:41:52";"1";"1";NULL;"3";"0"
+"22";"test";"<h1>Heading Of the Text</h1>
+
+<p>Subheading</p>
+
+<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth,the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, t ...</p>
+
+<ul>
+	<li>List item one</li>
+	<li>List item two</li>
+</ul>
+
+<p>Thank you,</p>
+
+<p>John Doe</p>
+
+<table border=""1"" cellpadding=""1"" cellspacing=""1"" style=""width:500px"">
+	<tbody>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+";"0";"2018-08-10 14:12:21";"1";"1";NULL;"3";"0"
+"23";"test omega";"<h1>Heading Of the Text</h1>
+
+<p>Subheading</p>
+
+<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth,the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, t ...</p>
+
+<ul>
+	<li>List item one</li>
+	<li>List item two</li>
+</ul>
+
+<p>Thank you,</p>
+
+<p>John Doe</p>
+
+<table border=""1"" cellpadding=""1"" cellspacing=""1"" style=""width:500px"">
+	<tbody>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+";"0";"2018-08-11 13:17:59";"1";"2";NULL;"3";"0"
+"24";"echo";"<h1>Heading Of the Text</h1>
+
+<p>Subheading</p>
+
+<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth,the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, t ...</p>
+
+<ul>
+	<li>List item one</li>
+	<li>List item two</li>
+</ul>
+
+<p>Thank you,</p>
+
+<p>John Doe</p>
+
+<table border=""1"" cellpadding=""1"" cellspacing=""1"" style=""width:500px"">
+	<tbody>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+";"0";"2018-08-11 14:05:58";"1";"9";NULL;"3";"0"
+"26";"frank14b";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/nouveau d/petit d/frank14b";"0";"2018-08-11 14:24:44";"1";"12";"3";"3";NULL
+"27";"yep";"<h1>Heading Of the Text</h1>
+
+<p>Subheading</p>
+
+<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth,the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, t ...</p>
+
+<ul>
+	<li>List item one</li>
+	<li>List item two</li>
+</ul>
+
+<p>Thank you,</p>
+
+<p>John Doe</p>
+
+<table border=""1"" cellpadding=""1"" cellspacing=""1"" style=""width:500px"">
+	<tbody>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+";"0";"2018-08-11 14:26:19";"1";"12";NULL;"3";"0"
+"28";"geolocal";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/nouveau d/geolocal";"0";"2018-08-14 08:32:32";"1";"11";"6";"1";NULL
+"29";"licence mdb";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/nouveau d/licence mdb";"0";"2018-08-14 08:33:11";"1";"11";"1";"1";NULL
+"30";"ges_scolarite";"static/dotracks/entreprises/bms/Bafoussam_Cameroun/nouveau d/ges_scolarite";"0";"2018-08-14 08:34:13";"1";"11";"2";"1";NULL

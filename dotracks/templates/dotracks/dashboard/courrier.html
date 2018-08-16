@@ -24,13 +24,6 @@
                     <h3 class="box-title">
                         <i class="fa fa-building"></i>&nbsp;
                         <b>{{ request.session.d_Entr }}</b> {{ request.resolver_match.view_name }}</h3>
-                    {% if request.session.d_Entr %}
-
-                    <a href="{{ baseurl }}/dashboard/company/logout/{{ lang_abbr }}">
-                        <button class="btn btn-danger pull-right">
-                            <i class="fa fa-power-off"></i>&nbsp; {{ langue.form_logout }} {{ request.session.d_Entr }}</button>
-                    </a>
-                    {% endif %}
                 </div>
                 <div class="box-body hover">
 

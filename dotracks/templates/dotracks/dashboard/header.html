@@ -287,7 +287,7 @@
         box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     }
 
-    .menus {
+    .menus, #menus {
         display: none;
     }
 
@@ -298,6 +298,7 @@
     #newNotifMess,
     #newNotifMicro,
     #divDOCIMAGE,
+    #divdocx,
     #STOPmodeMICro {
         display: none;
     }
@@ -381,6 +382,11 @@
         color: #FF5722;
         font-size: 15px;
     }
+
+    pre {
+        background: #fff;
+        border: 0px;
+    }
 </style>
 
 <!--
@@ -433,6 +439,13 @@ desired effect
                 <!-- Navbar Right Menu -->
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
+
+                        <li id="menus" class="menus {% if request.resolver_match.view_name == 'Configuration' %}active{%endif%}" data-iden="18">
+                            <a href="{{ baseurl }}/Member/configuration/{{ lang_abbr }}/">
+                                <i class="glyphicon glyphicon-cog"></i>
+                                <span class="hidden">{{ langue.form_reglages }}</span>
+                            </a>
+                        </li>
                         <!-- Messages: style can be found in dropdown.less-->
                         <li class="dropdown messages-menu hidden">
                             <!-- Menu toggle button -->
@@ -561,13 +574,13 @@ desired effect
 
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="{{ baseUrl }}/Member/profile/{{ lang_abbr }}/" class="btn btn-default btn-flat">
+                                        <a href="{{ baseUrl }}/Member/profile/{{ lang_abbr }}/" class="btn btn-default">
                                             <span style="color:#fff">
                                                 <i class="fa fa-user"></i> {{ langue.form_profile }}</span>
                                         </a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="" id="deconnexionUser" class="btn btn-danger btn-flat">
+                                        <a href="" id="deconnexionUser" class="btn btn-danger">
                                             <span style="color:#fff">
                                                 <i class="fa fa-power-off"></i> {{ langue.form_logout }}</a>
                                         </span>
@@ -757,18 +770,18 @@ desired effect
                         </ul>
                     </li>
 
-                    <li class="menus {%if request.resolver_match.view_name == 'Statistiques' %}active{%endif%}" data-iden="6">
-                        <a href="{{ baseurl }}/dashboard/courriers/" class="" style="font-size: 0.9em; text-align: left">
+                    <li class="menus {%if request.resolver_match.view_name == 'Outils Avances' %}active{%endif%}" data-iden="19">
+                        <a href="{{ baseurl }}/Member/outils_Avances/{{ lang_abbr }}" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-list"></i>
-                            <span>Anonces</span>
+                            <span>Outils Avancés</span>
                             <span class="label pull-right bg-green" style="font-size: .8em">0</span>
                         </a>
                     </li>
 
-                    <li class="menus {%if request.resolver_match.view_name == 'Statistiques' %}active{%endif%}" data-iden="6">
-                        <a href="{{ baseurl }}/dashboard/courriers/" class="" style="font-size: 0.9em; text-align: left">
+                    <li class="menus {%if request.resolver_match.view_name == 'Configuration' %}active{%endif%}" data-iden="18">
+                        <a href="{{ baseurl }}/Member/configuration/{{ lang_abbr }}" class="" style="font-size: 0.9em; text-align: left">
                             <i class="fa fa-list"></i>
-                            <span>Collaboration</span>
+                            <span>Configuration</span>
                             <span class="label pull-right bg-info" style="font-size: .8em"></span>
                         </a>
                     </li>
@@ -1129,7 +1142,7 @@ desired effect
             <!--/.Footer Links-->
 
             <!--Copyright-->
-            <div class="footer-copyright py-3 text-center" style="margin-top: 1px; margin-bottom: 15px; font-size: 0.9em; padding:8px">
+            <div class="footer-copyright py-3 text-center card" style="margin-top: 1px; margin-bottom: 15px; font-size: 0.9em; padding:8px">
                 <strong>Copyright
                     <script>document.write(new Date().getFullYear());</script> All rights reserved |
                     <a href="#" style="color: papayawhip;">DOTrack</a>
@@ -1442,6 +1455,97 @@ desired effect
                 } else {
                     return false;
                 }
+            })
+
+            $('.viewsFile').on('click', function () {
+                var id = $(this).attr('data-id')
+                var ext = $(this).attr('data-type')
+
+                if (ext == 'pdf') {
+                    $('#divdocx').fadeIn('slow')
+                    $('#contentdocx').html('<center><img src="{% static "dotracks/img/preloader.gif" %}" style="width: 130px; height: 130px; border-radius: 50%;"/><h2>Patientez Pendant l\'ouverture du Document...</h2></center>')
+                    $.ajax({
+                        url: "{{ baseusrl }}/Member/viewsOpenFiles/",
+                        type: "POST",
+                        data: { 'id': id, 'exts': ext, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                        success: function (data) {
+                            if (data === '0') {
+
+                            } else {
+                                $('#contentdocx').html('<textarea id="docpreview" required class="form-control" style="height:500px; width:100%"></textarea>')
+                                CKEDITOR.replace('docpreview')
+                                CKEDITOR.config.height = "55em"
+                                CKEDITOR.config.readOnly = true
+                                CKEDITOR.instances.docpreview.setData(data)
+                            }
+                        }
+                    });
+                }
+
+                if (ext == 'html') {
+                    $('#divdocx').fadeIn('slow')
+                    $('#contentdocx').html('<center><img src="{% static "dotracks/img/preloader.gif" %}" style="width: 130px; height: 130px; border-radius: 50%;"/><h2>Patientez Pendant l\'ouverture du Document...</h2></center>')
+                    $.ajax({
+                        url: "{{ baseusrl }}/Member/viewsFilesOpen/",
+                        type: "POST",
+                        data: { 'id': id, 'exts': ext, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                        success: function (data) {
+                            if (data === '0') {
+
+                            } else {
+                                $('#contentdocx').html('<textarea id="docpreview" required class="form-control" style="height:500px; width:100%"></textarea>')
+                                CKEDITOR.replace('docpreview')
+                                CKEDITOR.config.height = "55em"
+                                CKEDITOR.config.readOnly = true
+                                CKEDITOR.instances.docpreview.setData(data)
+                            }
+                        }
+                    });
+                }
+
+                if (ext == 'txt' || ext == "csv") {
+                    $('#divdocx').fadeIn('slow')
+                    $('#contentdocx').html('<center><img src="{% static "dotracks/img/preloader.gif" %}" style="width: 130px; height: 130px; border-radius: 50%;"/><h2>Patientez Pendant l\'ouverture du Document...</h2></center>')
+                    $.ajax({
+                        url: "{{ baseusrl }}/Member/viewsFilesOpen/",
+                        type: "POST",
+                        data: { 'id': id, 'exts': ext, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                        success: function (data) {
+                            //alert(data)
+                            if (data === '0') {
+                                $('#contentdocx').html("<h3><center>Echec lors du Chargement du Fichier</center></h3>")
+                                if (ext === "csv") {
+                                    $('#contentdocx').append('<center><h5>Telechargez le fichier pour le consulter sur votre machine</h5><a class="btn btn-primary">Telecharger</a></center>')
+                                }
+
+                            } else {
+                                $('#contentdocx').html('<div>' + data + '</div>')
+
+                            }
+                        }
+                    });
+                }
+
+                if (ext == 'docx' || ext == 'doc') {
+                    $('#divdocx').fadeIn('slow')
+                    $('#contentdocx').html('<center><img src="{% static "dotracks/img/preloader.gif" %}" style="width: 130px; height: 130px; border-radius: 50%;"/><h2>Patientez Pendant l\'ouverture du Document...</h2></center>')
+                    $.ajax({
+                        url: "{{ baseusrl }}/Member/viewsFilesOpen/",
+                        type: "POST",
+                        data: { 'id': id, 'exts': ext, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                        success: function (data) {
+                            if (data === '0') {
+
+                            } else {
+                                $('#contentdocx').html(data)
+                            }
+                        }
+                    });
+                }
+
+                $('#closeModalDocx').on('click', function () {
+                    $('#divdocx').fadeOut('slow')
+                })
             })
 
             $('#modeMICro').on('click', function () {
@@ -1761,6 +1865,10 @@ desired effect
                 $.post('{{ baseusrl }}/dashboard/member/checkAcces', { 'id': id, 'csrfmiddlewaretoken': '{{ csrf_token }}' }, function (data) {
                     if (data == 0) {
                         $this.addClass('visible')
+                        $('#menus').show()
+                    }else{
+                        $this.attr('href', '')
+                        $this.text('Acces Refuse')
                     }
                 });
             });
@@ -1806,7 +1914,7 @@ desired effect
             $('#fileDocx').change(function (e) {
                 e.preventDefault();
                 var $this = $(this);
-                var ext = ['pdf', 'docx', 'doc', 'pptx', 'html', 'txt'];
+                var ext = ['pdf', 'docx', 'doc', 'pptx', 'html', 'txt', 'csv', 'odt'];
                 if ($.inArray($(this).val().split('.').pop().toLowerCase(), ext) === -1) {
                     $('#modalHead').html("Operation annuler")
                     $('#modalBody').html("<h4>Erreur: Format non Valide Document requis.</h4>")
@@ -2654,6 +2762,16 @@ desired effect
             });
 
         });
+    </script>
+
+    <script src="{% static 'dotracks/docx2html-master/dist/index.js' %}"></script>
+
+    <script>
+        function test(input) {
+            require("docx2html")(input.files[0]).then(function (converted) {
+                text.value = converted.toString()
+            })
+        }
     </script>
 </body>
 

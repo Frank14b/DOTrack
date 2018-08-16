@@ -81,6 +81,7 @@ urlpatterns = {
     url(r'^Member/addTypeArchives', views.addTypeArchives),
     url(r'^Member/addMouchard', views.TraceMouchard),
     url(r'^dashboard/company/activite/(?P<lang>\w+)/$', views.allMouchard, name="Mouchard"),
+    url(r'^Member/configuration/(?P<lang>\w+)/$', views.configSuccursale, name="Configuration"),
 
     url(r'^Member/chatValidate', views.EnvoiDuChat),
     url(r'^Member/retriveChat', views.recuperationChat),
@@ -92,6 +93,10 @@ urlpatterns = {
     url(r'^Member/ChooseDossierBySuc', views.getChooseDossierBySuc),
     url(r'^Member/ChooseDossierSucById', views.getChooseDossierBySuc2),
     url(r'^Member/saveDOCcontent', views.enregistrerDocument),
+
+    url(r'^Member/viewsOpenFiles/', views.viewsFilesChoose, name="Ouverture du Fichier"),
+
+       url(r'^Member/viewsFilesOpen/', views.viewsFilesChoos),
 
     url(r'^logout/(?P<lang>\w+)/$', views.Logout, name='logout'),
     url(r'^Member/logout/(?P<lang>\w+)/$', views.LogoutMember, name='logout'),

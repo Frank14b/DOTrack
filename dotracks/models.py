@@ -11,6 +11,9 @@ import os
 from django.db import models
 from django.core.files.storage import FileSystemStorage
 
+from django.conf import settings
+from easy_pdf.views import PDFTemplateView
+
 class Acceder(models.Model):
     mod = models.ForeignKey('Module', models.DO_NOTHING, db_column='Mod_id', primary_key=False)  # Field name made lowercase.
     ids = models.ForeignKey('Typeuser', models.DO_NOTHING, db_column='ids')
@@ -377,3 +380,16 @@ class User_profile(models.Model):
         db_table = 'user_profile'
         verbose_name = 'photo'
         verbose_name_plural = 'photos'
+
+class HelloPDFView(PDFTemplateView):
+    template_name = 'hello.html'
+
+    base_url = 'file://' + settings.STATIC_ROOT
+    download_filename = 'hello.pdf'
+
+    def get_context_data(self, **kwargs):
+        return super(HelloPDFView, self).get_context_data(
+            pagesize='A4',
+            title='Hi there!',
+            **kwargs
+        )

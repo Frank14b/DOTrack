@@ -16,7 +16,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             {% if request.session.d_user %}
             <li>
                 <a href="{{baseurl}}/dashboard/admin/{{lang_abbr}}">
-                    <button class="btn btn-xs btn-flat btn-default">
+                    <button class="btn btn-xs btn-default">
                         <i class="fa fa-arrow-left"></i> {{langue.form_dashboard }} Admin</button>
                 </a>
             </li>
@@ -146,7 +146,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 </span>
 
                                                 <h3 class="timeline-header">
-                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {% if dossierInfo.dos__libelle != None %}<b>.. </b>/
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {% if dossierInfo.dos__libelle != None %}
+                                                    <b>.. </b>/
                                                     <a href="{{ baseurl }}/Member/dossiers/{{ dossierInfo.dos }}/{{ lang_abbr }}">{{ dossierInfo.dos__libelle }}</a> /{% endif %} {{ dossierInfo.libelle}}
                                                     <i class="fa fa-angle-right"></i> Documents</h3>
                                                 <style>
@@ -212,7 +213,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 </span>
 
                                                 <h3 class="timeline-header">
-                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {% if dossierInfo.dos__libelle != None %}<b>.. </b>/
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {% if dossierInfo.dos__libelle != None %}
+                                                    <b>.. </b>/
                                                     <a href="{{ baseurl }}/Member/dossiers/{{ dossierInfo.dos }}/{{ lang_abbr }}">{{ dossierInfo.dos__libelle }}</a> /{% endif %} {{ dossierInfo.libelle}}
                                                     <i class="fa fa-angle-right"></i> Fichiers</h3>
                                                 <style>
@@ -232,14 +234,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                     <i class="fa fa-file"></i>&nbsp; {{ langue.form_nouvelle }}</button>
                                                             </a>
                                                             <br> {%for elmts in docListfile %}
-                                                            <div class="col-md-2" style="position: relative;">
+                                                            <div class="col-md-2">
                                                                 <div class="btn-group">
                                                                     <span class="badge dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float:right; cursor:pointer; margin-bottom:-10px; background:#fff;">
                                                                         <i class="fa fa-angle-down" style="color:#333"></i>
                                                                     </span>
 
                                                                     <div class="dropdown-menu" style="font-size:0.8em; width:50px">
-                                                                        <a class="dropdown-item" href="{{ baseurl }}/Member/file/{{elmts.id}}/{{ lang_abbr }}">
+                                                                        <a class="dropdown-item viewsFile" data-type="{{ elmts.for_field__extension }}" data-id="{{ elmts.id }}" style="color:#007bff;">
                                                                             <i class="fa fa-eye"></i> Ouvrir</a>
                                                                         <a class="dropdown-item" href="{{ baseurl }}/Member/file/{{elmts.id}}/share">
                                                                             <i class="fa fa-share"></i> Partager</a>
@@ -255,7 +257,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                         <img src="{% static 'dotracks/img/'%}{{elmts.for_field__extension}}" alt="" style="width: 80%; margin-top: 10px;" class="img-responsive">
                                                                     </center>
                                                                     <p style="float: left;">
-                                                                        <center style="font-weight:bold;margin-bottom: 2px;">{{elmts.libelle}}</center>
+                                                                        <center style="font-weight:bold;margin-bottom: 2px;">{{elmts.libelle|slice:"0:10"}}...</center>
                                                                     </p>
                                                                 </div>
                                                                 <!-- /.widget-user -->
@@ -338,7 +340,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 </span>
 
                                                 <h3 class="timeline-header">
-                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {% if dossierInfo.dos__libelle != None %}<b>.. </b>/
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {% if dossierInfo.dos__libelle != None %}
+                                                    <b>.. </b>/
                                                     <a href="{{ baseurl }}/Member/dossiers/{{ dossierInfo.dos }}/{{ lang_abbr }}">{{ dossierInfo.dos__libelle }}</a> /{% endif %} {{ dossierInfo.libelle}}
                                                     <i class="fa fa-angle-right"></i> Images</h3>
 
@@ -359,7 +362,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 <div class="view zoom ImageMask card" style="height: 150px; margin-bottom:10px;border-radius:10px; opacity:0.9; background: url('{{ baseurl }}/{{ ele.descipt }}')center/cover; position:relative"
                                                                     data-toggle="tooltip" data-placement="bottom" title="{{ele.dates}}">
                                                                     <div class="mask  maskImage rgba-black-strong waves-effect waves-light flex-center">
-                                                                        <i class="fa fa-eye" style="color: #fff; font-size:2em;"></i>
+                                                                        <i class="fa fa-eye" style="color: #fff; font-size:2em;"></i><p style="color:#fff">
+                                                                        {{elmts.libelle}}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -399,9 +403,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 </span>
 
                                                 <h3 class="timeline-header">
-                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {% if dossierInfo.dos__libelle != None %}<b>.. </b>/
-                                                    <a href="{{ baseurl }}/Member/dossiers/{{ dossierInfo.dos }}/{{ lang_abbr }}">{{ dossierInfo.dos__libelle }}</a> /{% endif %} 
-                                                    {{ dossierInfo.libelle}}
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ lang_abbr }}">Dossiers</a> / {% if dossierInfo.dos__libelle != None %}
+                                                    <b>.. </b>/
+                                                    <a href="{{ baseurl }}/Member/dossiers/{{ dossierInfo.dos }}/{{ lang_abbr }}">{{ dossierInfo.dos__libelle }}</a> /{% endif %} {{ dossierInfo.libelle}}
                                                     <i class="fa fa-angle-right"></i> Dossiers</h3>
 
                                                 <div class="timeline-body">
@@ -630,6 +634,33 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <i class="fa fa-close"></i>
                 </a>
             </div>
+        </div>
+    </div>
+
+
+    <div class="row card scroll scroll-bleu" id="divdocx" style="position:fixed; top:0; left:0;right:0;bottom:0;background:linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.6)); z-index:999999; overflow-y:auto;">
+        <div class="col-md-1 col-sm-1"></div>
+        <div class="col-md-10 col-sm-10 col-xs-12" style="top:40px;position: relative;margin-bottom:90px;background:#fff; border-radius:6px">
+            <div class="col-md-12" style="width:100%;background:#fff;position:relative;border-radius:5px;">
+                <div class="well col-md-12" style="position: relative; padding-top:10px; padding-bottom:12px; margin-top:5px">
+                    <center>
+                        <a class="pull-left" style="color:#333;margin-right:10px">
+                            <i class="fa fa-download"></i> Telecharger
+                        </a>
+                        <a class="pull-left" style="color:#333;margin-right:10px">
+                            <i class="fa fa-pencil"></i> Modifier
+                        </a>
+                        <a class="pull-left" style="color:#333;">
+                            <i class="fa fa-share"></i> Partager
+                        </a>
+                        <a class="pull-right" id="closeModalDocx" style="color:red">
+                            <i class="fa fa-close"></i> Fermer
+                        </a>
+                    </center>
+                </div>
+                <div id="contentdocx" class="well col-md-12" style="padding:25px; padding-bottom:20px; padding-top:20px;"></div>
+            </div>
+            <!-- /.info-box -->
         </div>
     </div>
 

@@ -21,7 +21,16 @@ from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.db.models import Q
 #from docx import Document
+
+import mammoth
 import os
+import csv
+
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer.converter import TextConverter
+from pdfminer.layout import LAParams
+from pdfminer.pdfpage import PDFPage
+from io import StringIO
 
 # Create your views here.
 
@@ -33,6 +42,7 @@ global active
 active = "active"
 
 global newLink
+global pddf
 
 
 def baseUrl():
@@ -1309,6 +1319,23 @@ def addDocuments(request, lang):
     else:
         return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
 
+def configSuccursale(request, lang):
+    if "d_member" in request.session:
+        id = request.session["d_memberid"]
+
+        if checkMyAccess(18, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
+        idCic = Users.objects.get(id=id).cic
+
+        sucu = Users.objects.get(id=id)
+        sucur = Cicursale.objects.get(id=sucu.cics())
+        ent = Entreprise.objects.get(id=sucur.entr())
+
+        return render(request, 'dotracks/dashboard/configuration.html', {"nbruser": getNbrUserBySuc(id), "typuserlist": get_TypUser_by_Entr(ent),'langue': loadLang(lang), "lang_abbr": checkLangAbbr(lang), "userInfo": get_Userby_id(id), "dossierList": getDossierBySuc(idCic), "userList": get_User_by_cic(idCic, id)})
+    else:
+        return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
 
 def addImageDoc(request):
     if "d_member" in request.session:
@@ -1443,6 +1470,13 @@ def getDocumentsDetails(pk):
 def getDocumentsBySuc(dos):
     try:
         doc = Documents.objects.filter(dos=dos, for_field__libelle="images")
+    except ObjectDoesNotExist:
+        doc = None
+    return doc
+
+def getDocumentsByDocID(ids):
+    try:
+        doc = Documents.objects.get(id=ids)
     except ObjectDoesNotExist:
         doc = None
     return doc
@@ -1582,7 +1616,7 @@ def enregistrerDocument(request):
                     post.status = 0
                     post.files = 0
                     post.descipt = request.POST['descipt']
-                    post.libelle = request.POST['libelle']
+                    post.libelle = request.POST['libelle'].replace(" ","_")
                     post.dates = timezone.now()
                     post.cic = Cicursale.objects.get(id=request.POST['cic'])
                     post.dos = Dossiers.objects.get(id=request.POST['dos'])
@@ -1666,3 +1700,110 @@ def changeProfile(request):
         return HttpResponse('0')
     else:
         return HttpResponse('1')
+
+def viewsFilesChoose(request):
+    if "d_member" in request.session:
+        id = request.session["d_memberid"]
+
+        if checkMyAccess(4, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login")
+
+        pk = request.POST['id']
+        exts = request.POST['exts']
+
+        if exts == "pdf":
+
+            if(exts == "pdf"):
+                try:
+                    path = "dotracks/"+getDocumentsByDocID(pk).descipt
+                    new_f= 'dotracks/'+getDocumentsByDocID(pk).descipt+'_equiv.html'
+                    
+                    rsrcmgr = PDFResourceManager()
+                    retstr = StringIO()
+                    codec = 'utf-8'
+                    laparams = LAParams()
+                    device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
+                    fp = open(path, 'rb')
+                    interpreter = PDFPageInterpreter(rsrcmgr, device)
+                    password = ""
+                    maxpages = 0
+                    caching = True
+                    pagenos=set()
+
+                    for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password,caching=caching, check_extractable=True):
+                        interpreter.process_page(page)
+                    lines = retstr.getvalue().splitlines()
+                    with open(new_f, 'w+') as f:
+                        for line in lines:
+                            f.write("<pre>" + line + "</pre>")
+
+                    with open(new_f, 'r') as f:
+                        for line in f:
+                            html = f.read()
+                    
+                    fp.close()
+                    device.close()
+                    retstr.close()
+
+                except:
+                    html = '0'
+                    
+            return HttpResponse(html)
+    else:
+        return HttpResponseRedirect(baseUrl()+"member/login/"+checkLangAbbr(lang))
+
+def viewsFilesChoos(request):
+    if "d_member" in request.session:
+        id = request.session["d_memberid"]
+
+        if checkMyAccess(4, id) == 1:
+            return HttpResponseRedirect(baseUrl()+"member/login")
+
+        pk = request.POST['id']
+        exts = request.POST['exts']
+
+        if exts == "txt" or exts == "html":
+
+            if(exts == "html"):
+                try:
+                    contents = "dotracks/"+getDocumentsByDocID(pk).descipt
+                    with open(contents, 'r') as f:
+                        for line in f:
+                            html = f.read()
+                except:
+                    html = '0'
+            else:
+                try:
+                    contents = open("dotracks/"+getDocumentsByDocID(pk).descipt,"r")
+                    new_f= 'dotracks/'+getDocumentsByDocID(pk).libelle+'_equiv.html'
+                    with open(new_f, 'w+') as f:
+                        for line in contents.readlines():
+                            f.write("<pre>" + line + "</pre>")
+
+                    with open(new_f, 'r') as f:
+                        for line in f:
+                            html = f.read()
+
+                    os.unlink(new_f)
+                except:
+                    html = '0'
+        else:
+            if exts == "csv":
+                hi = []
+                with open('dotracks/'+getDocumentsByDocID(pk).descipt, newline='') as f:
+                    reader = csv.reader(f)
+                    for row in reader:
+                        hi = row
+                html = '0'
+            else:
+                try:
+                    with open('dotracks/'+getDocumentsByDocID(pk).descipt, "rb") as docx_file:
+                        result = mammoth.convert_to_html(docx_file)
+                        html = result.value # The generated HTML
+                        messages = result.messages # Any messages, such as warnings during conversion
+                except:
+                    html = '0'
+
+        return HttpResponse(html)
+    else:
+        return HttpResponse('0')

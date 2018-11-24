@@ -12,3 +12,5 @@ django-easy-pdf
 WeasyPrint
 mammoth
 pdfminer.six
+psycopg2
+psycopg2-binary==2.7.5

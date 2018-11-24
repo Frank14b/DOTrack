@@ -25,7 +25,7 @@ SECRET_KEY = '#x44o@fu08bw@+&3lc()8((dfmqh^+chz7=6qy)u8et(t8iuwt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','dotracks.herokuapp.com',]
 
 
 # Application definition
@@ -78,11 +78,18 @@ DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dotracks',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'USER' : 'root',
+        #'ENGINE': 'django.db.backends.mysql',
+        #'NAME': 'dotracks',
+        #'PASSWORD': '',
+        #'HOST': 'localhost',
+        #'USER' : 'root',
+        
+        'ENGINE': 'django.db.backends.postgresql',
+        'URL': 'postgres://vvtvhucckunctn:17d54a6576c1dd5a413b43a34eee3012d789349b7ea398d02b42e571383e3ad8@ec2-50-17-194-129.compute-1.amazonaws.com:5432/d2aoct7s7m2v3i',
+        'NAME' : 'd2aoct7s7m2v3i',
+        'PASSWORD' : '17d54a6576c1dd5a413b43a34eee3012d789349b7ea398d02b42e571383e3ad8',
+        'HOST' : 'ec2-50-17-194-129.compute-1.amazonaws.com',
+        'USER' : 'vvtvhucckunctn'
     }
 }
 

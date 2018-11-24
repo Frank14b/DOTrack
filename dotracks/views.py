@@ -164,7 +164,7 @@ def Loginadmin(request, lang):
                     request.session['d_userid'] = dotrack.id
                     request.session['d_user'] = dotrack.login
 
-                    addNbrConnexionAdmin(dotrack.id, dotrack.totalconnect, request)
+                    #addNbrConnexionAdmin(dotrack.id, dotrack.totalconnect, request)
 
                     # return HttpResponseRedirect("/connexion/")
                     request.session['tacheMouchard'] = "DOTrack Connexion Administrateur "+request.session['d_user']

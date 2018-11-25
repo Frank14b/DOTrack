@@ -247,7 +247,7 @@ def LoginFacebook(request):
                     # Mailmess = "Merci d'avoir souscrit a DoTrack veuillez activer votre compte en suivant ce lien:"
                     # """sendMail("Account_Validation", Mailmess,
                     # "franckfontcha@gmail.com", post.email)"""    
-                    request.session['tacheMouchard'] = "Nouvelle Inscription Administrateur "+request.POST['email']
+                    #request.session['tacheMouchard'] = "Nouvelle Inscription Administrateur "+request.POST['email']
                     
                     if "d_memberid" in request.session:
                         try:

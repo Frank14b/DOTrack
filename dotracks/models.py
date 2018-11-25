@@ -74,7 +74,7 @@ class Cicursale(models.Model):
     tel2 = models.IntegerField(blank=True, null=True)
     email = models.CharField(max_length=254, blank=True, null=True)
     status = models.CharField(max_length=254, blank=True, null=True)
-    photo = models.CharField(max_length=254, default=0)
+    #photo = models.CharField(max_length=254, default=0)
 
     def entr(self):
         try:

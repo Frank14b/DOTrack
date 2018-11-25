@@ -149,7 +149,7 @@ def Loginadmin(request, lang):
     else:
         if request.method == "POST":
             try:
-                dotrack = Admin.objects.get(email=request.POST['email'])
+                dotrack = Admin.objects.filter(email=request.POST['email'])[0]
             except ObjectDoesNotExist:
                 dotrack = None
             if dotrack != None:
@@ -231,7 +231,7 @@ def LoginFacebook(request):
     else:
         if request.method == "POST":
             try:
-                dotrack = Admin.objects.get(email=request.POST['email'])
+                dotrack = Admin.objects.filter(email=request.POST['email'])[0]
             except ObjectDoesNotExist:
                 dotrack = None
             if dotrack == None:

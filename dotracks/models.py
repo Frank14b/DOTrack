@@ -31,8 +31,8 @@ class Admin(models.Model):
     password = models.CharField(max_length=254, blank=True, null=True)
     dates = models.DateTimeField(blank=True, null=True)
     status = models.IntegerField(blank=True, null=True)
-    totalconnect = models.IntegerField(default=0, blank=True,)
-    lastconnect = models.CharField(max_length=254, blank=True, null=True)
+    #totalconnect = models.IntegerField(default=0, blank=True,)
+    #lastconnect = models.CharField(max_length=254, blank=True, null=True)
 
     class Meta:
         managed = True

@@ -256,7 +256,7 @@ def LoginFacebook(request):
                         except ObjectDoesNotExist:
                             answ =  None
 
-                    dotrack2 = Admin.objects.get(email=request.POST['email'])
+                    dotrack2 = Admin.objects.filter(email=request.POST['email'])[0]
 
                     request.session['d_userid'] = dotrack2.id
                     request.session['d_user'] = dotrack2.login

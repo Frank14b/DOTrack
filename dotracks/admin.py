@@ -34,3 +34,7 @@ admin.site.register(Dossiers)
 admin.site.register(Acceder)
 
 admin.site.register(Perception)
+
+admin.site.register(User_profile)
+
+admin.site.register(Notifications)

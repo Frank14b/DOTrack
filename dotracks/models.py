@@ -31,7 +31,7 @@ class Admin(models.Model):
     password = models.CharField(max_length=254, blank=True, null=True)
     dates = models.DateTimeField(blank=True, null=True)
     status = models.IntegerField(blank=True, null=True)
-    totalconnect = models.IntegerField(blank=True, null=True)
+    totalconnect = models.IntegerField(default=0, blank=True,)
     lastconnect = models.CharField(max_length=254, blank=True, null=True)
 
     class Meta:
@@ -74,6 +74,7 @@ class Cicursale(models.Model):
     tel2 = models.IntegerField(blank=True, null=True)
     email = models.CharField(max_length=254, blank=True, null=True)
     status = models.CharField(max_length=254, blank=True, null=True)
+    photo = models.CharField(max_length=254, default=0)
 
     def entr(self):
         try:
@@ -342,9 +343,9 @@ class Users(models.Model):
     password = models.CharField(max_length=254, blank=True, null=True)
     dates = models.DateTimeField(blank=True, null=True)
     lastconnect = models.CharField(max_length=200, blank=True, null=True)
-    totalconnect = models.IntegerField(blank=True, null=True)
+    totalconnect = models.IntegerField(default=0)
     about = models.CharField(max_length=253, blank=True, null=True)
-    photo = models.ImageField()
+    photo = models.CharField(max_length=254, default=0)
 
     def cics(self):
         try:

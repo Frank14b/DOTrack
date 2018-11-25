@@ -47,7 +47,7 @@ global pddf
 
 def baseUrl():
     global uri
-    uri = "http://127.0.0.1:8000/"
+    uri = "https://demo-dotrack.herokuapp.com/"
     return uri
 
 
@@ -120,7 +120,7 @@ def addNotif(request):
             rp = 'echec'
     return HttpResponse(rp)
 
-def LoginadminLang(request):
+def nnadminLang(request):
     return HttpResponseRedirect(baseUrl()+"connexion/"+defaultLang())
 
 def acceuil(request, lang):

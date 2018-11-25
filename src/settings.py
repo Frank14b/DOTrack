@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import psycopg2
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,8 +25,7 @@ SECRET_KEY = '#x44o@fu08bw@+&3lc()8((dfmqh^+chz7=6qy)u8et(t8iuwt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['127.0.0.1','dotracks.herokuapp.com',]
+ALLOWED_HOSTS = ['127.0.0.1','demo-dotrack.herokuapp.com',]
 
 
 # Application definition
@@ -74,22 +74,18 @@ WSGI_APPLICATION = 'src.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+#DATABASE_URL = os.environ['postgres://pupjtwpcetthdh:ad3ae82e4567c0a738ddf6582777c8b04a2822aedbdff6696b63401248b4c4d4@ec2-54-83-58-222.compute-1.amazonaws.com:5432/dank9gemk57ang']
+
+#conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        #'ENGINE': 'django.db.backends.mysql',
-        #'NAME': 'dotracks',
-        #'PASSWORD': '',
-        #'HOST': 'localhost',
-        #'USER' : 'root',
-        
         'ENGINE': 'django.db.backends.postgresql',
-        'URL': 'postgres://vvtvhucckunctn:17d54a6576c1dd5a413b43a34eee3012d789349b7ea398d02b42e571383e3ad8@ec2-50-17-194-129.compute-1.amazonaws.com:5432/d2aoct7s7m2v3i',
-        'NAME' : 'd2aoct7s7m2v3i',
-        'PASSWORD' : '17d54a6576c1dd5a413b43a34eee3012d789349b7ea398d02b42e571383e3ad8',
-        'HOST' : 'ec2-50-17-194-129.compute-1.amazonaws.com',
-        'USER' : 'vvtvhucckunctn'
+        'URL': 'postgres://exnsjqjgrulugm:018403676449b054fd340effc5a6c1d019effe188ecd24e5b51f91b7cc364b5c@ec2-54-221-210-97.compute-1.amazonaws.com:5432/den2t4c4osrp3a',
+        'NAME': 'den2t4c4osrp3a',
+        'USER': 'exnsjqjgrulugm',
+        'PASSWORD': '018403676449b054fd340effc5a6c1d019effe188ecd24e5b51f91b7cc364b5c',
+        'HOST': 'ec2-54-221-210-97.compute-1.amazonaws.com'
     }
 }
 
@@ -130,23 +126,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-#STATIC_URL = '/static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-#STATTICFILES = [
-#os.path.join(BASE_DIR, 'static'),
-#'dotracks/static',
-#]
-
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
-
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
-# Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
-)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATTICFILES = [
+    os.path.join(BASE_DIR, 'static'),
+    'dotracks/static',
+]

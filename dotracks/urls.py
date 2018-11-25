@@ -10,7 +10,7 @@ urlpatterns = {
     url(r'^$', views.home, name='Acceuil'),
     #url(r'^_@r/(?P<lang>\w+)/$', views.AdminR, name='Acceuil'),
     url(r'^(?P<lang>\w+)/$', views.acceuil, name='Acceuil'),
-    url(r'^connexion/$', views.LoginadminLang, name='Connexion'),
+    url(r'^connexion/$', views.Loginadmin, name='Connexion'),
     url(r'^login/facebook', views.LoginFacebook),
     url(r'^connexion/(?P<lang>\w+)/$', views.Loginadmin, name='Connexion'),
     url(r'^inscription/(?P<lang>\w+)/$', views.Register, name='Inscription'),

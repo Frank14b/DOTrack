@@ -32,6 +32,9 @@ from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 from io import StringIO
 
+import sendgrid
+from sendgrid.helpers.mail import *
+
 # Create your views here.
 
 uri = 0
@@ -52,14 +55,13 @@ def baseUrl():
 
 
 def sendMail(sujet, message, emailFrom, emailTo):
-    send_mail(
-        sujet,
-        message,
-        emailFrom,
-        [emailTo],
-        fail_silently=False,
-        html_message=None,
-    )
+    sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('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'))
+    from_email = Email(emailFrom)
+    to_email = Email(emailTo)
+    subject = sujet
+    content = Content("text/plain", message)
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
 
 def img(request, pk):
     return render('<img src="dotracks/'+pk+'.jpg"/>')

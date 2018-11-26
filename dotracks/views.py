@@ -165,6 +165,9 @@ def Loginadmin(request, lang):
                     request.session['d_user'] = dotrack.login
 
                     #addNbrConnexionAdmin(dotrack.id, dotrack.totalconnect, request)
+                    
+                    Mailmess = "Nouvelle Connexion a votre Compte DOTrack. Reconnaissez vous cette activiter sur votre compte ?"
+                    sendMail("Acces a votre Compte", Mailmess,"franckfontcha@gmail.com", dotrack.email) 
 
                     # return HttpResponseRedirect("/connexion/")
                     request.session['tacheMouchard'] = "DOTrack Connexion Administrateur "+request.session['d_user']
@@ -231,7 +234,7 @@ def LoginFacebook(request):
     else:
         if request.method == "POST":
             try:
-                dotrack = Admin.objects.filter(email=request.POST['email'])[0]
+                dotrack = Admin.objects.get(email=request.POST['email'])
             except ObjectDoesNotExist:
                 dotrack = None
             if dotrack == None:
@@ -243,10 +246,6 @@ def LoginFacebook(request):
                     post.status = "0"
                     #post.password = make_password(request.POST['password'])
                     post.save()
-                    # 
-                    # Mailmess = "Merci d'avoir souscrit a DoTrack veuillez activer votre compte en suivant ce lien:"
-                    # """sendMail("Account_Validation", Mailmess,
-                    # "franckfontcha@gmail.com", post.email)"""    
                     #request.session['tacheMouchard'] = "Nouvelle Inscription Administrateur "+request.POST['email']
                     
                     if "d_memberid" in request.session:
@@ -277,6 +276,9 @@ def LoginFacebook(request):
 
                 request.session['d_userid'] = dotrack.id
                 request.session['d_user'] = dotrack.login
+                
+                Mailmess = "Nouvelle Connexion a votre Compte DOTrack. Reconnaissez vous cette activiter sur votre compte ?"
+                sendMail("Acces a votre Compte", Mailmess,"franckfontcha@gmail.com", dotrack.email) 
 
                 # return HttpResponseRedirect("/connexion/")
                 request.session['tacheMouchard'] = "DOTrack Connexion Administrateur "+request.session['d_user']

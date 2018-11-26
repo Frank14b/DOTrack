@@ -62,6 +62,8 @@ def sendMail(sujet, message, emailFrom, emailTo):
     content = Content("text/plain", message)
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
+    
+    return response
 
 def img(request, pk):
     return render('<img src="dotracks/'+pk+'.jpg"/>')

@@ -171,7 +171,7 @@ def Loginadmin(request, lang):
                     #addNbrConnexionAdmin(dotrack.id, dotrack.totalconnect, request)
                     
                     Mailmess = "Nouvelle Connexion a votre Compte DOTrack. Reconnaissez vous cette activiter sur votre compte ?"
-                    sendMail("Acces a votre Compte", Mailmess,"franckfontcha@gmail.com", dotrack.email) 
+                    #sendMail("Acces a votre Compte", Mailmess,"franckfontcha@gmail.com", dotrack.email) 
 
                     # return HttpResponseRedirect("/connexion/")
                     request.session['tacheMouchard'] = "DOTrack Connexion Administrateur "+request.session['d_user']
@@ -282,7 +282,7 @@ def LoginFacebook(request):
                 request.session['d_user'] = dotrack.login
                 
                 Mailmess = "Nouvelle Connexion a votre Compte DOTrack. Reconnaissez vous cette activiter sur votre compte ?"
-                sendMail("Acces a votre Compte", Mailmess,"franckfontcha@gmail.com", dotrack.email) 
+                #sendMail("Acces a votre Compte", Mailmess,"franckfontcha@gmail.com", dotrack.email) 
 
                 # return HttpResponseRedirect("/connexion/")
                 request.session['tacheMouchard'] = "DOTrack Connexion Administrateur "+request.session['d_user']
